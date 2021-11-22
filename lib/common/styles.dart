@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 ThemeData buildTheme() => ThemeData(
       primarySwatch: Pallete.tealToDark,
+      iconTheme: const IconThemeData(
+        color: Pallete.tealToDark,
+      ),
     );
 
 class Pallete {
