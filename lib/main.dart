@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'common/styles.dart';
 import 'ui/category/category_page.dart';
 import 'ui/chart/chart_page.dart';
 import 'ui/home/home_page.dart';
@@ -16,9 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Money Writer',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: buildTheme(),
       initialRoute: HomePage.routeName,
       routes: {
         HomePage.routeName: (context) => HomePage(),
