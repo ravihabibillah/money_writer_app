@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:data/db/database_helper.dart';
+import 'package:provider/category_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
 
 import 'common/styles.dart';
@@ -16,17 +19,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Money Writer',
-      theme: buildTheme(),
-      initialRoute: HomePage.routeName,
-      routes: {
-        HomePage.routeName: (context) => HomePage(),
-        CategoryPage.routeName: (context) => CategoryPage(),
-        ChartPage.routeName: (context) => ChartPage(),
-        TransactionAddUpdatePage.routeName: (context) =>
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => CategoryProvider(databaseHelper: DatabaseHelper()),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Money Writer',
+        theme: buildTheme(),
+        initialRoute: HomePage.routeName,
+        routes: {
+          HomePage.routeName: (context) => HomePage(),
+          CategoryPage.routeName: (context) => CategoryPage(),
+          ChartPage.routeName: (context) => ChartPage(),
+          TransactionAddUpdatePage.routeName: (context) =>
             TransactionAddUpdatePage(),
-      },
+        },
+      ),
     );
   }
 }
