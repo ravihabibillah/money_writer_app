@@ -44,59 +44,46 @@ class HomePage extends StatelessWidget {
         //   ),
         // ),
       ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (BuildContext context, int i) {
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('Minggu, 3 Nov 2021'),
-                  SizedBox(height: 8.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Rp.10.000'),
-                      Text('Rp.25.000'),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Minuman'),
-                          Text('Susu sapi'),
-                          Text('Rp.15.000'),
-                        ],
-                      ),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 20,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('Minggu, 3 Nov 2021'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Rp. 10.000'),
+                            Text('Rp. 15.000'),
+                          ],
+                        ),
+                        ListView.builder(
+                            itemCount: 2,
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () {},
+                                child: ListTile(
+                                  leading: Text('Makanan'),
+                                  title: Text('Nasi'),
+                                  trailing: Text('Rp. 15.000'),
+                                ),
+                              );
+                            }),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Minuman'),
-                          Text('Susu sapi'),
-                          Text('Rp.15.000'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+                  );
+                }),
+          )
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
