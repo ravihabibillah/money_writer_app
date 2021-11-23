@@ -199,6 +199,7 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      shape: CircularNotchedRectangle(),
       child: Row(
         children: [
           IconButton(
