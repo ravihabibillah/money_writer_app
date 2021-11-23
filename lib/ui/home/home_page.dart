@@ -53,32 +53,56 @@ class HomePage extends StatelessWidget {
                 itemCount: 20,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('Minggu, 3 Nov 2021'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Rp. 10.000'),
-                            Text('Rp. 15.000'),
-                          ],
-                        ),
-                        ListView.builder(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Minggu, 3 Nov 2021',
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Rp. 10.000',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                Text(
+                                  'Rp. 15.000',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Divider(),
+                          ListView.builder(
                             itemCount: 2,
                             physics: ClampingScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
-                              return InkWell(
+                              return ListTile(
+                                leading: Text('Makanan'),
+                                title: Text('Nasi'),
+                                trailing: Text('Rp. 15.000'),
                                 onTap: () {},
-                                child: ListTile(
-                                  leading: Text('Makanan'),
-                                  title: Text('Nasi'),
-                                  trailing: Text('Rp. 15.000'),
-                                ),
                               );
-                            }),
-                      ],
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }),
