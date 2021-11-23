@@ -34,21 +34,63 @@ class HomePage extends StatelessWidget {
             },
           ),
         ],
-        // bottom: PreferredSize(
-        //   preferredSize: Size.fromHeight(100.0),
-        //   child: Column(
-        //     children: [
-        //       Text('Coba'),
-        //       Text('Coba'),
-        //       Text('Coba'),
-        //       Text('Coba'),
-        //     ],
-        //   ),
-        // ),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Material(
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          'Pemasukan',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 8.0),
+                        Text(
+                          'Rp. 15.000',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Pengeluaran',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 8.0),
+                        Text(
+                          'Rp. 15.000',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Saldo',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 8.0),
+                        Text('Rp. 15.000'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Divider(),
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
