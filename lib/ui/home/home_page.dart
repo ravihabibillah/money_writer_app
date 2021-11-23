@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/ui/category/category_page.dart';
 import 'package:money_writer_app/ui/chart/chart_page.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home_page';
@@ -109,31 +110,75 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            IconButton(icon: Icon(Icons.chevron_left), onPressed: () {}),
-            TextButton(
-              child: Text('Nov 2021'),
-              onPressed: () async {
-                final DateTime? newDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime(2020, 11, 17),
-                  firstDate: DateTime(2017, 1),
-                  lastDate: DateTime(2022, 7),
-                  helpText: 'Select a date',
-                );
-              },
-            ),
-            IconButton(icon: Icon(Icons.chevron_right), onPressed: () {}),
-          ],
-        ),
-      ),
+      bottomNavigationBar: buildBottomAppbar(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+    );
+  }
+}
+
+class buildBottomAppbar extends StatefulWidget {
+  const buildBottomAppbar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<buildBottomAppbar> createState() => _buildBottomAppbarState();
+}
+
+class _buildBottomAppbarState extends State<buildBottomAppbar> {
+  DateTime? selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDate = DateTime.now();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      child: TextButton(
+        child: Text(
+          'Month: ${selectedDate?.month} - ${selectedDate?.year}',
+        ),
+        onPressed: () {
+          showMonthPicker(
+            context: context,
+            firstDate: DateTime(DateTime.now().year - 1, 5),
+            lastDate: DateTime(DateTime.now().year + 1, 9),
+            initialDate: selectedDate ?? DateTime.now(),
+            locale: Locale("id"),
+          ).then((date) {
+            if (date != null) {
+              setState(() {
+                selectedDate = date;
+              });
+            }
+          });
+        },
+      ),
+      // child: Row(
+      //   children: [
+      //     IconButton(icon: Icon(Icons.chevron_left), onPressed: () {}),
+      //     TextButton(
+      //       child: Text('Nov 2021'),
+      //       onPressed: () async {
+      //         final DateTime? newDate = await showDatePicker(
+      //           context: context,
+      //           initialDate: DateTime(2020, 11, 17),
+      //           firstDate: DateTime(2017, 1),
+      //           lastDate: DateTime(2022, 7),
+      //           helpText: 'Select a date',
+      //         );
+      //       },
+      //     ),
+      //     IconButton(icon: Icon(Icons.chevron_right), onPressed: () {}),
+      //   ],
+      // ),
     );
   }
 }
