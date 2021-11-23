@@ -47,7 +47,55 @@ class HomePage extends StatelessWidget {
       body: ListView.builder(
         itemCount: 5,
         itemBuilder: (BuildContext context, int i) {
-          return Container();
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Minggu, 3 Nov 2021'),
+                  SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Rp.10.000'),
+                      Text('Rp.25.000'),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Minuman'),
+                          Text('Susu sapi'),
+                          Text('Rp.15.000'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Minuman'),
+                          Text('Susu sapi'),
+                          Text('Rp.15.000'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       ),
       bottomNavigationBar: BottomAppBar(
