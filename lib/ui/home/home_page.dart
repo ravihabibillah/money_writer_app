@@ -141,44 +141,52 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      child: TextButton(
-        child: Text(
-          'Month: ${selectedDate?.month} - ${selectedDate?.year}',
-        ),
-        onPressed: () {
-          showMonthPicker(
-            context: context,
-            firstDate: DateTime(DateTime.now().year - 1, 5),
-            lastDate: DateTime(DateTime.now().year + 1, 9),
-            initialDate: selectedDate ?? DateTime.now(),
-            locale: Locale("id"),
-          ).then((date) {
-            if (date != null) {
+      child: Row(
+        children: [
+          IconButton(
+            icon: Icon(Icons.chevron_left),
+            onPressed: () {
               setState(() {
-                selectedDate = date;
+                selectedDate = DateTime(
+                  selectedDate!.year,
+                  selectedDate!.month - 1,
+                );
               });
-            }
-          });
-        },
+            },
+          ),
+          TextButton(
+            child: Text(
+              'Month: ${selectedDate?.month} - ${selectedDate?.year}',
+            ),
+            onPressed: () {
+              showMonthPicker(
+                context: context,
+                firstDate: DateTime(DateTime.now().year - 10, 5),
+                lastDate: DateTime(DateTime.now().year + 1, 9),
+                initialDate: selectedDate ?? DateTime.now(),
+                locale: Locale("id"),
+              ).then((date) {
+                if (date != null) {
+                  setState(() {
+                    selectedDate = date;
+                  });
+                }
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.chevron_right),
+            onPressed: () {
+              setState(() {
+                selectedDate = DateTime(
+                  selectedDate!.year,
+                  selectedDate!.month + 1,
+                );
+              });
+            },
+          ),
+        ],
       ),
-      // child: Row(
-      //   children: [
-      //     IconButton(icon: Icon(Icons.chevron_left), onPressed: () {}),
-      //     TextButton(
-      //       child: Text('Nov 2021'),
-      //       onPressed: () async {
-      //         final DateTime? newDate = await showDatePicker(
-      //           context: context,
-      //           initialDate: DateTime(2020, 11, 17),
-      //           firstDate: DateTime(2017, 1),
-      //           lastDate: DateTime(2022, 7),
-      //           helpText: 'Select a date',
-      //         );
-      //       },
-      //     ),
-      //     IconButton(icon: Icon(Icons.chevron_right), onPressed: () {}),
-      //   ],
-      // ),
     );
   }
 }
