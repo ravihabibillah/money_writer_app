@@ -53,6 +53,9 @@ class HomePage extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
+                  // contoh check data pengeluaran atau pemasukan
+                  var isPengeluaran = true;
+
                   return Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -90,14 +93,24 @@ class HomePage extends StatelessWidget {
                           ),
                           Divider(),
                           ListView.builder(
-                            itemCount: 2,
+                            itemCount: 5,
                             physics: ClampingScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
+                              // contoh check data pengeluaran atau pemasukan
+                              isPengeluaran = !isPengeluaran;
                               return ListTile(
                                 leading: Text('Makanan'),
                                 title: Text('Nasi'),
-                                trailing: Text('Rp. 15.000'),
+                                trailing: Text(
+                                  'Rp. 15.000',
+                                  style: TextStyle(
+                                    // terapkan check data pengeluaran atau pemasukan
+                                    color: isPengeluaran
+                                        ? Colors.red
+                                        : Colors.blue,
+                                  ),
+                                ),
                                 onTap: () {},
                               );
                             },
