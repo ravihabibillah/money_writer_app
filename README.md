@@ -2,6 +2,10 @@
 
 A Capstone Flutter project.
 
+# Mockup Design
+
+(Figma)[https://www.figma.com/file/5MMbCYhFEPEqBJvYMUn35Z/Money-Writer?node-id=4%3A5]
+
 # Solution
 
 [Nested ListView](https://stackoverflow.com/questions/45270900/how-to-implement-nested-listview-in-flutter)
