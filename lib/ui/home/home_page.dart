@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/ui/category/category_page.dart';
 import 'package:money_writer_app/ui/chart/chart_page.dart';
+import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class HomePage extends StatelessWidget {
@@ -126,7 +127,9 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: buildBottomAppbar(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, TransactionAddUpdatePage.routeName);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
