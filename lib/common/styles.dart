@@ -6,14 +6,14 @@ ThemeData buildTheme(BuildContext context) => ThemeData(
       appBarTheme: AppBarTheme(
         backgroundColor: Pallete.tealToDark.shade100,
         // This will be applied to the "back" icon
-        iconTheme: IconThemeData(color: Pallete.tealToDark),
+        iconTheme: IconThemeData(color: Pallete.tealToDark.shade900),
         elevation: 0,
         // This will be applied to the action icon buttons that locates on the right side
-        actionsIconTheme: IconThemeData(color: Pallete.tealToDark),
+        actionsIconTheme: IconThemeData(color: Pallete.tealToDark.shade900),
         titleTextStyle: TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.w500,
-          color: Pallete.tealToDark,
+          color: Pallete.tealToDark.shade900,
         ),
       ),
       iconTheme: const IconThemeData(
