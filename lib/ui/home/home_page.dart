@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 20,
+                itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     child: Padding(
