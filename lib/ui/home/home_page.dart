@@ -50,76 +50,76 @@ class HomePage extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  // contoh check data pengeluaran atau pemasukan
-                  var isPengeluaran = true;
+              shrinkWrap: true,
+              itemCount: 5,
+              itemBuilder: (BuildContext context, int index) {
+                // contoh check data pengeluaran atau pemasukan
+                var isPengeluaran = true;
 
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Minggu, 3 Nov 2021',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 4.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Rp. 10.000',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    color: Colors.blue,
-                                  ),
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Minggu, 3 Nov 2021',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Rp. 10.000',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                  color: Colors.blue,
                                 ),
-                                Text(
-                                  'Rp. 15.000',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    color: Colors.red,
-                                  ),
+                              ),
+                              Text(
+                                'Rp. 15.000',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                  color: Colors.red,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Divider(),
-                          ListView.builder(
-                            itemCount: 5,
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              // contoh check data pengeluaran atau pemasukan
-                              isPengeluaran = !isPengeluaran;
-                              return ListTile(
-                                leading: Text('Makanan'),
-                                title: Text('Nasi'),
-                                trailing: Text(
-                                  'Rp. 15.000',
-                                  style: TextStyle(
-                                    // terapkan check data pengeluaran atau pemasukan
-                                    color: isPengeluaran
-                                        ? Colors.red
-                                        : Colors.blue,
-                                  ),
+                        ),
+                        Divider(),
+                        ListView.builder(
+                          itemCount: 5,
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            // contoh check data pengeluaran atau pemasukan
+                            isPengeluaran = !isPengeluaran;
+                            return ListTile(
+                              leading: Text('Makanan'),
+                              title: Text('Nasi'),
+                              trailing: Text(
+                                'Rp. 15.000',
+                                style: TextStyle(
+                                  // terapkan check data pengeluaran atau pemasukan
+                                  color:
+                                      isPengeluaran ? Colors.red : Colors.blue,
                                 ),
-                                onTap: () {},
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                              ),
+                              onTap: () {},
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+            ),
           )
         ],
       ),
