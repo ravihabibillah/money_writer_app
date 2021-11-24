@@ -16,8 +16,14 @@ class TransactionAddUpdatePage extends StatefulWidget {
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
   String? dropdownValue;
-  final amountTextController =
+
+  // Text Controller
+  TextEditingController _dateController = TextEditingController();
+  // TextEditingController _categoryController = TextEditingController();
+  MoneyMaskedTextController _amountTextController =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  TextEditingController _descriptionController = TextEditingController();
+
   DateTime? selectedDate;
 
   @override
@@ -30,7 +36,9 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    amountTextController.dispose();
+    _dateController.dispose();
+    _amountTextController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -46,7 +54,9 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
+              // Tanggal
               DateTimeField(
+                controller: _dateController,
                 format: DateFormat("yyyy-MM-dd"),
                 decoration: InputDecoration(
                   label: Text('tanggal'),
@@ -62,21 +72,18 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       initialDate: currentValue ?? DateTime.now(),
                       lastDate: DateTime(2100));
                 },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              // Tanggal
-              // TextFormField(
-              //   decoration: InputDecoration(
-              //     label: Text('tanggal'),
-              //     icon: Icon(Icons.event),
-              //     border: OutlineInputBorder(
-              //       borderRadius: BorderRadius.circular(5.0),
-              //     ),
-              //   ),
-              // ),
               SizedBox(height: 16.0),
 
               // kategori
               DropdownButtonFormField<String>(
+                value: dropdownValue,
                 items: <String>[
                   'Pilih',
                   'tes1',
@@ -89,7 +96,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     child: Text(value),
                   );
                 }).toList(),
-                value: dropdownValue,
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
@@ -102,12 +108,18 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 16.0),
 
               // Jumlah Uang
               TextFormField(
-                controller: amountTextController,
+                controller: _amountTextController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   prefixText: 'Rp. ',
@@ -117,11 +129,18 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 16.0),
 
               // Keterangan
               TextFormField(
+                controller: _descriptionController,
                 decoration: InputDecoration(
                   label: Text('Keterangan'),
                   icon: Icon(Icons.description),
@@ -129,13 +148,34 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 16.0),
 
               ElevatedButton(
                 child: Text('Simpan'),
                 onPressed: () {
-                  if (_transactionFormKey.currentState != null) {}
+                  if (_transactionFormKey.currentState!.validate()) {
+                    print(_dateController.text);
+                    print(dropdownValue!);
+                    print(_amountTextController.text);
+                    print(_descriptionController.text);
+                    // AlertDialog(
+                    //   content: Column(
+                    //     children: [
+                    //       Text(_dateController.text),
+                    //       Text(dropdownValue!),
+                    //       Text(_amountTextController.text),
+                    //       Text(_descriptionController.text),
+                    //     ],
+                    //   ),
+                    // );
+                  }
                 },
               ),
             ],
