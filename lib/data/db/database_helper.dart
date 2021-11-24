@@ -20,6 +20,10 @@ class DatabaseHelper {
   static const String _pemasukan = 'pemasukan';
   static const String _pengeluaran = 'pengeluaran';
 
+  String insertQuery(String name, String type) {
+    return 'INSERT INTO $_tblCategories(name, type) VALUES("$name", "$type")';
+  }
+
   Future<Database> _initializeDb() async {
     var path = await getDatabasesPath();
     var db = openDatabase(
@@ -39,10 +43,20 @@ class DatabaseHelper {
              type TEXT NOT NULL,
              FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
            )''');
+        await db.execute(insertQuery('Makanan', 'pengeluaran'));
+        await db.execute(insertQuery('Minuman', 'pengeluaran'));
+        await db.execute(insertQuery('Kesehatan', 'pengeluaran'));
+        await db.execute(insertQuery('Olahraga', 'pengeluaran'));
+        await db.execute(insertQuery('Belanja', 'pengeluaran'));
+        await db.execute(insertQuery('Gaji', 'pemasukan'));
+        await db.execute(insertQuery('Penjualan', 'pemasukan'));
+        await db.execute(insertQuery('Deposito', 'pemasukan'));
+        await db.execute(insertQuery('Investasi', 'pemasukan'));
+        await db.execute(insertQuery('Penyewaan', 'pemasukan'));
       },
       version: 1,
     );
-    print('$path/money_writer.db');
+    // print('$path/money_writer.db');
     return db;
   }
 
@@ -110,7 +124,7 @@ class DatabaseHelper {
   }
 
   // fungsi menghapus Kategori
-  Future<void> removeCategory(int id) async {
+  Future<void> removeCategory(int? id) async {
     final db = await database;
 
     await db!.delete(

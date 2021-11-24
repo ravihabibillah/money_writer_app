@@ -89,7 +89,7 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeCategory(int id) async {
+  void removeCategory(int? id) async {
     try {
       await databaseHelper.removeCategory(id);
       _getCategoriesByPemasukan();
