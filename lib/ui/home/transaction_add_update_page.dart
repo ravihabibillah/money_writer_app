@@ -13,8 +13,16 @@ class TransactionAddUpdatePage extends StatefulWidget {
 
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
-  String dropdownValue = 'Pilih';
+  String? dropdownValue;
   var amountTextController = MaskedTextController(mask: '0.000.000.000');
+  DateTime? selectedDate;
+
+  @override
+  initState() {
+    super.initState();
+    selectedDate = DateTime.now();
+    dropdownValue = 'Pilih';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +36,27 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Tanggal
-              TextFormField(
-                decoration: InputDecoration(
-                  label: Text('tanggal'),
-                  icon: Icon(Icons.event),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
+              InputDatePickerFormField(
+                firstDate: DateTime(DateTime.now().year - 10),
+                lastDate: DateTime(DateTime.now().year + 1),
+                initialDate: selectedDate,
+                onDateSubmitted: (date) {
+                  setState(() {
+                    selectedDate = date;
+                  });
+                },
               ),
+              Text("Selected Date: $selectedDate"),
+              // Tanggal
+              // TextFormField(
+              //   decoration: InputDecoration(
+              //     label: Text('tanggal'),
+              //     icon: Icon(Icons.event),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 16.0),
 
               // kategori
@@ -87,7 +106,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
               // Keterangan
               TextFormField(
-                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   label: Text('Keterangan'),
                   icon: Icon(Icons.description),
