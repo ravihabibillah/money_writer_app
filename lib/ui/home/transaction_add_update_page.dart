@@ -161,13 +161,15 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                 child: Text('Simpan'),
                 onPressed: () {
                   if (_transactionFormKey.currentState!.validate()) {
-                    print(_dateController.text);
+                    DateTime? parsedDateTime =
+                        DateTime.tryParse(_dateController.text);
+                    print(parsedDateTime);
                     print(dropdownValue!);
 
                     var amountReplaceThousandSeparator = _amountTextController
                         .text
                         .replaceAll(RegExp(r'[^0-9\.]'), '');
-                    var amountToDoble =
+                    double? amountToDoble =
                         double.tryParse(amountReplaceThousandSeparator);
                     // assert(myInt is double);
                     print(amountToDoble);
