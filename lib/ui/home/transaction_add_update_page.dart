@@ -12,7 +12,7 @@ class TransactionAddUpdatePage extends StatefulWidget {
 
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
-  String dropdownValue = '';
+  String dropdownValue = 'Pilih';
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +41,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
               // kategori
               DropdownButtonFormField<String>(
                 items: <String>[
-                  'One',
-                  'Two',
-                  'Free',
-                  'Four',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    alignment: AlignmentDirectional.center,
+                  'Pilih',
+                  'tes1',
+                  'tes2',
+                  'tes3',
+                ].map((String value) {
+                  return DropdownMenuItem(
+                    enabled: value == 'Pilih' ? false : true,
                     value: value,
                     child: Text(value),
                   );
@@ -58,6 +58,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     dropdownValue = newValue!;
                   });
                 },
+                decoration: InputDecoration(
+                  label: Text('Kategory'),
+                  icon: Icon(Icons.money),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
               ),
               SizedBox(height: 16.0),
 
