@@ -16,7 +16,8 @@ class TransactionAddUpdatePage extends StatefulWidget {
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
   String? dropdownValue;
-  var amountTextController = MaskedTextController(mask: '0.000.000.000');
+  final amountTextController =
+      MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   DateTime? selectedDate;
 
   @override
@@ -24,6 +25,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
     super.initState();
     selectedDate = DateTime.now();
     dropdownValue = 'Pilih';
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    amountTextController.dispose();
+    super.dispose();
   }
 
   @override
