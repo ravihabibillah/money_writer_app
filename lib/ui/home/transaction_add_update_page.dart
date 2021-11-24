@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class TransactionAddUpdatePage extends StatefulWidget {
   static const routeName = '/transaction_add_update_page';
@@ -13,6 +14,7 @@ class TransactionAddUpdatePage extends StatefulWidget {
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
   String dropdownValue = 'Pilih';
+  var amountTextController = MaskedTextController(mask: '0.000.000.000');
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
               // Jumlah Uang
               TextFormField(
+                controller: amountTextController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   prefixText: 'Rp. ',
