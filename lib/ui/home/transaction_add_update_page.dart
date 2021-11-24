@@ -1,5 +1,7 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:intl/intl.dart';
 
 class TransactionAddUpdatePage extends StatefulWidget {
   static const routeName = '/transaction_add_update_page';
@@ -36,17 +38,23 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              InputDatePickerFormField(
-                firstDate: DateTime(DateTime.now().year - 10),
-                lastDate: DateTime(DateTime.now().year + 1),
-                initialDate: selectedDate,
-                onDateSubmitted: (date) {
-                  setState(() {
-                    selectedDate = date;
-                  });
+              DateTimeField(
+                format: DateFormat("yyyy-MM-dd"),
+                decoration: InputDecoration(
+                  label: Text('tanggal'),
+                  icon: Icon(Icons.event),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onShowPicker: (context, currentValue) {
+                  return showDatePicker(
+                      context: context,
+                      firstDate: DateTime(1900),
+                      initialDate: currentValue ?? DateTime.now(),
+                      lastDate: DateTime(2100));
                 },
               ),
-              Text("Selected Date: $selectedDate"),
               // Tanggal
               // TextFormField(
               //   decoration: InputDecoration(
