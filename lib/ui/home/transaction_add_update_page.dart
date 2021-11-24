@@ -163,18 +163,16 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                   if (_transactionFormKey.currentState!.validate()) {
                     print(_dateController.text);
                     print(dropdownValue!);
-                    print(_amountTextController.text);
+
+                    var amountReplaceThousandSeparator = _amountTextController
+                        .text
+                        .replaceAll(RegExp(r'[^0-9\.]'), '');
+                    var amountToDoble =
+                        double.tryParse(amountReplaceThousandSeparator);
+                    // assert(myInt is double);
+                    print(amountToDoble);
+
                     print(_descriptionController.text);
-                    // AlertDialog(
-                    //   content: Column(
-                    //     children: [
-                    //       Text(_dateController.text),
-                    //       Text(dropdownValue!),
-                    //       Text(_amountTextController.text),
-                    //       Text(_descriptionController.text),
-                    //     ],
-                    //   ),
-                    // );
                   }
                 },
               ),
