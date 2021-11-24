@@ -30,7 +30,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
               TextFormField(
                 decoration: InputDecoration(
                   label: Text('tanggal'),
-                  icon: Icon(Icons.money),
+                  icon: Icon(Icons.event),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -59,8 +59,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                   });
                 },
                 decoration: InputDecoration(
-                  label: Text('Kategory'),
-                  icon: Icon(Icons.money),
+                  label: Text('Kategori'),
+                  icon: Icon(Icons.category),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -87,7 +87,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   label: Text('Keterangan'),
-                  icon: Icon(Icons.money),
+                  icon: Icon(Icons.description),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
