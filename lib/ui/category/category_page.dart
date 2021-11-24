@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/model/category.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
-import 'package:money_writer_app/ui/category/add_category_dialog.dart';
+import 'package:money_writer_app/ui/category/add_update_category_dialog.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:provider/provider.dart';
 
@@ -37,9 +37,10 @@ class _CategoryPageState extends State<CategoryPage>
         title: const Text('Kategori'),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () async {
-              await showInformationDialog(context);
+              await showInformationDialog(
+                  context, Category(id: null, name: '', type: ''));
             },
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
@@ -61,7 +62,7 @@ class _CategoryPageState extends State<CategoryPage>
                   borderRadius: BorderRadius.circular(30),
                   color: Colors.red,
                 ),
-                tabs: [
+                tabs: const [
                   Tab(child: Text('Pemasukan')),
                   Tab(child: Text('Pengeluaran')),
                 ],
@@ -93,7 +94,9 @@ class _CategoryPageState extends State<CategoryPage>
             itemCount: provider.categoriesPemasukan.length,
             itemBuilder: (context, index) {
               return CardCategory(
-                  category: provider.categoriesPemasukan[index]);
+                category: provider.categoriesPemasukan[index],
+                provider: provider,
+              );
             },
           );
         } else {
@@ -113,7 +116,9 @@ class _CategoryPageState extends State<CategoryPage>
             itemCount: provider.categoriesPengeluaran.length,
             itemBuilder: (context, index) {
               return CardCategory(
-                  category: provider.categoriesPengeluaran[index]);
+                category: provider.categoriesPengeluaran[index],
+                provider: provider,
+              );
             },
           );
         } else {
@@ -127,23 +132,47 @@ class _CategoryPageState extends State<CategoryPage>
 }
 
 class CardCategory extends StatelessWidget {
-  Category category;
+  final Category category;
+  final CategoryProvider provider;
 
-  CardCategory({
+  const CardCategory({
     Key? key,
     required this.category,
+    required this.provider,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            Expanded(child: Text(category.name)),
-            Icon(Icons.edit),
-            Icon(Icons.delete_forever),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child:
+                    Text(category.name, style: const TextStyle(fontSize: 15)),
+              ),
+            ),
+            GestureDetector(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6.0),
+                child: Icon(Icons.edit),
+              ),
+              onTap: () {
+                showInformationDialog(context, category);
+              },
+            ),
+            GestureDetector(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6.0),
+                child: Icon(Icons.delete_forever),
+              ),
+              onTap: () {
+                provider.removeCategory(category.id);
+              },
+            ),
           ],
         ),
       ),
