@@ -94,6 +94,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                 ),
               ),
               SizedBox(height: 16.0),
+
+              ElevatedButton(
+                child: Text('Simpan'),
+                onPressed: () {
+                  if (_transactionFormKey.currentState != null) {}
+                },
+              ),
             ],
           ),
         ),
