@@ -40,53 +40,51 @@ class HomePage extends StatelessWidget {
         children: [
           Material(
             child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          'Pemasukan',
-                          style: Theme.of(context).textTheme.bodyText1,
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'Pemasukan',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Rp. 15.000',
+                        style: TextStyle(
+                          color: Colors.blue,
                         ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'Rp. 15.000',
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        'Pengeluaran',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Rp. 15.000',
+                        style: TextStyle(
+                          color: Colors.red,
                         ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          'Pengeluaran',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'Rp. 15.000',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          'Saldo',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(height: 8.0),
-                        Text('Rp. 15.000'),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        'Saldo',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      SizedBox(height: 8.0),
+                      Text('Rp. 15.000'),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
