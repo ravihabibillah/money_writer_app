@@ -40,9 +40,9 @@ class DatabaseHelper {
              description TEXT,
              amount INTEGER NOT NULL,
              transaction_date TEXT,
-             categories TEXT,
+             id_categories INTEGER,
              type TEXT NOT NULL,
-             FOREIGN KEY (categories) REFERENCES $_tblCategories (name) ON DELETE NO ACTION ON UPDATE NO ACTION
+             FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
            )''');
         await db.execute(insertQuery('Makanan', 'pengeluaran'));
         await db.execute(insertQuery('Minuman', 'pengeluaran'));

@@ -3,7 +3,7 @@ class Transactions {
   late String description;
   late int amount;
   late String transaction_date;
-  late String categories;
+  late int id_categories;
   late String type;
 
   Transactions({
@@ -11,7 +11,7 @@ class Transactions {
     required this.description,
     required this.amount,
     required this.transaction_date,
-    required this.categories,
+    required this.id_categories,
     required this.type,
   });
 
@@ -21,7 +21,7 @@ class Transactions {
     description = map['description'];
     amount = map['amount'];
     transaction_date = map['transaction_date'];
-    categories = map['categories'];
+    id_categories = map['categories'];
     type = map['type'];
   }
 
@@ -31,7 +31,7 @@ class Transactions {
         "description": description,
         "amount": amount,
         "transaction_date": transaction_date,
-        "categories": categories,
+        "id_categories": id_categories,
         "type": type,
       };
 }
