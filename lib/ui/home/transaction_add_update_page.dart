@@ -2,6 +2,9 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:intl/intl.dart';
+import 'package:money_writer_app/provider/category_provider.dart';
+import 'package:money_writer_app/utils/result_state.dart';
+import 'package:provider/provider.dart';
 
 class TransactionAddUpdatePage extends StatefulWidget {
   static const routeName = '/transaction_add_update_page';
@@ -20,8 +23,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   // Text Controller
   TextEditingController _dateController = TextEditingController();
   // TextEditingController _categoryController = TextEditingController();
-  MoneyMaskedTextController _amountTextController =
-      MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
+      decimalSeparator: '', thousandSeparator: ',', precision: 0);
   TextEditingController _descriptionController = TextEditingController();
 
   DateTime? selectedDate;
@@ -82,37 +85,56 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
               SizedBox(height: 16.0),
 
               // kategori
-              DropdownButtonFormField<String>(
-                value: dropdownValue,
-                items: <String>[
-                  'Pilih',
-                  'tes1',
-                  'tes2',
-                  'tes3',
-                ].map((String value) {
-                  return DropdownMenuItem(
-                    enabled: value == 'Pilih' ? false : true,
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropdownValue = newValue!;
-                  });
-                },
-                decoration: InputDecoration(
-                  label: Text('Kategori'),
-                  icon: Icon(Icons.category),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+              Consumer<CategoryProvider>(
+                builder: (context, provider, child) {
+                  if (provider.statePengeluaran == ResultState.HasData) {
+                    var firstData = <String>[
+                      'Pilih',
+                    ];
+
+                    var categoryMapToList = provider.categoriesPengeluaran
+                        .map((e) => e.name)
+                        .toList();
+
+                    var firstDataWithCategoryList =
+                        firstData + categoryMapToList;
+
+                    var firstDataWithCategoryMap =
+                        firstDataWithCategoryList.map((String value) {
+                      return DropdownMenuItem(
+                        enabled: value == 'Pilih' ? false : true,
+                        value: value,
+                        child: Text(value),
+                      );
+                    });
+
+                    return DropdownButtonFormField<String>(
+                      value: dropdownValue,
+                      items: firstDataWithCategoryMap.toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        label: Text('Kategori'),
+                        icon: Icon(Icons.category),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    );
+                  } else {
+                    return Center(
+                      child: Text(provider.message),
+                    );
                   }
-                  return null;
                 },
               ),
               SizedBox(height: 16.0),
@@ -161,19 +183,21 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                 child: Text('Simpan'),
                 onPressed: () {
                   if (_transactionFormKey.currentState!.validate()) {
-                    DateTime? parsedDateTime =
-                        DateTime.tryParse(_dateController.text);
-                    print(parsedDateTime);
+                    // String to DateTime
+                    // DateTime? parsedDateTime =
+                    //     DateTime.tryParse(_dateController.text);
+                    // print(parsedDateTime);
+                    print(_dateController.text);
                     print(dropdownValue!);
 
                     var amountReplaceThousandSeparator = _amountTextController
                         .text
                         .replaceAll(RegExp(r'[^0-9\.]'), '');
-                    double? amountToDoble =
-                        double.tryParse(amountReplaceThousandSeparator);
+                    int? amountToInt =
+                        int.tryParse(amountReplaceThousandSeparator);
                     // assert(myInt is double);
-                    print(amountToDoble);
-
+                    print(amountToInt);
+                    print(amountToInt.runtimeType);
                     print(_descriptionController.text);
                   }
                 },
