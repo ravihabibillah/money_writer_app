@@ -104,6 +104,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
                     return DropdownButtonFormField<String>(
                       items: _firstDataWithCategoryMap.toList(),
+                      value: categoryMapToList.first,
                       onChanged: (String? newValue) {
                         setState(() {
                           dropdownValue = newValue!;
