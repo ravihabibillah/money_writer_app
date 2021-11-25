@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/db/database_helper.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
+import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => CategoryProvider(databaseHelper: DatabaseHelper()),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TransactionsProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Money Writer',
