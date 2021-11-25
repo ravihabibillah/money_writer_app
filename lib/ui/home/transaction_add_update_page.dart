@@ -22,19 +22,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   bool typePengeluaran = true;
 
   // Text Controller
-  TextEditingController _dateController = TextEditingController();
+  TextEditingController _dateController = TextEditingController(
+    text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+  );
   // TextEditingController _categoryController = TextEditingController();
   MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
       decimalSeparator: '', thousandSeparator: ',', precision: 0);
   TextEditingController _descriptionController = TextEditingController();
-
-  DateTime? selectedDate;
-
-  @override
-  initState() {
-    super.initState();
-    selectedDate = DateTime.now();
-  }
 
   @override
   void dispose() {
@@ -58,16 +52,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           child: Column(
             children: [
               // Mengubah kategori
-              // DefaultTabController(
-              //   length: 2,
-              //   child: TabBar(
-              //     labelColor: Colors.red,
-              //     tabs: [
-              //       Tab(text: 'Pengeluaran'),
-              //       Tab(text: 'Pemasukan'),
-              //     ],
-              //   ),
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -101,6 +85,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
               // Tanggal
               DateTimeField(
                 controller: _dateController,
+                initialValue: DateTime.tryParse(_dateController.text),
                 format: DateFormat("yyyy-MM-dd"),
                 decoration: InputDecoration(
                   label: Text('tanggal'),
@@ -144,8 +129,9 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       );
                     });
 
+                    print('dropdownValue = ' + dropdownValue.toString());
+
                     return DropdownButtonFormField<String>(
-                      value: dropdownValue ?? categoryMapToList.first,
                       items: _firstDataWithCategoryMap.toList(),
                       onChanged: (String? newValue) {
                         setState(() {
@@ -245,50 +231,3 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
     );
   }
 }
-
-// class AppDropdownInput<T> extends StatelessWidget {
-//   final String hintText;
-//   final List<T> options;
-//   final T value;
-//   final String Function(T) getLabel;
-//   final Function(T) onChanged;
-//
-//   AppDropdownInput({
-//     this.hintText = 'Please select an Option',
-//     this.options = const [],
-//     required this.getLabel,
-//     required this.value,
-//     required this.onChanged,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return FormField<T>(
-//       builder: (FormFieldState<T> state) {
-//         return InputDecorator(
-//           decoration: InputDecoration(
-//             contentPadding:
-//                 EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-//             labelText: hintText,
-//             border:
-//                 OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-//           ),
-//           isEmpty: value == null || value == '',
-//           child: DropdownButtonHideUnderline(
-//             child: DropdownButton<T>(
-//               value: value,
-//               isDense: true,
-//               onChanged: onChanged,
-//               items: options.map((T value) {
-//                 return DropdownMenuItem<T>(
-//                   value: value,
-//                   child: Text(getLabel(value)),
-//                 );
-//               }).toList(),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
