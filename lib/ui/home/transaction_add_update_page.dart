@@ -91,23 +91,49 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     var getCategory = typePengeluaran
                         ? provider.categoriesPengeluaran
                         : provider.categoriesPemasukan;
-                    var categoryMapToList =
-                        getCategory.map((e) => e.name).toList();
+                    // var categoryMapToList =
+                    //     getCategory.map((e) => e.name).toList();
 
-                    var _firstDataWithCategoryMap =
-                        categoryMapToList.map((String value) {
+                    // var _firstDataWithCategoryMap =
+                    //     categoryMapToList.map((String value) {
+                    //   return DropdownMenuItem(
+                    //     value: value,
+                    //     child: Text(value),
+                    //   );
+                    // });
+
+                    var categoryMapToList =
+                        getCategory.map((e) => {e.id: e.name});
+
+                    var coba = categoryMapToList.map((entry) {
                       return DropdownMenuItem(
-                        value: value,
-                        child: Text(value),
+                        value: entry.keys
+                            .toString()
+                            .replaceAll(RegExp(r'[^0-9]'), ''),
+                        child: Text(entry.values
+                            .toString()
+                            .replaceAll(RegExp(r'[^0-9\a-z\A-Z\ ]'), '')),
                       );
                     });
 
-                    return DropdownButtonFormField<String>(
-                      items: _firstDataWithCategoryMap.toList(),
-                      value: categoryMapToList.first,
-                      onChanged: (String? newValue) {
+                    // print(categoryMapToList.toList());
+                    //
+                    // print(categoryMapToList.toList().map((entry) {
+                    //   return entry.keys;
+                    // }).toList());
+                    //
+                    // print(categoryMapToList.toList().map((entry) {
+                    //   return entry.keys
+                    //       .toString()
+                    //       .replaceAll(RegExp(r'[^0-9\.]'), '');
+                    // }).toList());
+
+                    return DropdownButtonFormField(
+                      items: coba.toList(),
+                      // value: categoryMapToList.first.keys,
+                      onChanged: (newValue) {
                         setState(() {
-                          dropdownValue = newValue!;
+                          dropdownValue = newValue as String?;
                         });
                       },
                       decoration: InputDecoration(
@@ -118,7 +144,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         ),
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null) {
                           return 'Please enter some text';
                         }
                         return null;
@@ -182,7 +208,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     //     DateTime.tryParse(_dateController.text);
                     // print(parsedDateTime);
                     print(_dateController.text);
-                    print(dropdownValue!);
+                    print(int.tryParse(dropdownValue!));
 
                     var amountReplaceThousandSeparator = _amountTextController
                         .text
