@@ -37,10 +37,10 @@ class DatabaseHelper {
            )''');
         await db.execute('''CREATE TABLE $_tblTransaction (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
-             description TEXT,
+             description TEXT NOT NULL,
              amount INTEGER NOT NULL,
-             transaction_date TEXT,
-             id_categories INTEGER,
+             transaction_date TEXT NOT NULL,
+             id_categories INTEGER NOT NULL,
              type TEXT NOT NULL,
              FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
            )''');
@@ -154,7 +154,8 @@ class DatabaseHelper {
   // fungsi Insert Kategori
   Future<void> insertTransaction(Transactions transaction) async {
     final db = await database;
-    await db!.insert(_tblCategories, transaction.toMap());
+    await db!.insert(_tblTransaction, transaction.toMap());
+    print('Data saved');
   }
 
   // Fungsi get all transactions
