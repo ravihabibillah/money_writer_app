@@ -52,34 +52,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           child: Column(
             children: [
               // Mengubah kategori
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    child: Text('Pengeluaran'),
-                    style: ElevatedButton.styleFrom(
-                      primary: typePengeluaran ? Colors.red : Colors.grey,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        typePengeluaran = true;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 8.0),
-                  ElevatedButton(
-                    child: Text('Pemasukan'),
-                    style: ElevatedButton.styleFrom(
-                      primary: !typePengeluaran ? Colors.blue : Colors.grey,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        typePengeluaran = false;
-                      });
-                    },
-                  ),
-                ],
-              ),
+              _buildTabTypeTransaction(),
               SizedBox(height: 16.0),
 
               // Tanggal
@@ -228,6 +201,37 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTabTypeTransaction() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: Text('Pengeluaran'),
+          style: ElevatedButton.styleFrom(
+            primary: typePengeluaran ? Colors.red : Colors.grey,
+          ),
+          onPressed: () {
+            setState(() {
+              typePengeluaran = true;
+            });
+          },
+        ),
+        SizedBox(width: 8.0),
+        ElevatedButton(
+          child: Text('Pemasukan'),
+          style: ElevatedButton.styleFrom(
+            primary: !typePengeluaran ? Colors.blue : Colors.grey,
+          ),
+          onPressed: () {
+            setState(() {
+              typePengeluaran = false;
+            });
+          },
+        ),
+      ],
     );
   }
 }
