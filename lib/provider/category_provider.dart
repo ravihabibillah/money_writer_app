@@ -11,13 +11,13 @@ class CategoryProvider extends ChangeNotifier {
     _getCategoriesByPengeluaran();
   }
 
-  late ResultState _state;
+  late ResultState _state = ResultState.Loading;
   ResultState get state => _state;
 
-  late ResultState _statePemasukan;
+  late ResultState _statePemasukan = ResultState.Loading;
   ResultState get statePemasukan => _statePemasukan;
 
-  late ResultState _statePengeluaran;
+  late ResultState _statePengeluaran = ResultState.Loading;
   ResultState get statePengeluaran => _statePengeluaran;
 
   String _message = '';

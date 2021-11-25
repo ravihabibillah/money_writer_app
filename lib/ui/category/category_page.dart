@@ -52,8 +52,9 @@ class _CategoryPageState extends State<CategoryPage>
         child: Column(
           children: [
             Container(
+              margin: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.blue.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TabBar(
@@ -89,7 +90,11 @@ class _CategoryPageState extends State<CategoryPage>
   Widget _buildListPemasukan() {
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
-        if (provider.statePemasukan == ResultState.HasData) {
+        if (provider.statePemasukan == ResultState.Loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (provider.statePemasukan == ResultState.HasData) {
           return ListView.builder(
             itemCount: provider.categoriesPemasukan.length,
             itemBuilder: (context, index) {
@@ -111,7 +116,11 @@ class _CategoryPageState extends State<CategoryPage>
   Widget _buildListPengeluaran() {
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
-        if (provider.statePengeluaran == ResultState.HasData) {
+        if (provider.statePengeluaran == ResultState.Loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (provider.statePengeluaran == ResultState.HasData) {
           return ListView.builder(
             itemCount: provider.categoriesPengeluaran.length,
             itemBuilder: (context, index) {

@@ -29,7 +29,6 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
-  // final TextEditingController _textEditingController = TextEditingController();
   JenisKategori? _jenis = JenisKategori.pengeluaran;
 
   final _formKey = GlobalKey<FormState>();
@@ -49,7 +48,6 @@ class _CustomDialogState extends State<CustomDialog> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
-                  // controller: _textEditingController,
                   initialValue:
                       widget.category.name == '' ? null : widget.category.name,
                   autofocus: true,
@@ -86,9 +84,7 @@ class _CustomDialogState extends State<CustomDialog> {
                         onChanged: (JenisKategori? value) {
                           setState(() {
                             _jenis = value;
-                            // print(_jenis);
                             widget.category.type = 'pemasukan';
-                            // print(type);
                           });
                         },
                       ),
@@ -96,16 +92,13 @@ class _CustomDialogState extends State<CustomDialog> {
                         'Pemasukan',
                         style: TextStyle(fontSize: 14),
                       ),
-                      // Spacer(),
                       Radio<JenisKategori>(
                         value: JenisKategori.pengeluaran,
                         groupValue: _jenis,
                         onChanged: (JenisKategori? value) {
                           setState(() {
                             _jenis = value;
-                            // print(_jenis);
                             widget.category.type = 'pengeluaran';
-                            // print(type);
                           });
                         },
                       ),
@@ -135,8 +128,6 @@ class _CustomDialogState extends State<CustomDialog> {
                     provider.addCategory(widget.category);
                   }
                   Navigator.of(context).pop();
-
-                  // print(widget.category.type);
                 }
               },
               child: const Text('SIMPAN'),

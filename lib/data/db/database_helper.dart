@@ -29,11 +29,14 @@ class DatabaseHelper {
     var db = openDatabase(
       '$path/money_writer.db',
       onCreate: (db, version) async {
+        // membuat tabel kategori
         await db.execute('''CREATE TABLE $_tblCategories (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
              name TEXT NOT NULL,
              type TEXT NOT NULL
            )''');
+
+        // membuat tabel transaksi
         await db.execute('''CREATE TABLE $_tblTransaction (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
              description TEXT,
@@ -43,6 +46,8 @@ class DatabaseHelper {
              type TEXT NOT NULL,
              FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
            )''');
+
+        // Insert data awal untuk kategori pengeluaran dan masukan
         await db.execute(insertQuery('Makanan', 'pengeluaran'));
         await db.execute(insertQuery('Minuman', 'pengeluaran'));
         await db.execute(insertQuery('Kesehatan', 'pengeluaran'));
