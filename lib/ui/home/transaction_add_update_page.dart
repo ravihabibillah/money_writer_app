@@ -102,8 +102,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       );
                     });
 
-                    print('dropdownValue = ' + dropdownValue.toString());
-
                     return DropdownButtonFormField<String>(
                       items: _firstDataWithCategoryMap.toList(),
                       onChanged: (String? newValue) {
