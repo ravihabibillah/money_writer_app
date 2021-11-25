@@ -1,4 +1,4 @@
-class Transaction {
+class Transactions {
   late int? id;
   late String description;
   late int amount;
@@ -6,7 +6,7 @@ class Transaction {
   late String categories;
   late String type;
 
-  Transaction({
+  Transactions({
     required this.id,
     required this.description,
     required this.amount,
@@ -16,7 +16,7 @@ class Transaction {
   });
 
   // mengambil data
-  Transaction.fromMap(Map<String, dynamic> map) {
+  Transactions.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     description = map['description'];
     amount = map['amount'];
@@ -26,7 +26,7 @@ class Transaction {
   }
 
   // konversi data ke map
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "description": description,
         "amount": amount,
