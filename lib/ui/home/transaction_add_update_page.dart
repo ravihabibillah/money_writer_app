@@ -19,6 +19,7 @@ class TransactionAddUpdatePage extends StatefulWidget {
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
   String? dropdownValue;
+  bool typePengeluaran = true;
 
   // Text Controller
   TextEditingController _dateController = TextEditingController();
@@ -57,6 +58,47 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
+              // Mengubah kategori
+              // DefaultTabController(
+              //   length: 2,
+              //   child: TabBar(
+              //     labelColor: Colors.red,
+              //     tabs: [
+              //       Tab(text: 'Pengeluaran'),
+              //       Tab(text: 'Pemasukan'),
+              //     ],
+              //   ),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    child: Text('Pengeluaran'),
+                    style: ElevatedButton.styleFrom(
+                      primary: typePengeluaran ? Colors.red : Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        typePengeluaran = true;
+                      });
+                    },
+                  ),
+                  SizedBox(width: 8.0),
+                  ElevatedButton(
+                    child: Text('Pemasukan'),
+                    style: ElevatedButton.styleFrom(
+                      primary: !typePengeluaran ? Colors.blue : Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        typePengeluaran = false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.0),
+
               // Tanggal
               DateTimeField(
                 controller: _dateController,
@@ -92,9 +134,11 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       'Pilih',
                     ];
 
-                    var categoryMapToList = provider.categoriesPengeluaran
-                        .map((e) => e.name)
-                        .toList();
+                    var getCategory = typePengeluaran
+                        ? provider.categoriesPengeluaran
+                        : provider.categoriesPemasukan;
+                    var categoryMapToList =
+                        getCategory.map((e) => e.name).toList();
 
                     var firstDataWithCategoryList =
                         firstData + categoryMapToList;
