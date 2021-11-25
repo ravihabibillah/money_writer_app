@@ -34,7 +34,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   initState() {
     super.initState();
     selectedDate = DateTime.now();
-    dropdownValue = 'Pilih';
   }
 
   @override
@@ -130,31 +129,24 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
               Consumer<CategoryProvider>(
                 builder: (context, provider, child) {
                   if (provider.statePengeluaran == ResultState.HasData) {
-                    var firstData = <String>[
-                      'Pilih',
-                    ];
-
+                    // data category
                     var getCategory = typePengeluaran
                         ? provider.categoriesPengeluaran
                         : provider.categoriesPemasukan;
                     var categoryMapToList =
                         getCategory.map((e) => e.name).toList();
 
-                    var firstDataWithCategoryList =
-                        firstData + categoryMapToList;
-
-                    var firstDataWithCategoryMap =
-                        firstDataWithCategoryList.map((String value) {
+                    var _firstDataWithCategoryMap =
+                        categoryMapToList.map((String value) {
                       return DropdownMenuItem(
-                        enabled: value == 'Pilih' ? false : true,
                         value: value,
                         child: Text(value),
                       );
                     });
 
                     return DropdownButtonFormField<String>(
-                      value: dropdownValue,
-                      items: firstDataWithCategoryMap.toList(),
+                      value: dropdownValue ?? categoryMapToList.first,
+                      items: _firstDataWithCategoryMap.toList(),
                       onChanged: (String? newValue) {
                         setState(() {
                           dropdownValue = newValue!;
