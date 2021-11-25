@@ -1,9 +1,9 @@
 class Transactions {
   late int? id;
   late String description;
-  late int amount;
+  late int? amount;
   late String transaction_date;
-  late int id_categories;
+  late int? id_categories;
   late String type;
 
   Transactions({
@@ -21,7 +21,7 @@ class Transactions {
     description = map['description'];
     amount = map['amount'];
     transaction_date = map['transaction_date'];
-    id_categories = map['categories'];
+    id_categories = map['id_categories'];
     type = map['type'];
   }
 
