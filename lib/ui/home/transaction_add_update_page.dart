@@ -23,8 +23,8 @@ class TransactionAddUpdatePage extends StatefulWidget {
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
   bool _isUpdate = false;
-  String? dropdownValue;
   bool typePengeluaran = true;
+  String? dropdownValue;
 
   // Text Controller
   TextEditingController _dateController = TextEditingController(
@@ -67,6 +67,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_isUpdate ? 'Ubah Transaksi' : 'Tambah Transaksi'),
+        actions: [
+          if (_isUpdate)
+            IconButton(
+              icon: Icon(Icons.delete_forever),
+              onPressed: () {},
+            ),
+        ],
       ),
       body: Consumer<TransactionsProvider>(
         builder: (context, provider, child) {
