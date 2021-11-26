@@ -150,6 +150,11 @@ class HomePage extends StatelessWidget {
                                       .toString()),
                                   title: Text(
                                       provider.transactions[index].description),
+
+                                  /**
+                                   * properti subtitle hanya percobaan
+                                   * untuk menampilkan data type dan transaction_date
+                                   */
                                   subtitle: Text(
                                       provider.transactions[index].type +
                                           ' : ' +
