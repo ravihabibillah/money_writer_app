@@ -217,11 +217,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               return categoryMapToDropdownMenuItem.first.value;
                             }
                           } else {
-                            dropdownValue =
-                                categoryMapToDropdownMenuItem.first.value;
                             return categoryMapToDropdownMenuItem.first.value;
                           }
-
                           // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
                         }
 
@@ -235,6 +232,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                             setState(() {
                               dropdownValue = newValue as String?;
                             });
+                            print('onChanged : ' + dropdownValue!);
                           },
                           decoration: InputDecoration(
                             label: Text('Kategori'),
@@ -303,6 +301,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     child: Text('Simpan'),
                     onPressed: () {
                       if (_transactionFormKey.currentState!.validate()) {
+                        print('Button save : ' + dropdownValue!);
                         var idTransaction =
                             _isUpdate ? widget.transaction!.id : null;
                         var amountReplaceThousandSeparator =
