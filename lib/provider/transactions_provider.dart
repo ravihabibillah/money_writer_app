@@ -24,7 +24,7 @@ class TransactionsProvider extends ChangeNotifier {
   List<Transactions> get transactions => _transactions;
 
   void _getAllTransactions() async {
-    _transactions = await _dbHelper.getTransactions();
+    _transactions = await _dbHelper.getTransactionsJoinCategory();
     if (_transactions.isNotEmpty) {
       _stateTransaction = ResultState.HasData;
     } else {

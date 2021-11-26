@@ -5,6 +5,7 @@ class Transactions {
   late String transaction_date;
   late int? id_categories;
   late String type;
+  late String name_categories;
 
   Transactions({
     required this.id,
@@ -23,6 +24,7 @@ class Transactions {
     transaction_date = map['transaction_date'];
     id_categories = map['id_categories'];
     type = map['type'];
+    name_categories = map['name'];
   }
 
   // konversi data ke map

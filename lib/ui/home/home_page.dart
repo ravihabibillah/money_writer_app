@@ -18,19 +18,19 @@ class HomePage extends StatelessWidget {
         title: const Text('Money Writer'),
         actions: [
           IconButton(
-            icon: Icon(Icons.download),
+            icon: const Icon(Icons.download),
             onPressed: () {
               // Route Laporan Transaksi (Report)
             },
           ),
           IconButton(
-            icon: Icon(Icons.text_snippet),
+            icon: const Icon(Icons.text_snippet),
             onPressed: () {
               Navigator.pushNamed(context, CategoryPage.routeName);
             },
           ),
           IconButton(
-            icon: Icon(Icons.pie_chart),
+            icon: const Icon(Icons.pie_chart),
             onPressed: () {
               Navigator.pushNamed(context, ChartPage.routeName);
             },
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
         children: [
           Material(
             child: Container(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
                         'Pemasukan',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
-                      SizedBox(height: 8.0),
+                      const SizedBox(height: 8.0),
                       Text(
                         'Rp. 15.000',
                         style: TextStyle(
@@ -139,15 +139,20 @@ class HomePage extends StatelessWidget {
                           builder: (context, provider, child) {
                             return ListView.builder(
                               itemCount: provider.transactions.length,
-                              physics: ClampingScrollPhysics(),
+                              physics: const ClampingScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int index) {
                                 // contoh check data pengeluaran atau pemasukan
                                 isPengeluaran = !isPengeluaran;
                                 return ListTile(
-                                  leading: Text(provider
-                                      .transactions[index].id_categories
-                                      .toString()),
+                                  leading: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(provider
+                                          .transactions[index].name_categories
+                                          .toString()),
+                                    ],
+                                  ),
                                   title: Text(
                                       provider.transactions[index].description),
 

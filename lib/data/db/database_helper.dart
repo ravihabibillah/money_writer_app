@@ -164,9 +164,18 @@ class DatabaseHelper {
   }
 
   // Fungsi get all transactions
-  Future<List<Transactions>> getTransactions() async {
+  // Future<List<Transactions>> getTransactions() async {
+  //   final Database? db = await database;
+  //   List<Map<String, dynamic>> results = await db!.query(_tblTransaction);
+
+  //   return results.map((res) => Transactions.fromMap(res)).toList();
+  // }
+
+  // Fungsi get all transaction join category
+  Future<List<Transactions>> getTransactionsJoinCategory() async {
     final Database? db = await database;
-    List<Map<String, dynamic>> results = await db!.query(_tblTransaction);
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id");
 
     return results.map((res) => Transactions.fromMap(res)).toList();
   }

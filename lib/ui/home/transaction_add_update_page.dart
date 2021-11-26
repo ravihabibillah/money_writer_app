@@ -120,227 +120,230 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
             key: _transactionFormKey,
             child: Container(
               padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  // Mengubah kategori
-                  _buildTabTypeTransaction(),
-                  SizedBox(height: 16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Mengubah kategori
+                    _buildTabTypeTransaction(),
+                    SizedBox(height: 16.0),
 
-                  // Tanggal
-                  DateTimeField(
-                    controller: _dateController,
-                    initialValue: DateTime.tryParse(_dateController.text),
-                    format: DateFormat("yyyy-MM-dd"),
-                    decoration: InputDecoration(
-                      label: Text('tanggal'),
-                      icon: Icon(Icons.event),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    // Tanggal
+                    DateTimeField(
+                      controller: _dateController,
+                      initialValue: DateTime.tryParse(_dateController.text),
+                      format: DateFormat("yyyy-MM-dd"),
+                      decoration: InputDecoration(
+                        label: Text('tanggal'),
+                        icon: Icon(Icons.event),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1900),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                     ),
-                    onShowPicker: (context, currentValue) {
-                      return showDatePicker(
-                          context: context,
-                          firstDate: DateTime(1900),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100));
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
+                    SizedBox(height: 16.0),
 
-                  // kategori
-                  Consumer<CategoryProvider>(
-                    builder: (context, provider, child) {
-                      if (provider.statePengeluaran == ResultState.HasData ||
-                          provider.statePemasukan == ResultState.HasData) {
-                        // data category
-                        var getCategory = typePengeluaran
-                            ? provider.categoriesPengeluaran
-                            : provider.categoriesPemasukan;
-                        // var categoryMapToList =
-                        //     getCategory.map((e) => e.name).toList();
+                    // kategori
+                    Consumer<CategoryProvider>(
+                      builder: (context, provider, child) {
+                        if (provider.statePengeluaran == ResultState.HasData ||
+                            provider.statePemasukan == ResultState.HasData) {
+                          // data category
+                          var getCategory = typePengeluaran
+                              ? provider.categoriesPengeluaran
+                              : provider.categoriesPemasukan;
+                          // var categoryMapToList =
+                          //     getCategory.map((e) => e.name).toList();
 
-                        // var _firstDataWithCategoryMap =
-                        //     categoryMapToList.map((String value) {
-                        //   return DropdownMenuItem(
-                        //     value: value,
-                        //     child: Text(value),
-                        //   );
-                        // });
+                          // var _firstDataWithCategoryMap =
+                          //     categoryMapToList.map((String value) {
+                          //   return DropdownMenuItem(
+                          //     value: value,
+                          //     child: Text(value),
+                          //   );
+                          // });
 
-                        var categoryMap =
-                            getCategory.map((e) => {e.id: e.name});
+                          var categoryMap =
+                              getCategory.map((e) => {e.id: e.name});
 
-                        var categoryMapToDropdownMenuItem =
-                            categoryMap.map((entry) {
-                          return DropdownMenuItem(
-                            value: entry.keys
-                                .toString()
-                                .replaceAll(RegExp(r'[^0-9]'), ''),
-                            child: Text(entry.values
-                                .toString()
-                                .replaceAll(RegExp(r'[^0-9\a-z\A-Z\ ]'), '')),
-                          );
-                        });
+                          var categoryMapToDropdownMenuItem =
+                              categoryMap.map((entry) {
+                            return DropdownMenuItem(
+                              value: entry.keys
+                                  .toString()
+                                  .replaceAll(RegExp(r'[^0-9]'), ''),
+                              child: Text(entry.values
+                                  .toString()
+                                  .replaceAll(RegExp(r'[^0-9\a-z\A-Z\ ]'), '')),
+                            );
+                          });
 
-                        // print(categoryMapToList.toList());
-                        //
-                        // print(categoryMapToList.toList().map((entry) {
-                        //   return entry.keys;
-                        // }).toList());
-                        //
-                        // print(categoryMapToList.toList().map((entry) {
-                        //   return entry.keys
-                        //       .toString()
-                        //       .replaceAll(RegExp(r'[^0-9\.]'), '');
-                        // }).toList());
+                          // print(categoryMapToList.toList());
+                          //
+                          // print(categoryMapToList.toList().map((entry) {
+                          //   return entry.keys;
+                          // }).toList());
+                          //
+                          // print(categoryMapToList.toList().map((entry) {
+                          //   return entry.keys
+                          //       .toString()
+                          //       .replaceAll(RegExp(r'[^0-9\.]'), '');
+                          // }).toList());
 
-                        String? defaultValueDropdown() {
-                          if (widget.transaction?.id_categories.toString() !=
-                              null) {
-                            if (widget.transaction?.type == typeTransaction) {
-                              return widget.transaction?.id_categories
-                                  .toString();
+                          String? defaultValueDropdown() {
+                            if (widget.transaction?.id_categories.toString() !=
+                                null) {
+                              if (widget.transaction?.type == typeTransaction) {
+                                return widget.transaction?.id_categories
+                                    .toString();
+                              } else {
+                                dropdownValue =
+                                    categoryMapToDropdownMenuItem.first.value;
+                                return categoryMapToDropdownMenuItem
+                                    .first.value;
+                              }
                             } else {
                               dropdownValue =
                                   categoryMapToDropdownMenuItem.first.value;
                               return categoryMapToDropdownMenuItem.first.value;
                             }
-                          } else {
-                            dropdownValue =
-                                categoryMapToDropdownMenuItem.first.value;
-                            return categoryMapToDropdownMenuItem.first.value;
+
+                            // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
                           }
 
-                          // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
-                        }
-
-                        return DropdownButtonFormField(
-                          items: categoryMapToDropdownMenuItem.toList(),
-                          // value: _isUpdate
-                          //     ? widget.transaction?.id_categories.toString()
-                          //     : categoryMapToDropdownMenuItem.first.value,
-                          value: defaultValueDropdown(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              dropdownValue = newValue as String?;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            label: Text('Kategori'),
-                            icon: Icon(Icons.category),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                          return DropdownButtonFormField(
+                            items: categoryMapToDropdownMenuItem.toList(),
+                            // value: _isUpdate
+                            //     ? widget.transaction?.id_categories.toString()
+                            //     : categoryMapToDropdownMenuItem.first.value,
+                            value: defaultValueDropdown(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                dropdownValue = newValue as String?;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              label: Text('Kategori'),
+                              icon: Icon(Icons.category),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                             ),
-                          ),
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        );
-                      } else {
-                        return Center(
-                          child: Text(provider.message),
-                        );
-                      }
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-
-                  // Jumlah Uang
-                  TextFormField(
-                    controller: _amountTextController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      prefixText: 'Rp. ',
-                      label: Text('Jumlah'),
-                      icon: Icon(Icons.money),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-
-                  // Keterangan
-                  TextFormField(
-                    controller: _descriptionController,
-                    decoration: InputDecoration(
-                      label: Text('Keterangan'),
-                      icon: Icon(Icons.description),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-
-                  ElevatedButton(
-                    child: Text('Simpan'),
-                    onPressed: () {
-                      if (_transactionFormKey.currentState!.validate()) {
-                        var idTransaction =
-                            _isUpdate ? widget.transaction!.id : null;
-                        var amountReplaceThousandSeparator =
-                            _amountTextController.text
-                                .replaceAll(RegExp(r'[^0-9\.]'), '');
-                        int? amountToInt =
-                            int.tryParse(amountReplaceThousandSeparator);
-                        // int? idCategoriesToInt = int.parse(dropdownValue!);
-
-                        Transactions dataTranscation = Transactions(
-                            id: idTransaction,
-                            description: _descriptionController.text,
-                            amount: amountToInt!,
-                            transaction_date: _dateController.text,
-                            id_categories: int.parse(dropdownValue!),
-                            type: typeTransaction);
-
-                        print(dataTranscation.toMap());
-                        if (!_isUpdate) {
-                          provider.addTransaction(dataTranscation);
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                          );
                         } else {
-                          provider.updateTransaction(dataTranscation);
+                          return Center(
+                            child: Text(provider.message),
+                          );
                         }
+                      },
+                    ),
+                    SizedBox(height: 16.0),
 
-                        Navigator.pop(context);
+                    // Jumlah Uang
+                    TextFormField(
+                      controller: _amountTextController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        prefixText: 'Rp. ',
+                        label: Text('Jumlah'),
+                        icon: Icon(Icons.money),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16.0),
 
-                        // String to DateTime
-                        // DateTime? parsedDateTime =
-                        //     DateTime.tryParse(_dateController.text);
-                        // print(parsedDateTime);
-                        print(_dateController.text);
-                        print(int.parse(dropdownValue!));
-                        print(int.parse(dropdownValue!).runtimeType);
+                    // Keterangan
+                    TextFormField(
+                      controller: _descriptionController,
+                      decoration: InputDecoration(
+                        label: Text('Keterangan'),
+                        icon: Icon(Icons.description),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16.0),
 
-                        // assert(myInt is double);
-                        print(amountToInt);
-                        print(amountToInt.runtimeType);
-                        print(_descriptionController.text);
-                      }
-                    },
-                  ),
-                ],
+                    ElevatedButton(
+                      child: Text('Simpan'),
+                      onPressed: () {
+                        if (_transactionFormKey.currentState!.validate()) {
+                          var idTransaction =
+                              _isUpdate ? widget.transaction!.id : null;
+                          var amountReplaceThousandSeparator =
+                              _amountTextController.text
+                                  .replaceAll(RegExp(r'[^0-9\.]'), '');
+                          int? amountToInt =
+                              int.tryParse(amountReplaceThousandSeparator);
+                          // int? idCategoriesToInt = int.parse(dropdownValue!);
+
+                          Transactions dataTranscation = Transactions(
+                              id: idTransaction,
+                              description: _descriptionController.text,
+                              amount: amountToInt!,
+                              transaction_date: _dateController.text,
+                              id_categories: int.parse(dropdownValue!),
+                              type: typeTransaction);
+
+                          print(dataTranscation.toMap());
+                          if (!_isUpdate) {
+                            provider.addTransaction(dataTranscation);
+                          } else {
+                            provider.updateTransaction(dataTranscation);
+                          }
+
+                          Navigator.pop(context);
+
+                          // String to DateTime
+                          // DateTime? parsedDateTime =
+                          //     DateTime.tryParse(_dateController.text);
+                          // print(parsedDateTime);
+                          print(_dateController.text);
+                          print(int.parse(dropdownValue!));
+                          print(int.parse(dropdownValue!).runtimeType);
+
+                          // assert(myInt is double);
+                          print(amountToInt);
+                          print(amountToInt.runtimeType);
+                          print(_descriptionController.text);
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           );
