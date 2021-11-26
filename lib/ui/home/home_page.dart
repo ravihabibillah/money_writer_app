@@ -165,7 +165,30 @@ class HomePage extends StatelessWidget {
                                           : Colors.blue,
                                     ),
                                   ),
-                                  onTap: () {},
+                                  onTap: () {
+                                    // final selectedTransaction =
+                                    //     await provider.getTransactionById(
+                                    //         provider.transactions[index].id!);
+
+                                    Navigator.pushNamed(
+                                      context,
+                                      TransactionAddUpdatePage.routeName,
+                                      arguments: provider.transactions[index],
+                                      // arguments: Transactions(
+                                      //   id: null,
+                                      //   description: provider
+                                      //       .transactions[index].description,
+                                      //   amount:
+                                      //       provider.transactions[index].amount,
+                                      //   transaction_date: provider
+                                      //       .transactions[index]
+                                      //       .transaction_date,
+                                      //   id_categories: provider
+                                      //       .transactions[index].id_categories,
+                                      //   type: provider.transactions[index].type,
+                                      // ),
+                                    );
+                                  },
                                 );
                               },
                             );
