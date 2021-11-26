@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/category/category_page.dart';
 import 'package:money_writer_app/ui/chart/chart_page.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home_page';
@@ -92,7 +94,7 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 5,
+              itemCount: 1,
               itemBuilder: (BuildContext context, int index) {
                 // contoh check data pengeluaran atau pemasukan
                 var isPengeluaran = true;
@@ -133,25 +135,62 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         Divider(),
-                        ListView.builder(
-                          itemCount: 5,
-                          physics: ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            // contoh check data pengeluaran atau pemasukan
-                            isPengeluaran = !isPengeluaran;
-                            return ListTile(
-                              leading: Text('Makanan'),
-                              title: Text('Nasi'),
-                              trailing: Text(
-                                'Rp. 15.000',
-                                style: TextStyle(
-                                  // terapkan check data pengeluaran atau pemasukan
-                                  color:
-                                      isPengeluaran ? Colors.red : Colors.blue,
-                                ),
-                              ),
-                              onTap: () {},
+                        Consumer<TransactionsProvider>(
+                          builder: (context, provider, child) {
+                            return ListView.builder(
+                              itemCount: provider.transactions.length,
+                              physics: ClampingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                // contoh check data pengeluaran atau pemasukan
+                                isPengeluaran = !isPengeluaran;
+                                return ListTile(
+                                  leading: Text(provider
+                                      .transactions[index].id_categories
+                                      .toString()),
+                                  title: Text(
+                                      provider.transactions[index].description),
+                                  subtitle: Text(
+                                      provider.transactions[index].type +
+                                          ' : ' +
+                                          provider.transactions[index]
+                                              .transaction_date),
+                                  trailing: Text(
+                                    provider.transactions[index].amount
+                                        .toString(),
+                                    style: TextStyle(
+                                      // terapkan check data pengeluaran atau pemasukan
+                                      color: isPengeluaran
+                                          ? Colors.red
+                                          : Colors.blue,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    // final selectedTransaction =
+                                    //     await provider.getTransactionById(
+                                    //         provider.transactions[index].id!);
+
+                                    Navigator.pushNamed(
+                                      context,
+                                      TransactionAddUpdatePage.routeName,
+                                      arguments: provider.transactions[index],
+                                      // arguments: Transactions(
+                                      //   id: null,
+                                      //   description: provider
+                                      //       .transactions[index].description,
+                                      //   amount:
+                                      //       provider.transactions[index].amount,
+                                      //   transaction_date: provider
+                                      //       .transactions[index]
+                                      //       .transaction_date,
+                                      //   id_categories: provider
+                                      //       .transactions[index].id_categories,
+                                      //   type: provider.transactions[index].type,
+                                      // ),
+                                    );
+                                  },
+                                );
+                              },
                             );
                           },
                         ),

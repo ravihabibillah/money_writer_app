@@ -1,4 +1,5 @@
 import 'package:money_writer_app/data/model/category.dart';
+import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -39,10 +40,10 @@ class DatabaseHelper {
         // membuat tabel transaksi
         await db.execute('''CREATE TABLE $_tblTransaction (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
-             description TEXT,
+             description TEXT NOT NULL,
              amount INTEGER NOT NULL,
-             transaction_date DATE,
-             id_categories INTEGER,
+             transaction_date TEXT NOT NULL,
+             id_categories INTEGER NOT NULL,
              type TEXT NOT NULL,
              FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
            )''');
@@ -148,6 +149,65 @@ class DatabaseHelper {
       category.toJson(),
       where: 'id = ?',
       whereArgs: [category.id],
+    );
+  }
+
+  /**
+   * Fungsi CRUD table transactions
+   */
+
+  // fungsi Insert Kategori
+  Future<void> insertTransaction(Transactions transaction) async {
+    final db = await database;
+    await db!.insert(_tblTransaction, transaction.toMap());
+    print('Data saved');
+  }
+
+  // Fungsi get all transactions
+  Future<List<Transactions>> getTransactions() async {
+    final Database? db = await database;
+    List<Map<String, dynamic>> results = await db!.query(_tblTransaction);
+
+    return results.map((res) => Transactions.fromMap(res)).toList();
+  }
+
+  // Fungsi get transactions by id
+  Future<Map> getTransactionById(int id) async {
+    final db = await database;
+
+    List<Map<String, dynamic>> results = await db!.query(
+      _tblTransaction,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (results.isNotEmpty) {
+      return results.first;
+    } else {
+      return {};
+    }
+  }
+
+  // Fungsi Update transactions
+  Future<void> updateTransaction(Transactions transaction) async {
+    final db = await database;
+
+    await db!.update(
+      _tblTransaction,
+      transaction.toMap(),
+      where: 'id = ?',
+      whereArgs: [transaction.id],
+    );
+  }
+
+  // Fungsi menghapus transactions
+  Future<void> removeTransaction(int? id) async {
+    final db = await database;
+
+    await db!.delete(
+      _tblTransaction,
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 }
