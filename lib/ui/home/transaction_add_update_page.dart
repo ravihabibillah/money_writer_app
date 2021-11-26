@@ -162,9 +162,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               return widget.transaction?.id_categories
                                   .toString();
                             } else {
+                              dropdownValue =
+                                  categoryMapToDropdownMenuItem.first.value;
                               return categoryMapToDropdownMenuItem.first.value;
                             }
                           } else {
+                            dropdownValue =
+                                categoryMapToDropdownMenuItem.first.value;
                             return categoryMapToDropdownMenuItem.first.value;
                           }
 
