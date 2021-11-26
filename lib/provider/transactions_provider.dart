@@ -8,6 +8,7 @@ class TransactionsProvider extends ChangeNotifier {
 
   TransactionsProvider() {
     _dbHelper = DatabaseHelper();
+    _getAllTransactions();
   }
 
   late ResultState _state;
@@ -24,11 +25,59 @@ class TransactionsProvider extends ChangeNotifier {
 
   void _getAllTransactions() async {
     _transactions = await _dbHelper.getTransactions();
+    if (_transactions.isNotEmpty) {
+      _stateTransaction = ResultState.HasData;
+    } else {
+      _stateTransaction = ResultState.NoData;
+      _message = 'Tidak Ada Data';
+    }
     notifyListeners();
   }
 
   Future<void> addTransaction(Transactions transaction) async {
-    await _dbHelper.insertTransaction(transaction);
-    _getAllTransactions();
+    try {
+      await _dbHelper.insertTransaction(transaction);
+      _getAllTransactions();
+    } catch (e) {
+      _state = ResultState.Error;
+      _message = 'Gagal Menambahkan Transaksi';
+      notifyListeners();
+    }
+  }
+
+  // Future<Transactions> getTransactionById(int id) async {
+  //   final transactions = await _dbHelper.getTransactionById(id);
+  //
+  //   if (transactions.isNotEmpty) {
+  //     _state = ResultState.HasData;
+  //   } else {
+  //     _state = ResultState.NoData;
+  //     _message = 'Tidak Ada Data';
+  //   }
+  //   notifyListeners();
+  // }
+
+  void updateTransaction(Transactions transaction) async {
+    try {
+      await _dbHelper.updateTransaction(transaction);
+      _getAllTransactions();
+    } catch (e) {
+      _state = ResultState.Error;
+      _message = 'Gagal Mengubah Transaksi';
+      print(_state);
+      print(_message);
+      notifyListeners();
+    }
+  }
+
+  void removeTransaction(int? id) async {
+    try {
+      await _dbHelper.removeTransaction(id);
+      _getAllTransactions();
+    } catch (e) {
+      _state = ResultState.Error;
+      _message = 'Gagal Menghapus Transaksi';
+      notifyListeners();
+    }
   }
 }
