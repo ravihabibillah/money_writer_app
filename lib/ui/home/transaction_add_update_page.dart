@@ -10,8 +10,10 @@ import 'package:provider/provider.dart';
 
 class TransactionAddUpdatePage extends StatefulWidget {
   static const routeName = '/transaction_add_update_page';
+  final Transactions? transaction;
 
-  TransactionAddUpdatePage({Key? key}) : super(key: key);
+  const TransactionAddUpdatePage([this.transaction, Key? key])
+      : super(key: key);
 
   @override
   State<TransactionAddUpdatePage> createState() =>
@@ -20,6 +22,7 @@ class TransactionAddUpdatePage extends StatefulWidget {
 
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
+  bool _isUpdate = false;
   String? dropdownValue;
   bool typePengeluaran = true;
 
@@ -31,6 +34,22 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
       decimalSeparator: '', thousandSeparator: ',', precision: 0);
   TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.transaction != null) {
+      // print("Data dari homePage : " + widget.transaction!.description); // mencoba mendapat data dari homepage
+      var selectedTransaction = widget.transaction;
+      typePengeluaran =
+          selectedTransaction!.type == 'pengeluaran' ? true : false;
+      _dateController.text = selectedTransaction.transaction_date;
+      dropdownValue = selectedTransaction.id_categories.toString();
+      _amountTextController.text = selectedTransaction.amount.toString();
+      _descriptionController.text = selectedTransaction.description;
+      _isUpdate = true;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -45,7 +64,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tambah Transaksi'),
+        title: Text(_isUpdate ? 'Ubah Transaksi' : 'Tambah Transaksi'),
       ),
       body: Consumer<TransactionsProvider>(
         builder: (context, provider, child) {
@@ -135,7 +154,10 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
                         return DropdownButtonFormField(
                           items: categoryMapToDropdownMenuItem.toList(),
-                          // value: categoryMapToList.first.keys,
+                          // value: _isUpdate
+                          //     ? widget.transaction?.id_categories.toString()
+                          //     : categoryMapToDropdownMenuItem.first.value,
+                          value: categoryMapToDropdownMenuItem.first.value,
                           onChanged: (newValue) {
                             setState(() {
                               dropdownValue = newValue as String?;
@@ -208,6 +230,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     child: Text('Simpan'),
                     onPressed: () {
                       if (_transactionFormKey.currentState!.validate()) {
+                        var idTransaction =
+                            _isUpdate ? widget.transaction!.id : null;
                         var amountReplaceThousandSeparator =
                             _amountTextController.text
                                 .replaceAll(RegExp(r'[^0-9\.]'), '');
@@ -217,16 +241,20 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         String typeTransaction =
                             typePengeluaran ? 'pengeluaran' : 'pemasukan';
 
-                        Transactions dataTransacation = Transactions(
-                            id: null,
+                        Transactions dataTranscation = Transactions(
+                            id: idTransaction,
                             description: _descriptionController.text,
                             amount: amountToInt!,
                             transaction_date: _dateController.text,
                             id_categories: int.parse(dropdownValue!),
                             type: typeTransaction);
 
-                        print(dataTransacation.toMap());
-                        provider.addTransaction(dataTransacation);
+                        print(dataTranscation.toMap());
+                        if (!_isUpdate) {
+                          provider.addTransaction(dataTranscation);
+                        } else {
+                          provider.updateTransaction(dataTranscation);
+                        }
 
                         Navigator.pop(context);
 
