@@ -23,8 +23,25 @@ class TransactionsProvider extends ChangeNotifier {
   List<Transactions> _transactions = [];
   List<Transactions> get transactions => _transactions;
 
+  List<Transactions> _transactionsMonth = [];
+  List<Transactions> get transactionsMonth => _transactionsMonth;
+
   void _getAllTransactions() async {
     _transactions = await _dbHelper.getTransactionsJoinCategory();
+    if (_transactions.isNotEmpty) {
+      _stateTransaction = ResultState.HasData;
+    } else {
+      _stateTransaction = ResultState.NoData;
+      _message = 'Tidak Ada Data';
+    }
+    notifyListeners();
+  }
+
+  void setAllTransactionsbyMonth(int month, int year) async {
+    _transactionsMonth =
+        await _dbHelper.getTransactionsJoinCategorybyMonthAndYear(month, year);
+
+    print(_transactionsMonth);
     if (_transactions.isNotEmpty) {
       _stateTransaction = ResultState.HasData;
     } else {
@@ -44,6 +61,16 @@ class TransactionsProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // int totalPemasukan(String date) {
+  //   return _transactions.fold(0, (previousValue, element) {
+  //     if (element.type == 'pemasukan' && element.transaction_date == date) {
+  //       return previousValue + element.amount;
+  //     } else {
+  //       return 0;
+  //     }
+  //   });
+  // }
 
   // Future<Transactions> getTransactionById(int id) async {
   //   final transactions = await _dbHelper.getTransactionById(id);

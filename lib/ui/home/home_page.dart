@@ -37,182 +37,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Material(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Pemasukan',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        'Rp. 15.000',
-                        style: TextStyle(
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Pengeluaran',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        'Rp. 15.000',
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Saldo',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      SizedBox(height: 8.0),
-                      Text('Rp. 15.000'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Divider(),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: 1,
-              itemBuilder: (BuildContext context, int index) {
-                // contoh check data pengeluaran atau pemasukan
-                var isPengeluaran = true;
-
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Minggu, 3 Nov 2021',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 4.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Rp. 10.000',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              Text(
-                                'Rp. 15.000',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Divider(),
-                        Consumer<TransactionsProvider>(
-                          builder: (context, provider, child) {
-                            return ListView.builder(
-                              itemCount: provider.transactions.length,
-                              physics: const ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                // contoh check data pengeluaran atau pemasukan
-                                isPengeluaran = !isPengeluaran;
-                                return ListTile(
-                                  leading: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(provider
-                                          .transactions[index].name_categories
-                                          .toString()),
-                                    ],
-                                  ),
-                                  title: Text(
-                                      provider.transactions[index].description),
-
-                                  /**
-                                   * properti subtitle hanya percobaan
-                                   * untuk menampilkan data type dan transaction_date
-                                   */
-                                  subtitle: Text(
-                                      provider.transactions[index].type +
-                                          ' : ' +
-                                          provider.transactions[index]
-                                              .transaction_date),
-                                  trailing: Text(
-                                    provider.transactions[index].amount
-                                        .toString(),
-                                    style: TextStyle(
-                                      // terapkan check data pengeluaran atau pemasukan
-                                      color: isPengeluaran
-                                          ? Colors.red
-                                          : Colors.blue,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    // final selectedTransaction =
-                                    //     await provider.getTransactionById(
-                                    //         provider.transactions[index].id!);
-
-                                    Navigator.pushNamed(
-                                      context,
-                                      TransactionAddUpdatePage.routeName,
-                                      arguments: provider.transactions[index],
-                                      // arguments: Transactions(
-                                      //   id: null,
-                                      //   description: provider
-                                      //       .transactions[index].description,
-                                      //   amount:
-                                      //       provider.transactions[index].amount,
-                                      //   transaction_date: provider
-                                      //       .transactions[index]
-                                      //       .transaction_date,
-                                      //   id_categories: provider
-                                      //       .transactions[index].id_categories,
-                                      //   type: provider.transactions[index].type,
-                                      // ),
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          )
-        ],
-      ),
+      body: const TransactionListPerDay(),
       bottomNavigationBar: buildBottomAppbar(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -223,6 +48,218 @@ class HomePage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
+}
+
+class TransactionListPerDay extends StatefulWidget {
+  const TransactionListPerDay({Key? key}) : super(key: key);
+
+  @override
+  _TransactionListPerDayState createState() => _TransactionListPerDayState();
+}
+
+class _TransactionListPerDayState extends State<TransactionListPerDay> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Material(
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      'Pemasukan',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      'Rp. 15.000',
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      'Pengeluaran',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      'Rp. 15.000',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      'Saldo',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text('Rp. 15.000'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        Divider(),
+        Expanded(child:
+            Consumer<TransactionsProvider>(builder: (context, provider, child) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: provider.transactionsMonth.length,
+            itemBuilder: (BuildContext context, int index) {
+              // contoh check data pengeluaran atau pemasukan
+              var isPengeluaran = true;
+
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Consumer<TransactionsProvider>(
+                    builder: (context, provider, child) {
+                      // WidgetsBinding.instance?.addPostFrameCallback((_) {
+                      //   setTotal(provider);
+                      // });
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Minggu, 3 Nov 2021',
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Rp. 0',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                Text(
+                                  'Rp. 0',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(),
+                          ListView.builder(
+                            itemCount: provider.transactions.length,
+                            physics: const ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              // contoh check data pengeluaran atau pemasukan
+                              isPengeluaran = !isPengeluaran;
+
+                              return ListTile(
+                                leading: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(provider
+                                        .transactions[index].name_categories
+                                        .toString()),
+                                  ],
+                                ),
+                                title: Text(
+                                    provider.transactions[index].description),
+
+                                /**
+                                   * properti subtitle hanya percobaan
+                                   * untuk menampilkan data type dan transaction_date
+                                   */
+                                subtitle: Text(
+                                    provider.transactions[index].type +
+                                        ' : ' +
+                                        provider.transactions[index]
+                                            .transaction_date),
+                                trailing: Text(
+                                  provider.transactions[index].amount
+                                      .toString(),
+                                  style: TextStyle(
+                                    // terapkan check data pengeluaran atau pemasukan
+                                    color: isPengeluaran
+                                        ? Colors.red
+                                        : Colors.blue,
+                                  ),
+                                ),
+                                onTap: () {
+                                  // final selectedTransaction =
+                                  //     await provider.getTransactionById(
+                                  //         provider.transactions[index].id!);
+
+                                  Navigator.pushNamed(
+                                    context,
+                                    TransactionAddUpdatePage.routeName,
+                                    arguments: provider.transactions[index],
+                                    // arguments: Transactions(
+                                    //   id: null,
+                                    //   description: provider
+                                    //       .transactions[index].description,
+                                    //   amount:
+                                    //       provider.transactions[index].amount,
+                                    //   transaction_date: provider
+                                    //       .transactions[index]
+                                    //       .transaction_date,
+                                    //   id_categories: provider
+                                    //       .transactions[index].id_categories,
+                                    //   type: provider.transactions[index].type,
+                                    // ),
+                                  );
+                                },
+                              );
+                            },
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        }))
+      ],
+    );
+  }
+
+  // Future<void> setTotal(TransactionsProvider provider) async {
+  //   setState(() {
+  //     provider.transactions.forEach(
+  //       (transaction) {
+  //         if (transaction.type == 'pengeluaran') {
+  //           totalPengeluaranPerDate += transaction.amount;
+  //         } else {
+  //           totalPemasukanPerDate += transaction.amount;
+  //         }
+  //       },
+  //     );
+  //   });
+
+  //   totalPengeluaranPerDate = 0;
+  //   totalPemasukanPerDate = 0;
+  // }
 }
 
 class buildBottomAppbar extends StatefulWidget {
@@ -245,54 +282,60 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: CircularNotchedRectangle(),
-      child: Row(
-        children: [
-          IconButton(
-            icon: Icon(Icons.chevron_left),
-            onPressed: () {
-              setState(() {
-                selectedDate = DateTime(
-                  selectedDate!.year,
-                  selectedDate!.month - 1,
-                );
-              });
-            },
-          ),
-          TextButton(
-            child: Text(
-              'Month: ${selectedDate?.month} - ${selectedDate?.year}',
-            ),
-            onPressed: () {
-              showMonthPicker(
-                context: context,
-                firstDate: DateTime(DateTime.now().year - 10, 5),
-                lastDate: DateTime(DateTime.now().year + 1, 9),
-                initialDate: selectedDate ?? DateTime.now(),
-                locale: Locale("id"),
-              ).then((date) {
-                if (date != null) {
+    return Consumer<TransactionsProvider>(
+      builder: (context, provider, child) {
+        provider.setAllTransactionsbyMonth(
+            selectedDate!.month, selectedDate!.year);
+        return BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.chevron_left),
+                onPressed: () {
                   setState(() {
-                    selectedDate = date;
+                    selectedDate = DateTime(
+                      selectedDate!.year,
+                      selectedDate!.month - 1,
+                    );
                   });
-                }
-              });
-            },
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Month: ${selectedDate?.month} - ${selectedDate?.year}',
+                ),
+                onPressed: () {
+                  showMonthPicker(
+                    context: context,
+                    firstDate: DateTime(DateTime.now().year - 10, 5),
+                    lastDate: DateTime(DateTime.now().year + 1, 9),
+                    initialDate: selectedDate ?? DateTime.now(),
+                    locale: const Locale("id"),
+                  ).then((date) {
+                    if (date != null) {
+                      setState(() {
+                        selectedDate = date;
+                      });
+                    }
+                  });
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.chevron_right),
+                onPressed: () {
+                  setState(() {
+                    selectedDate = DateTime(
+                      selectedDate!.year,
+                      selectedDate!.month + 1,
+                    );
+                  });
+                },
+              ),
+            ],
           ),
-          IconButton(
-            icon: Icon(Icons.chevron_right),
-            onPressed: () {
-              setState(() {
-                selectedDate = DateTime(
-                  selectedDate!.year,
-                  selectedDate!.month + 1,
-                );
-              });
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

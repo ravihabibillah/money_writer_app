@@ -1,7 +1,7 @@
 class Transactions {
   late int? id;
   late String description;
-  late int? amount;
+  late int amount;
   late String transaction_date;
   late int? id_categories;
   late String type;

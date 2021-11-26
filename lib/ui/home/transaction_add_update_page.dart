@@ -153,7 +153,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     // kategori
                     Consumer<CategoryProvider>(

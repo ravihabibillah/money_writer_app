@@ -180,6 +180,25 @@ class DatabaseHelper {
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
 
+  Future<List<Transactions>> getTransactionsJoinCategorybyMonthAndYear(
+      int month, int year) async {
+    final Database? db = await database;
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%'");
+
+    return results.map((res) => Transactions.fromMap(res)).toList();
+  }
+
+  // Future<List<TotalTransactionPerDay>> getTotalPengeluaranAndPemasukanbyDay(
+  //     String date) async {
+  //   final db = await database;
+
+  //   List<Map<String, dynamic>> results = await db!.rawQuery(
+  //       "SELECT SUM(amount) FROM $_tblTransaction where transaction_date = $date GROUP BY type");
+
+  //   return results.map((res) => TotalTransactionPerDay.fromMap(res)).toList();
+  // }
+
   // Fungsi get transactions by id
   Future<Map> getTransactionById(int id) async {
     final db = await database;
