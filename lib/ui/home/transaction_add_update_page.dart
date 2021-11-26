@@ -10,8 +10,10 @@ import 'package:provider/provider.dart';
 
 class TransactionAddUpdatePage extends StatefulWidget {
   static const routeName = '/transaction_add_update_page';
+  final Transactions? transaction;
 
-  TransactionAddUpdatePage({Key? key}) : super(key: key);
+  const TransactionAddUpdatePage([this.transaction, Key? key])
+      : super(key: key);
 
   @override
   State<TransactionAddUpdatePage> createState() =>
@@ -20,8 +22,9 @@ class TransactionAddUpdatePage extends StatefulWidget {
 
 class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   final _transactionFormKey = GlobalKey<FormState>();
-  String? dropdownValue;
+  bool _isUpdate = false;
   bool typePengeluaran = true;
+  String? dropdownValue;
 
   // Text Controller
   TextEditingController _dateController = TextEditingController(
@@ -31,6 +34,22 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
       decimalSeparator: '', thousandSeparator: ',', precision: 0);
   TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.transaction != null) {
+      // print("Data dari homePage : " + widget.transaction!.description); // mencoba mendapat data dari homepage
+      var selectedTransaction = widget.transaction;
+      typePengeluaran =
+          selectedTransaction!.type == 'pengeluaran' ? true : false;
+      _dateController.text = selectedTransaction.transaction_date;
+      dropdownValue = selectedTransaction.id_categories.toString();
+      _amountTextController.text = selectedTransaction.amount.toString();
+      _descriptionController.text = selectedTransaction.description;
+      _isUpdate = true;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -43,9 +62,57 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
   @override
   Widget build(BuildContext context) {
+    String typeTransaction = typePengeluaran ? 'pengeluaran' : 'pemasukan';
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tambah Transaksi'),
+        title: Text(_isUpdate ? 'Ubah Transaksi' : 'Tambah Transaksi'),
+        actions: [
+          if (_isUpdate)
+            IconButton(
+              icon: Icon(Icons.delete_forever),
+              onPressed: () {
+                showAlertDialog(BuildContext context) {
+                  // set up the button
+                  Widget okButton = OutlinedButton(
+                    child: Text("Tetap Hapus"),
+                    style: ElevatedButton.styleFrom(
+                      onPrimary: Colors.red,
+                    ),
+                    onPressed: () {},
+                  );
+
+                  Widget cancelButton = ElevatedButton(
+                    child: Text("Batal"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+
+                  // set up the AlertDialog
+                  AlertDialog alert = AlertDialog(
+                    title: Text("HAPUS"),
+                    content: Text("Anda yakin ingin menghapus data ini ?"),
+                    actions: [
+                      cancelButton,
+                      okButton,
+                    ],
+                  );
+
+                  // show the dialog
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return alert;
+                    },
+                  );
+                }
+
+                return showAlertDialog(context);
+              },
+            ),
+        ],
       ),
       body: Consumer<TransactionsProvider>(
         builder: (context, provider, child) {
@@ -90,7 +157,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                   // kategori
                   Consumer<CategoryProvider>(
                     builder: (context, provider, child) {
-                      if (provider.statePengeluaran == ResultState.HasData) {
+                      if (provider.statePengeluaran == ResultState.HasData ||
+                          provider.statePemasukan == ResultState.HasData) {
                         // data category
                         var getCategory = typePengeluaran
                             ? provider.categoriesPengeluaran
@@ -133,9 +201,32 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         //       .replaceAll(RegExp(r'[^0-9\.]'), '');
                         // }).toList());
 
+                        String? defaultValueDropdown() {
+                          if (widget.transaction?.id_categories.toString() !=
+                              null) {
+                            if (widget.transaction?.type == typeTransaction) {
+                              return widget.transaction?.id_categories
+                                  .toString();
+                            } else {
+                              dropdownValue =
+                                  categoryMapToDropdownMenuItem.first.value;
+                              return categoryMapToDropdownMenuItem.first.value;
+                            }
+                          } else {
+                            dropdownValue =
+                                categoryMapToDropdownMenuItem.first.value;
+                            return categoryMapToDropdownMenuItem.first.value;
+                          }
+
+                          // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
+                        }
+
                         return DropdownButtonFormField(
                           items: categoryMapToDropdownMenuItem.toList(),
-                          // value: categoryMapToList.first.keys,
+                          // value: _isUpdate
+                          //     ? widget.transaction?.id_categories.toString()
+                          //     : categoryMapToDropdownMenuItem.first.value,
+                          value: defaultValueDropdown(),
                           onChanged: (newValue) {
                             setState(() {
                               dropdownValue = newValue as String?;
@@ -208,25 +299,29 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     child: Text('Simpan'),
                     onPressed: () {
                       if (_transactionFormKey.currentState!.validate()) {
+                        var idTransaction =
+                            _isUpdate ? widget.transaction!.id : null;
                         var amountReplaceThousandSeparator =
                             _amountTextController.text
                                 .replaceAll(RegExp(r'[^0-9\.]'), '');
                         int? amountToInt =
                             int.tryParse(amountReplaceThousandSeparator);
                         // int? idCategoriesToInt = int.parse(dropdownValue!);
-                        String typeTransaction =
-                            typePengeluaran ? 'pengeluaran' : 'pemasukan';
 
-                        Transactions dataTransacation = Transactions(
-                            id: null,
+                        Transactions dataTranscation = Transactions(
+                            id: idTransaction,
                             description: _descriptionController.text,
                             amount: amountToInt!,
                             transaction_date: _dateController.text,
                             id_categories: int.parse(dropdownValue!),
                             type: typeTransaction);
 
-                        print(dataTransacation.toMap());
-                        provider.addTransaction(dataTransacation);
+                        print(dataTranscation.toMap());
+                        if (!_isUpdate) {
+                          provider.addTransaction(dataTranscation);
+                        } else {
+                          provider.updateTransaction(dataTranscation);
+                        }
 
                         Navigator.pop(context);
 
