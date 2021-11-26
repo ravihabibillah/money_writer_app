@@ -106,10 +106,11 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         //   );
                         // });
 
-                        var categoryMapToList =
+                        var categoryMap =
                             getCategory.map((e) => {e.id: e.name});
 
-                        var coba = categoryMapToList.map((entry) {
+                        var categoryMapToDropdownMenuItem =
+                            categoryMap.map((entry) {
                           return DropdownMenuItem(
                             value: entry.keys
                                 .toString()
@@ -133,7 +134,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         // }).toList());
 
                         return DropdownButtonFormField(
-                          items: coba.toList(),
+                          items: categoryMapToDropdownMenuItem.toList(),
                           // value: categoryMapToList.first.keys,
                           onChanged: (newValue) {
                             setState(() {
