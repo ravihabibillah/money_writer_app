@@ -62,6 +62,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
   @override
   Widget build(BuildContext context) {
+    String typeTransaction = typePengeluaran ? 'pengeluaran' : 'pemasukan';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_isUpdate ? 'Ubah Transaksi' : 'Tambah Transaksi'),
@@ -109,7 +111,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                   // kategori
                   Consumer<CategoryProvider>(
                     builder: (context, provider, child) {
-                      if (provider.statePengeluaran == ResultState.HasData) {
+                      if (provider.statePengeluaran == ResultState.HasData ||
+                          provider.statePemasukan == ResultState.HasData) {
                         // data category
                         var getCategory = typePengeluaran
                             ? provider.categoriesPengeluaran
@@ -152,12 +155,28 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         //       .replaceAll(RegExp(r'[^0-9\.]'), '');
                         // }).toList());
 
+                        String? defaultValueDropdown() {
+                          if (widget.transaction?.id_categories.toString() !=
+                              null) {
+                            if (widget.transaction?.type == typeTransaction) {
+                              return widget.transaction?.id_categories
+                                  .toString();
+                            } else {
+                              return categoryMapToDropdownMenuItem.first.value;
+                            }
+                          } else {
+                            return categoryMapToDropdownMenuItem.first.value;
+                          }
+
+                          // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
+                        }
+
                         return DropdownButtonFormField(
                           items: categoryMapToDropdownMenuItem.toList(),
                           // value: _isUpdate
                           //     ? widget.transaction?.id_categories.toString()
                           //     : categoryMapToDropdownMenuItem.first.value,
-                          value: categoryMapToDropdownMenuItem.first.value,
+                          value: defaultValueDropdown(),
                           onChanged: (newValue) {
                             setState(() {
                               dropdownValue = newValue as String?;
@@ -238,8 +257,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         int? amountToInt =
                             int.tryParse(amountReplaceThousandSeparator);
                         // int? idCategoriesToInt = int.parse(dropdownValue!);
-                        String typeTransaction =
-                            typePengeluaran ? 'pengeluaran' : 'pemasukan';
 
                         Transactions dataTranscation = Transactions(
                             id: idTransaction,
