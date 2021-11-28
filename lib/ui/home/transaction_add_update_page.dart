@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
+import 'package:money_writer_app/ui/home/home_page.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:provider/provider.dart';
 
@@ -64,59 +65,62 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   Widget build(BuildContext context) {
     String typeTransaction = typePengeluaran ? 'pengeluaran' : 'pemasukan';
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_isUpdate ? 'Ubah Transaksi' : 'Tambah Transaksi'),
-        actions: [
-          if (_isUpdate)
-            IconButton(
-              icon: Icon(Icons.delete_forever),
-              onPressed: () {
-                showAlertDialog(BuildContext context) {
-                  // set up the button
-                  Widget okButton = OutlinedButton(
-                    child: Text("Tetap Hapus"),
-                    style: ElevatedButton.styleFrom(
-                      onPrimary: Colors.red,
-                    ),
-                    onPressed: () {},
-                  );
+    return Consumer<TransactionsProvider>(
+      builder: (context, provider, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(_isUpdate ? 'Ubah Transaksi' : 'Tambah Transaksi'),
+            actions: [
+              if (_isUpdate)
+                IconButton(
+                  icon: Icon(Icons.delete_forever),
+                  onPressed: () {
+                    showAlertDialog(BuildContext context) {
+                      // set up the button
+                      Widget okButton = OutlinedButton(
+                        child: Text("Tetap Hapus"),
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Colors.red,
+                        ),
+                        onPressed: () {
+                          provider.removeTransaction(widget.transaction!.id);
+                          Navigator.of(context).pushNamed(HomePage.routeName);
+                        },
+                      );
 
-                  Widget cancelButton = ElevatedButton(
-                    child: Text("Batal"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  );
+                      Widget cancelButton = ElevatedButton(
+                        child: Text("Batal"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      );
 
-                  // set up the AlertDialog
-                  AlertDialog alert = AlertDialog(
-                    title: Text("HAPUS"),
-                    content: Text("Anda yakin ingin menghapus data ini ?"),
-                    actions: [
-                      cancelButton,
-                      okButton,
-                    ],
-                  );
+                      // set up the AlertDialog
+                      AlertDialog alert = AlertDialog(
+                        title: Text("HAPUS"),
+                        content: Text("Anda yakin ingin menghapus data ini ?"),
+                        actions: [
+                          cancelButton,
+                          okButton,
+                        ],
+                      );
 
-                  // show the dialog
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return alert;
-                    },
-                  );
-                }
+                      // show the dialog
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return alert;
+                        },
+                      );
+                    }
 
-                return showAlertDialog(context);
-              },
-            ),
-        ],
-      ),
-      body: Consumer<TransactionsProvider>(
-        builder: (context, provider, child) {
-          return Form(
+                    return showAlertDialog(context);
+                  },
+                ),
+            ],
+          ),
+          body: Form(
             key: _transactionFormKey,
             child: Container(
               padding: EdgeInsets.all(16.0),
@@ -220,26 +224,30 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               return categoryMapToDropdownMenuItem.first.value;
                             }
 
-                            // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
+                          } else {
+                            return categoryMapToDropdownMenuItem.first.value;
                           }
+                          // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
+                        }
 
-                          return DropdownButtonFormField(
-                            items: categoryMapToDropdownMenuItem.toList(),
-                            // value: _isUpdate
-                            //     ? widget.transaction?.id_categories.toString()
-                            //     : categoryMapToDropdownMenuItem.first.value,
-                            value: defaultValueDropdown(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                dropdownValue = newValue as String?;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              label: Text('Kategori'),
-                              icon: Icon(Icons.category),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
+                        return DropdownButtonFormField(
+                          items: categoryMapToDropdownMenuItem.toList(),
+                          // value: _isUpdate
+                          //     ? widget.transaction?.id_categories.toString()
+                          //     : categoryMapToDropdownMenuItem.first.value,
+                          value: defaultValueDropdown(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              dropdownValue = newValue as String?;
+                            });
+                            print('onChanged : ' + dropdownValue!);
+                          },
+                          decoration: InputDecoration(
+                            label: Text('Kategori'),
+                            icon: Icon(Icons.category),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+
                             ),
                             validator: (value) {
                               if (value == null) {
@@ -297,18 +305,21 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     ),
                     SizedBox(height: 16.0),
 
-                    ElevatedButton(
-                      child: Text('Simpan'),
-                      onPressed: () {
-                        if (_transactionFormKey.currentState!.validate()) {
-                          var idTransaction =
-                              _isUpdate ? widget.transaction!.id : null;
-                          var amountReplaceThousandSeparator =
-                              _amountTextController.text
-                                  .replaceAll(RegExp(r'[^0-9\.]'), '');
-                          int? amountToInt =
-                              int.tryParse(amountReplaceThousandSeparator);
-                          // int? idCategoriesToInt = int.parse(dropdownValue!);
+
+                  ElevatedButton(
+                    child: Text('Simpan'),
+                    onPressed: () {
+                      if (_transactionFormKey.currentState!.validate()) {
+                        print('Button save : ' + dropdownValue!);
+                        var idTransaction =
+                            _isUpdate ? widget.transaction!.id : null;
+                        var amountReplaceThousandSeparator =
+                            _amountTextController.text
+                                .replaceAll(RegExp(r'[^0-9\.]'), '');
+                        int? amountToInt =
+                            int.tryParse(amountReplaceThousandSeparator);
+                        // int? idCategoriesToInt = int.parse(dropdownValue!);
+
 
                           Transactions dataTranscation = Transactions(
                               id: idTransaction,
@@ -346,9 +357,9 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
