@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
-import 'package:money_writer_app/ui/home/home_page.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +83,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         ),
                         onPressed: () {
                           provider.removeTransaction(widget.transaction!.id);
-                          Navigator.of(context).pushNamed(HomePage.routeName);
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                         },
                       );
 
