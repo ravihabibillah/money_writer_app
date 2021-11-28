@@ -26,6 +26,9 @@ class TransactionsProvider extends ChangeNotifier {
   List<Transactions> _transactionsMonth = [];
   List<Transactions> get transactionsMonth => _transactionsMonth;
 
+  List<Transactions> _transactionsDay = [];
+  List<Transactions> get transactionsDay => _transactionsDay;
+
   void _getAllTransactions() async {
     _transactions = await _dbHelper.getTransactionsJoinCategory();
     if (_transactions.isNotEmpty) {
@@ -42,6 +45,20 @@ class TransactionsProvider extends ChangeNotifier {
         await _dbHelper.getTransactionsJoinCategorybyMonthAndYear(month, year);
 
     print(_transactionsMonth);
+    if (_transactions.isNotEmpty) {
+      _stateTransaction = ResultState.HasData;
+    } else {
+      _stateTransaction = ResultState.NoData;
+      _message = 'Tidak Ada Data';
+    }
+    notifyListeners();
+  }
+
+  void setAllTransactionsbyDay(/*String day*/ int month, int year) async {
+    _transactionsDay = await _dbHelper
+        .getTransactionsJoinCategorybyDateMonthAndYear(month, year);
+
+    print(_transactionsDay);
     if (_transactions.isNotEmpty) {
       _stateTransaction = ResultState.HasData;
     } else {

@@ -184,8 +184,20 @@ class DatabaseHelper {
       int month, int year) async {
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%'");
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%' GROUP BY t.transaction_date ORDER BY t.transaction_date DESC");
+    // print(results);
+    return results.map((res) => Transactions.fromMap(res)).toList();
+  }
 
+  Future<List<Transactions>> getTransactionsJoinCategorybyDateMonthAndYear(
+      // String day
+      int month,
+      int year) async {
+    final Database? db = await database;
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        // "SELECT t.*, c.name FROM $_tblTransaction t LEFT JOIN $_tblCategories c ON t.id_categories = c.id WHERE t.transaction_date = '$day'"
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%'");
+    print(results);
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
 

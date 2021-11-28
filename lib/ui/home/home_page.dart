@@ -116,124 +116,121 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
         Divider(),
         Expanded(child:
             Consumer<TransactionsProvider>(builder: (context, provider, child) {
+          // provider.setAllTransactionsbyDay(
+          //     provider.transactionsMonth[index].transaction_date);
+          var itemCardData = provider.transactionsMonth;
           return ListView.builder(
             shrinkWrap: true,
-            itemCount: provider.transactionsMonth.length,
+            itemCount: itemCardData.length,
             itemBuilder: (BuildContext context, int index) {
               // contoh check data pengeluaran atau pemasukan
               var isPengeluaran = true;
-
+              // provider.setAllTransactionsbyDay(
+              //     provider.transactionsMonth[index].transaction_date);
+              var listItemTransaction = [];
+              for (var item in provider.transactionsDay) {
+                if (item.transaction_date ==
+                    itemCardData[index].transaction_date) {
+                  listItemTransaction.add(item);
+                }
+              }
               return Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Consumer<TransactionsProvider>(
-                    builder: (context, provider, child) {
-                      // WidgetsBinding.instance?.addPostFrameCallback((_) {
-                      //   setTotal(provider);
-                      // });
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        itemCardData[index].transaction_date,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 4.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Rp. 0',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            Text(
+                              'Rp. 0',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(),
+                      ListView.builder(
+                        itemCount: listItemTransaction.length,
+                        physics: const ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          // contoh check data pengeluaran atau pemasukan
+                          isPengeluaran = !isPengeluaran;
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Minggu, 3 Nov 2021',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 4.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          return ListTile(
+                            leading: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  'Rp. 0',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                Text(
-                                  'Rp. 0',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    color: Colors.red,
-                                  ),
-                                ),
+                                Text(listItemTransaction[index]
+                                    .name_categories
+                                    .toString()),
                               ],
                             ),
-                          ),
-                          const Divider(),
-                          ListView.builder(
-                            itemCount: provider.transactions.length,
-                            physics: const ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              // contoh check data pengeluaran atau pemasukan
-                              isPengeluaran = !isPengeluaran;
+                            title: Text(listItemTransaction[index].description),
 
-                              return ListTile(
-                                leading: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(provider
-                                        .transactions[index].name_categories
-                                        .toString()),
-                                  ],
-                                ),
-                                title: Text(
-                                    provider.transactions[index].description),
-
-                                /**
+                            /**
                                    * properti subtitle hanya percobaan
                                    * untuk menampilkan data type dan transaction_date
                                    */
-                                subtitle: Text(
-                                    provider.transactions[index].type +
-                                        ' : ' +
-                                        provider.transactions[index]
-                                            .transaction_date),
-                                trailing: Text(
-                                  provider.transactions[index].amount
-                                      .toString(),
-                                  style: TextStyle(
-                                    // terapkan check data pengeluaran atau pemasukan
-                                    color: isPengeluaran
-                                        ? Colors.red
-                                        : Colors.blue,
-                                  ),
-                                ),
-                                onTap: () {
-                                  // final selectedTransaction =
-                                  //     await provider.getTransactionById(
-                                  //         provider.transactions[index].id!);
+                            subtitle: Text(listItemTransaction[index].type +
+                                ' : ' +
+                                listItemTransaction[index].transaction_date),
+                            trailing: Text(
+                              listItemTransaction[index].amount.toString(),
+                              style: TextStyle(
+                                // terapkan check data pengeluaran atau pemasukan
+                                color: isPengeluaran ? Colors.red : Colors.blue,
+                              ),
+                            ),
+                            onTap: () {
+                              // final selectedTransaction =
+                              //     await provider.getTransactionById(
+                              //         provider.transactions[index].id!);
 
-                                  Navigator.pushNamed(
-                                    context,
-                                    TransactionAddUpdatePage.routeName,
-                                    arguments: provider.transactions[index],
-                                    // arguments: Transactions(
-                                    //   id: null,
-                                    //   description: provider
-                                    //       .transactions[index].description,
-                                    //   amount:
-                                    //       provider.transactions[index].amount,
-                                    //   transaction_date: provider
-                                    //       .transactions[index]
-                                    //       .transaction_date,
-                                    //   id_categories: provider
-                                    //       .transactions[index].id_categories,
-                                    //   type: provider.transactions[index].type,
-                                    // ),
-                                  );
-                                },
+                              Navigator.pushNamed(
+                                context,
+                                TransactionAddUpdatePage.routeName,
+                                arguments: listItemTransaction[index],
+                                // arguments: Transactions(
+                                //   id: null,
+                                //   description: provider
+                                //       .transactions[index].description,
+                                //   amount:
+                                //       provider.transactions[index].amount,
+                                //   transaction_date: provider
+                                //       .transactions[index]
+                                //       .transaction_date,
+                                //   id_categories: provider
+                                //       .transactions[index].id_categories,
+                                //   type: provider.transactions[index].type,
+                                // ),
                               );
                             },
-                          )
-                        ],
-                      );
-                    },
+                          );
+                        },
+                      )
+                    ],
                   ),
                 ),
               );
@@ -286,6 +283,9 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
       builder: (context, provider, child) {
         provider.setAllTransactionsbyMonth(
             selectedDate!.month, selectedDate!.year);
+        provider.setAllTransactionsbyDay(
+            selectedDate!.month, selectedDate!.year);
+
         return BottomAppBar(
           shape: const CircularNotchedRectangle(),
           child: Row(
