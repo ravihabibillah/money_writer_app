@@ -186,7 +186,45 @@ class CardCategory extends StatelessWidget {
                 child: Icon(Icons.delete_forever),
               ),
               onTap: () {
-                provider.removeCategory(category.id);
+                showAlertDialog(BuildContext context) {
+                  // set up the button
+                  Widget okButton = OutlinedButton(
+                    child: Text("Tetap Hapus"),
+                    style: ElevatedButton.styleFrom(
+                      onPrimary: Colors.red,
+                    ),
+                    onPressed: () {
+                      provider.removeCategory(category.id);
+                      Navigator.of(context).pop();
+                    },
+                  );
+
+                  Widget cancelButton = ElevatedButton(
+                    child: Text("Batal"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                  // set up the AlertDialog
+                  AlertDialog alert = AlertDialog(
+                    title: Text("HAPUS"),
+                    content: Text("Anda yakin ingin menghapus Kategori ini ?"),
+                    actions: [
+                      cancelButton,
+                      okButton,
+                    ],
+                  );
+                  // show the dialog
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return alert;
+                    },
+                  );
+                }
+
+                return showAlertDialog(context);
               },
             ),
           ],
