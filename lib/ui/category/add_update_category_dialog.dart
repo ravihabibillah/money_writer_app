@@ -37,6 +37,7 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   Widget build(BuildContext context) {
     checkCategory();
+
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
         return AlertDialog(
@@ -79,6 +80,20 @@ class _CustomDialogState extends State<CustomDialog> {
                   child: Row(
                     children: [
                       Radio<JenisKategori>(
+                        value: JenisKategori.pengeluaran,
+                        groupValue: _jenis,
+                        onChanged: (JenisKategori? value) {
+                          setState(() {
+                            _jenis = value;
+                            widget.category.type = 'pengeluaran';
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Pengeluaran',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Radio<JenisKategori>(
                         value: JenisKategori.pemasukan,
                         groupValue: _jenis,
                         onChanged: (JenisKategori? value) {
@@ -92,20 +107,6 @@ class _CustomDialogState extends State<CustomDialog> {
                         'Pemasukan',
                         style: TextStyle(fontSize: 14),
                       ),
-                      Radio<JenisKategori>(
-                        value: JenisKategori.pengeluaran,
-                        groupValue: _jenis,
-                        onChanged: (JenisKategori? value) {
-                          setState(() {
-                            _jenis = value;
-                            widget.category.type = 'pengeluaran';
-                          });
-                        },
-                      ),
-                      const Text(
-                        'Pengeluaran',
-                        style: TextStyle(fontSize: 14),
-                      )
                     ],
                   ),
                 ),
@@ -130,8 +131,6 @@ class _CustomDialogState extends State<CustomDialog> {
                     } else {
                       widget.category.type = 'pemasukan';
                     }
-                    print(widget.category.name);
-                    print(widget.category.type);
                     provider.addCategory(widget.category);
                   }
                   Navigator.of(context).pop();
