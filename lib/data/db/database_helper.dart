@@ -190,15 +190,25 @@ class DatabaseHelper {
   }
 
   Future<List<Transactions>> getTransactionsJoinCategorybyDateMonthAndYear(
-      // String day
-      int month,
-      int year) async {
+    // String day
+    int month,
+    int year,
+  ) async {
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
         // "SELECT t.*, c.name FROM $_tblTransaction t LEFT JOIN $_tblCategories c ON t.id_categories = c.id WHERE t.transaction_date = '$day'"
         "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%'");
-    print(results);
+    // print(results);
     return results.map((res) => Transactions.fromMap(res)).toList();
+  }
+
+  Future<List<TotalTransactions>> getTotalInMonth(int month, int year) async {
+    final Database? db = await database;
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        "SELECT t.type, SUM(t.amount) as total FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%' GROUP BY t.type");
+    // print(results);
+
+    return results.map((res) => TotalTransactions.fromMap(res)).toList();
   }
 
   // Future<List<TotalTransactionPerDay>> getTotalPengeluaranAndPemasukanbyDay(
@@ -212,21 +222,21 @@ class DatabaseHelper {
   // }
 
   // Fungsi get transactions by id
-  Future<Map> getTransactionById(int id) async {
-    final db = await database;
+  // Future<Map> getTransactionById(int id) async {
+  //   final db = await database;
 
-    List<Map<String, dynamic>> results = await db!.query(
-      _tblTransaction,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+  //   List<Map<String, dynamic>> results = await db!.query(
+  //     _tblTransaction,
+  //     where: 'id = ?',
+  //     whereArgs: [id],
+  //   );
 
-    if (results.isNotEmpty) {
-      return results.first;
-    } else {
-      return {};
-    }
-  }
+  //   if (results.isNotEmpty) {
+  //     return results.first;
+  //   } else {
+  //     return {};
+  //   }
+  // }
 
   // Fungsi Update transactions
   Future<void> updateTransaction(Transactions transaction) async {

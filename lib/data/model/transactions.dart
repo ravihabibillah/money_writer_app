@@ -37,3 +37,13 @@ class Transactions {
         "type": type,
       };
 }
+
+class TotalTransactions {
+  late int total;
+  late String type;
+
+  TotalTransactions.fromMap(Map<String, dynamic> map) {
+    type = map['type'];
+    total = map['total'];
+  }
+}

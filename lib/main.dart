@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => CategoryProvider(databaseHelper: DatabaseHelper()),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<TransactionsProvider>(
           create: (_) => TransactionsProvider(),
         ),
       ],
