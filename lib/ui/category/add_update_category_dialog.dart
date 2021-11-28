@@ -36,9 +36,9 @@ class _CustomDialogState extends State<CustomDialog> {
 
   @override
   Widget build(BuildContext context) {
+    checkCategory();
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
-        checkCategory();
         return AlertDialog(
           title: const Text('Tambah Kategori'),
           content: Form(
@@ -125,6 +125,13 @@ class _CustomDialogState extends State<CustomDialog> {
                   if (isUpdate) {
                     provider.updateCategory(widget.category);
                   } else {
+                    if (_jenis == JenisKategori.pengeluaran) {
+                      widget.category.type = 'pengeluaran';
+                    } else {
+                      widget.category.type = 'pemasukan';
+                    }
+                    print(widget.category.name);
+                    print(widget.category.type);
                     provider.addCategory(widget.category);
                   }
                   Navigator.of(context).pop();
@@ -148,9 +155,6 @@ class _CustomDialogState extends State<CustomDialog> {
         _jenis = JenisKategori.pemasukan;
       }
       isUpdate = true;
-    } else {
-      // set nilai type awalan ketika data baru dibuat
-      widget.category.type = 'pengeluaran';
     }
   }
 }
