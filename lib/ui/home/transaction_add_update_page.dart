@@ -223,31 +223,26 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                                   categoryMapToDropdownMenuItem.first.value;
                               return categoryMapToDropdownMenuItem.first.value;
                             }
-
-                          } else {
-                            return categoryMapToDropdownMenuItem.first.value;
                           }
-                          // return widget.transaction?.id_categories.toString() ?? categoryMapToDropdownMenuItem.first.value;
-                        }
 
-                        return DropdownButtonFormField(
-                          items: categoryMapToDropdownMenuItem.toList(),
-                          // value: _isUpdate
-                          //     ? widget.transaction?.id_categories.toString()
-                          //     : categoryMapToDropdownMenuItem.first.value,
-                          value: defaultValueDropdown(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              dropdownValue = newValue as String?;
-                            });
-                            print('onChanged : ' + dropdownValue!);
-                          },
-                          decoration: InputDecoration(
-                            label: Text('Kategori'),
-                            icon: Icon(Icons.category),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-
+                          return DropdownButtonFormField(
+                            items: categoryMapToDropdownMenuItem.toList(),
+                            // value: _isUpdate
+                            //     ? widget.transaction?.id_categories.toString()
+                            //     : categoryMapToDropdownMenuItem.first.value,
+                            value: defaultValueDropdown(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                dropdownValue = newValue as String?;
+                              });
+                              print('onChanged : ' + dropdownValue!);
+                            },
+                            decoration: InputDecoration(
+                              label: Text('Kategori'),
+                              icon: Icon(Icons.category),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null) {
@@ -305,21 +300,19 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     ),
                     SizedBox(height: 16.0),
 
-
-                  ElevatedButton(
-                    child: Text('Simpan'),
-                    onPressed: () {
-                      if (_transactionFormKey.currentState!.validate()) {
-                        print('Button save : ' + dropdownValue!);
-                        var idTransaction =
-                            _isUpdate ? widget.transaction!.id : null;
-                        var amountReplaceThousandSeparator =
-                            _amountTextController.text
-                                .replaceAll(RegExp(r'[^0-9\.]'), '');
-                        int? amountToInt =
-                            int.tryParse(amountReplaceThousandSeparator);
-                        // int? idCategoriesToInt = int.parse(dropdownValue!);
-
+                    ElevatedButton(
+                      child: Text('Simpan'),
+                      onPressed: () {
+                        if (_transactionFormKey.currentState!.validate()) {
+                          print('Button save : ' + dropdownValue!);
+                          var idTransaction =
+                              _isUpdate ? widget.transaction!.id : null;
+                          var amountReplaceThousandSeparator =
+                              _amountTextController.text
+                                  .replaceAll(RegExp(r'[^0-9\.]'), '');
+                          int? amountToInt =
+                              int.tryParse(amountReplaceThousandSeparator);
+                          // int? idCategoriesToInt = int.parse(dropdownValue!);
 
                           Transactions dataTranscation = Transactions(
                               id: idTransaction,
