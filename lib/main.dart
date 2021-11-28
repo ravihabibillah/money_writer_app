@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         initialRoute: HomePage.routeName,
         routes: {
           HomePage.routeName: (context) => HomePage(),
-          CategoryPage.routeName: (context) => CategoryPage(),
+          CategoryPage.routeName: (context) => const CategoryPage(),
           ChartPage.routeName: (context) => ChartPage(),
           TransactionAddUpdatePage.routeName: (context) {
             if (ModalRoute.of(context)!.settings.arguments != null) {

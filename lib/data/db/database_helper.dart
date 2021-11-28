@@ -30,11 +30,14 @@ class DatabaseHelper {
     var db = openDatabase(
       '$path/money_writer.db',
       onCreate: (db, version) async {
+        // membuat tabel kategori
         await db.execute('''CREATE TABLE $_tblCategories (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
              name TEXT NOT NULL,
              type TEXT NOT NULL
            )''');
+
+        // membuat tabel transaksi
         await db.execute('''CREATE TABLE $_tblTransaction (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
              description TEXT NOT NULL,
@@ -44,6 +47,8 @@ class DatabaseHelper {
              type TEXT NOT NULL,
              FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
            )''');
+
+        // Insert data awal untuk kategori pengeluaran dan masukan
         await db.execute(insertQuery('Makanan', 'pengeluaran'));
         await db.execute(insertQuery('Minuman', 'pengeluaran'));
         await db.execute(insertQuery('Kesehatan', 'pengeluaran'));
@@ -159,12 +164,52 @@ class DatabaseHelper {
   }
 
   // Fungsi get all transactions
-  Future<List<Transactions>> getTransactions() async {
+  // Future<List<Transactions>> getTransactions() async {
+  //   final Database? db = await database;
+  //   List<Map<String, dynamic>> results = await db!.query(_tblTransaction);
+
+  //   return results.map((res) => Transactions.fromMap(res)).toList();
+  // }
+
+  // Fungsi get all transaction join category
+  Future<List<Transactions>> getTransactionsJoinCategory() async {
     final Database? db = await database;
-    List<Map<String, dynamic>> results = await db!.query(_tblTransaction);
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id");
 
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
+
+  Future<List<Transactions>> getTransactionsJoinCategorybyMonthAndYear(
+      int month, int year) async {
+    final Database? db = await database;
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%' GROUP BY t.transaction_date ORDER BY t.transaction_date DESC");
+    // print(results);
+    return results.map((res) => Transactions.fromMap(res)).toList();
+  }
+
+  Future<List<Transactions>> getTransactionsJoinCategorybyDateMonthAndYear(
+      // String day
+      int month,
+      int year) async {
+    final Database? db = await database;
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        // "SELECT t.*, c.name FROM $_tblTransaction t LEFT JOIN $_tblCategories c ON t.id_categories = c.id WHERE t.transaction_date = '$day'"
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%'");
+    print(results);
+    return results.map((res) => Transactions.fromMap(res)).toList();
+  }
+
+  // Future<List<TotalTransactionPerDay>> getTotalPengeluaranAndPemasukanbyDay(
+  //     String date) async {
+  //   final db = await database;
+
+  //   List<Map<String, dynamic>> results = await db!.rawQuery(
+  //       "SELECT SUM(amount) FROM $_tblTransaction where transaction_date = $date GROUP BY type");
+
+  //   return results.map((res) => TotalTransactionPerDay.fromMap(res)).toList();
+  // }
 
   // Fungsi get transactions by id
   Future<Map> getTransactionById(int id) async {
