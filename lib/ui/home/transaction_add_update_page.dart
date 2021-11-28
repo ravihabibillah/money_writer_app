@@ -162,7 +162,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     // kategori
                     Consumer<CategoryProvider>(
                       builder: (context, provider, child) {
-                        if (provider.statePengeluaran == ResultState.HasData ||
+                        if (provider.statePengeluaran == ResultState.Loading ||
+                            provider.statePemasukan == ResultState.Loading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (provider.statePengeluaran ==
+                                ResultState.HasData ||
                             provider.statePemasukan == ResultState.HasData) {
                           // data category
                           var getCategory = typePengeluaran
