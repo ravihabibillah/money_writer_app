@@ -85,7 +85,6 @@ class _CustomDialogState extends State<CustomDialog> {
                         onChanged: (JenisKategori? value) {
                           setState(() {
                             _jenis = value;
-                            widget.category.type = 'pengeluaran';
                           });
                         },
                       ),
@@ -99,7 +98,6 @@ class _CustomDialogState extends State<CustomDialog> {
                         onChanged: (JenisKategori? value) {
                           setState(() {
                             _jenis = value;
-                            widget.category.type = 'pemasukan';
                           });
                         },
                       ),
