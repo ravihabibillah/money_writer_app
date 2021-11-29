@@ -29,7 +29,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
   // Text Controller
   TextEditingController _dateController = TextEditingController(
-    text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    text: DateFormat('yyyy-MM-dd', "id_ID").format(DateTime.now()),
   );
   // TextEditingController _categoryController = TextEditingController();
   MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
@@ -130,7 +130,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                   children: [
                     // Mengubah kategori
                     _buildTabTypeTransaction(),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     // Tanggal
                     DateTimeField(
@@ -138,8 +138,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       initialValue: DateTime.tryParse(_dateController.text),
                       format: DateFormat("yyyy-MM-dd"),
                       decoration: InputDecoration(
-                        label: Text('tanggal'),
-                        icon: Icon(Icons.event),
+                        label: const Text('tanggal'),
+                        icon: const Icon(Icons.event),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),

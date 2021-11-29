@@ -72,7 +72,63 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
         if (provider.state == ResultState.Loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (provider.state == ResultState.NoData) {
-          return const Center(child: Text("Belum Ada Data"));
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Material(
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            'Pemasukan',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            'Rp. 0',
+                            style: const TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            'Pengeluaran',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            'Rp. 0',
+                            style: const TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            'Saldo',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text('Rp.0'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(),
+              Expanded(child: Center(child: Text("Belum Ada Data")))
+            ],
+          );
         } else if (provider.state == ResultState.HasData) {
           var itemCardData = provider.transactionsMonth;
           var totalPemasukanPerbulan = 0;
@@ -475,7 +531,7 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
                     firstDate: DateTime(DateTime.now().year - 10, 5),
                     lastDate: DateTime(DateTime.now().year + 1, 9),
                     initialDate: selectedDate ?? DateTime.now(),
-                    locale: const Locale("id"),
+                    // locale: const Locale("id"),
                   ).then((date) {
                     if (date != null) {
                       setState(() {

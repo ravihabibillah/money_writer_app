@@ -85,6 +85,10 @@ class TransactionsProvider extends ChangeNotifier {
     try {
       await _dbHelper.insertTransaction(transaction);
       // _getAllTransactions();
+      DateTime? parsedDateTime =
+          DateTime.tryParse(transaction.transaction_date);
+
+      _setData(parsedDateTime!.month, parsedDateTime.year);
     } catch (e) {
       _state = ResultState.Error;
       _message = 'Gagal Menambahkan Transaksi';
