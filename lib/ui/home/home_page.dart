@@ -160,7 +160,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                           ),
                           const SizedBox(height: 8.0),
                           Text(
-                            'Rp. $totalPemasukanPerbulan',
+                            'Rp ${NumberFormat("#,##0", 'id_ID').format(totalPemasukanPerbulan)}',
                             style: const TextStyle(
                               color: Colors.blue,
                             ),
@@ -175,7 +175,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                           ),
                           const SizedBox(height: 8.0),
                           Text(
-                            'Rp. $totalPengeluaranPerbulan',
+                            'Rp ${NumberFormat("#,##0", 'id_ID').format(totalPengeluaranPerbulan)}',
                             style: const TextStyle(
                               color: Colors.red,
                             ),
@@ -189,9 +189,8 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const SizedBox(height: 8.0),
-                          Text(provider.totalInMonth.isEmpty
-                              ? 'Rp.0'
-                              : 'Rp. ${totalPemasukanPerbulan - totalPengeluaranPerbulan}'),
+                          Text(
+                              'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPemasukanPerbulan - totalPengeluaranPerbulan)}'),
                         ],
                       ),
                     ],
@@ -362,7 +361,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Rp. $totalPemasukan',
+                                          'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPemasukan)}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16.0,
@@ -370,7 +369,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                           ),
                                         ),
                                         Text(
-                                          'Rp. $totalPengeluaran',
+                                          'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPengeluaran)}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16.0,
@@ -409,9 +408,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                */
 
                                         trailing: Text(
-                                          listItemTransaction[index]
-                                              .amount
-                                              .toString(),
+                                          'Rp. ${NumberFormat("#,##0", 'id_ID').format(listItemTransaction[index].amount)}',
                                           style: TextStyle(
                                             // terapkan check data pengeluaran atau pemasukan
                                             color: listItemTransaction[index]
