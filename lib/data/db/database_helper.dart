@@ -182,9 +182,15 @@ class DatabaseHelper {
 
   Future<List<Transactions>> getTransactionsJoinCategorybyMonthAndYear(
       int month, int year) async {
+    var addZeroCaracter;
+    if (month < 10) {
+      addZeroCaracter = '0';
+    } else {
+      addZeroCaracter = '';
+    }
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%' GROUP BY t.transaction_date ORDER BY t.transaction_date DESC");
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCaracter$month%' GROUP BY t.transaction_date ORDER BY t.transaction_date DESC");
     // print(results);
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
@@ -193,9 +199,15 @@ class DatabaseHelper {
     int month,
     int year,
   ) async {
+    var addZeroCaracter;
+    if (month < 10) {
+      addZeroCaracter = '0';
+    } else {
+      addZeroCaracter = '';
+    }
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$month%'");
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCaracter$month%'");
     // print(results);
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
