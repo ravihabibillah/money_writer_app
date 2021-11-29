@@ -85,15 +85,17 @@ class _ChartPageState extends State<ChartPage> {
               child: Column(
                 children: [
                   Text('Chart'),
-                  SizedBox(height: 700),
+                  SizedBox(height: 500),
                   const Divider(),
                   ListTile(
-                    title: Text('title'),
-                    trailing: Text('leading'),
+                    leading: Text('(85%)'),
+                    title: Text('Pengeluaran'),
+                    trailing: Text('Rp. 850.000'),
                   ),
                   ListTile(
-                    title: Text('title'),
-                    trailing: Text('leading'),
+                    leading: Text('(15%)'),
+                    title: Text('Pemasukan'),
+                    trailing: Text('Rp. 150.000'),
                   ),
                 ],
               ),
