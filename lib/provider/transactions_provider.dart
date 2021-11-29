@@ -54,7 +54,7 @@ class TransactionsProvider extends ChangeNotifier {
     // print(_transactionsMonth);
     if (_transactionsMonth.isNotEmpty) {
       _state = ResultState.HasData;
-      setAllTransactionsbyDay(month, year);
+      // setAllTransactionsbyDay(month, year);
     } else {
       _state = ResultState.NoData;
       _message = 'Tidak Ada Data';

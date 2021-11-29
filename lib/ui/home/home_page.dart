@@ -69,13 +69,23 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
     return Consumer<TransactionsProvider>(
       builder: (context, provider, child) {
         if (provider.state == ResultState.Loading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (provider.state == ResultState.NoData) {
-          return Center(child: Text("Belum Ada Data"));
+          return const Center(child: Text("Belum Ada Data"));
         } else if (provider.state == ResultState.HasData) {
           var itemCardData = provider.transactionsMonth;
-          // print("TOTAL: ${provider.totalInMonth}");
-
+          var totalPemasukanPerbulan = 0;
+          var totalPengeluaranPerbulan = 0;
+          if (provider.totalInMonth.length > 0) {
+            for (var item in provider.totalInMonth) {
+              if (item.type == 'pengeluaran') {
+                totalPengeluaranPerbulan = item.total;
+              } else {
+                totalPemasukanPerbulan = item.total;
+              }
+            }
+          }
+          print("TOTAL: ${provider.totalInMonth}");
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -93,9 +103,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                           ),
                           const SizedBox(height: 8.0),
                           Text(
-                            provider.totalInMonth.isEmpty
-                                ? 'Rp. 0'
-                                : 'Rp. ${provider.totalInMonth[0].total}',
+                            'Rp. $totalPemasukanPerbulan',
                             style: const TextStyle(
                               color: Colors.blue,
                             ),
@@ -110,9 +118,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                           ),
                           const SizedBox(height: 8.0),
                           Text(
-                            provider.totalInMonth.isEmpty
-                                ? 'Rp. 0'
-                                : 'Rp. ${provider.totalInMonth[1].total}',
+                            'Rp. $totalPengeluaranPerbulan',
                             style: const TextStyle(
                               color: Colors.red,
                             ),
@@ -126,7 +132,9 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const SizedBox(height: 8.0),
-                          Text('Rp. 15.000'),
+                          Text(provider.totalInMonth.isEmpty
+                              ? 'Rp.0'
+                              : 'Rp. ${totalPemasukanPerbulan - totalPengeluaranPerbulan}'),
                         ],
                       ),
                     ],
@@ -200,11 +208,12 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                     //             title: Text(element.description),
 
                     //             /**
-                    //                            * properti subtitle hanya percobaan
-                    //                            * untuk menampilkan data type dan transaction_date
-                    //                            */
-                    //             subtitle: Text(
-                    //                 element.type + ' : ' + element.transaction_date),
+                    //                                * properti subtitle hanya percobaan
+                    //                                * untuk menampilkan data type dan transaction_date
+                    //                                */
+                    //             subtitle: Text(element.type +
+                    //                 ' : ' +
+                    //                 element.transaction_date),
                     //             trailing: Text(
                     //               element.amount.toString(),
                     //               style: TextStyle(
@@ -330,9 +339,9 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                             .description),
 
                                         /**
-                                   * properti subtitle hanya percobaan
-                                   * untuk menampilkan data type dan transaction_date
-                                   */
+                               * properti subtitle hanya percobaan
+                               * untuk menampilkan data type dan transaction_date
+                               */
                                         subtitle: Text(
                                             listItemTransaction[index].type +
                                                 ' : ' +
@@ -390,7 +399,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
         } else if (provider.state == ResultState.Error) {
           return Center(child: Text(provider.message));
         } else {
-          return Center();
+          return const Center();
         }
       },
     );
@@ -419,12 +428,13 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
   Widget build(BuildContext context) {
     return Consumer<TransactionsProvider>(
       builder: (context, provider, child) {
-        provider.setAllTransactionsbyMonth(
-            selectedDate!.month, selectedDate!.year);
+        // provider.setAllTransactionsbyMonth(
+        //     selectedDate!.month, selectedDate!.year);
         // provider.setAllTransactionsbyDay(
         //     selectedDate!.month, selectedDate!.year);
         // provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
 
+        getData(provider);
         return BottomAppBar(
           shape: const CircularNotchedRectangle(),
           child: Row(
@@ -437,8 +447,10 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
                       selectedDate!.year,
                       selectedDate!.month - 1,
                     );
-                    provider.getTotalInMonth(
-                        selectedDate!.month, selectedDate!.year);
+                    // getData(provider);
+
+                    // provider.getTotalInMonth(
+                    //     selectedDate!.month, selectedDate!.year);
                   });
                 },
               ),
@@ -458,8 +470,10 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
                       setState(() {
                         selectedDate = date;
                       });
-                      provider.getTotalInMonth(
-                          selectedDate!.month, selectedDate!.year);
+                      // getData(provider);
+
+                      // provider.getTotalInMonth(
+                      //     selectedDate!.month, selectedDate!.year);
                     }
                   });
                 },
@@ -473,8 +487,9 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
                       selectedDate!.month + 1,
                     );
                   });
-                  provider.getTotalInMonth(
-                      selectedDate!.month, selectedDate!.year);
+                  // getData(provider);
+                  // provider.getTotalInMonth(
+                  //     selectedDate!.month, selectedDate!.year);
                 },
               ),
             ],
@@ -482,5 +497,13 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
         );
       },
     );
+  }
+
+  Future<void> getData(TransactionsProvider provider) async {
+    await provider.setAllTransactionsbyMonth(
+        selectedDate!.month, selectedDate!.year);
+    provider.setAllTransactionsbyDay(selectedDate!.month, selectedDate!.year);
+
+    provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
   }
 }
