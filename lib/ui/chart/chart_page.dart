@@ -80,21 +80,24 @@ class _ChartPageState extends State<ChartPage> {
               ),
             ),
           ),
-          const Divider(),
-          Column(
-            children: [
-              Text('Chart'),
-              SizedBox(height: 700),
-              const Divider(),
-              ListTile(
-                title: Text('title'),
-                trailing: Text('leading'),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text('Chart'),
+                  SizedBox(height: 700),
+                  const Divider(),
+                  ListTile(
+                    title: Text('title'),
+                    trailing: Text('leading'),
+                  ),
+                  ListTile(
+                    title: Text('title'),
+                    trailing: Text('leading'),
+                  ),
+                ],
               ),
-              ListTile(
-                title: Text('title'),
-                trailing: Text('leading'),
-              ),
-            ],
+            ),
           ),
         ],
       ),
