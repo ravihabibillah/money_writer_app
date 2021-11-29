@@ -11,8 +11,7 @@ class TransactionsProvider extends ChangeNotifier {
     _dbHelper = DatabaseHelper();
     // _getAllTransactions();
 
-    setAllTransactionsbyMonth(date.month, date.year);
-    getTotalInMonth(date.month, date.year);
+    _setData(date.month, date.year);
   }
 
   late ResultState _state = ResultState.Loading;
@@ -47,6 +46,11 @@ class TransactionsProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
+  void _setData(int month, int year) {
+    setAllTransactionsbyMonth(month, year);
+    getTotalInMonth(month, year);
+  }
+
   Future<void> setAllTransactionsbyMonth(int month, int year) async {
     _transactionsMonth =
         await _dbHelper.getTransactionsJoinCategorybyMonthAndYear(month, year);
@@ -54,7 +58,7 @@ class TransactionsProvider extends ChangeNotifier {
     // print(_transactionsMonth);
     if (_transactionsMonth.isNotEmpty) {
       _state = ResultState.HasData;
-      // setAllTransactionsbyDay(month, year);
+      setAllTransactionsbyDay(month, year);
     } else {
       _state = ResultState.NoData;
       _message = 'Tidak Ada Data';
@@ -124,6 +128,10 @@ class TransactionsProvider extends ChangeNotifier {
   void updateTransaction(Transactions transaction) async {
     try {
       await _dbHelper.updateTransaction(transaction);
+      DateTime? parsedDateTime =
+          DateTime.tryParse(transaction.transaction_date);
+
+      _setData(parsedDateTime!.month, parsedDateTime.year);
       // _getAllTransactions();
     } catch (e) {
       _state = ResultState.Error;
@@ -134,9 +142,12 @@ class TransactionsProvider extends ChangeNotifier {
     }
   }
 
-  void removeTransaction(int? id) async {
+  void removeTransaction(int? id, String dateString) async {
     try {
       await _dbHelper.removeTransaction(id);
+      DateTime? parsedDateTime = DateTime.tryParse(dateString);
+
+      _setData(parsedDateTime!.month, parsedDateTime.year);
       // _getAllTransactions();
     } catch (e) {
       _state = ResultState.Error;

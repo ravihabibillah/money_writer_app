@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/category/category_page.dart';
 import 'package:money_writer_app/ui/chart/chart_page.dart';
@@ -277,6 +278,10 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                               }
                             }
                           }
+                          DateTime? parsedDate = DateTime.tryParse(
+                              itemCardData[index].transaction_date);
+
+                          // parseDate(itemCardData[index].transaction_date);
 
                           return Card(
                             child: Padding(
@@ -284,10 +289,14 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    itemCardData[index].transaction_date,
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
+                                  Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Text(
+                                      DateFormat("EEEE, d MMM yyyy", "id_ID")
+                                          .format(parsedDate!),
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -342,11 +351,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                * properti subtitle hanya percobaan
                                * untuk menampilkan data type dan transaction_date
                                */
-                                        subtitle: Text(
-                                            listItemTransaction[index].type +
-                                                ' : ' +
-                                                listItemTransaction[index]
-                                                    .transaction_date),
+
                                         trailing: Text(
                                           listItemTransaction[index]
                                               .amount
@@ -404,6 +409,12 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
       },
     );
   }
+
+  // void parseDate(String transaction_date) {
+  //   DateTime? parsedDate = DateTime.tryParse(transaction_date);
+  //   var month
+  //   if()
+  // }
 }
 
 class buildBottomAppbar extends StatefulWidget {
@@ -434,7 +445,7 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
         //     selectedDate!.month, selectedDate!.year);
         // provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
 
-        getData(provider);
+        // getData(provider);
         return BottomAppBar(
           shape: const CircularNotchedRectangle(),
           child: Row(
@@ -447,7 +458,7 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
                       selectedDate!.year,
                       selectedDate!.month - 1,
                     );
-                    // getData(provider);
+                    getData(provider);
 
                     // provider.getTotalInMonth(
                     //     selectedDate!.month, selectedDate!.year);
@@ -470,7 +481,7 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
                       setState(() {
                         selectedDate = date;
                       });
-                      // getData(provider);
+                      getData(provider);
 
                       // provider.getTotalInMonth(
                       //     selectedDate!.month, selectedDate!.year);
@@ -487,7 +498,7 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
                       selectedDate!.month + 1,
                     );
                   });
-                  // getData(provider);
+                  getData(provider);
                   // provider.getTotalInMonth(
                   //     selectedDate!.month, selectedDate!.year);
                 },
@@ -499,10 +510,9 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
     );
   }
 
-  Future<void> getData(TransactionsProvider provider) async {
-    await provider.setAllTransactionsbyMonth(
-        selectedDate!.month, selectedDate!.year);
-    provider.setAllTransactionsbyDay(selectedDate!.month, selectedDate!.year);
+  void getData(TransactionsProvider provider) {
+    // provider.setAllTransactionsbyDay(selectedDate!.month, selectedDate!.year);
+    provider.setAllTransactionsbyMonth(selectedDate!.month, selectedDate!.year);
 
     provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
   }

@@ -83,7 +83,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                           onPrimary: Colors.red,
                         ),
                         onPressed: () {
-                          provider.removeTransaction(widget.transaction!.id);
+                          provider.removeTransaction(widget.transaction!.id,
+                              widget.transaction!.transaction_date);
                           Navigator.of(context).pushNamed(HomePage.routeName);
                         },
                       );
