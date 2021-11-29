@@ -5,14 +5,16 @@ import 'package:money_writer_app/provider/category_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
 import 'common/styles.dart';
 import 'ui/category/category_page.dart';
 import 'ui/chart/chart_page.dart';
 import 'ui/home/home_page.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null)
+      .then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
