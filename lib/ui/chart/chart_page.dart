@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_writer_app/ui/chart/PieChartTransactions.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class ChartPage extends StatefulWidget {
@@ -84,8 +85,7 @@ class _ChartPageState extends State<ChartPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Text('Chart'),
-                  SizedBox(height: 500),
+                  PieChartTransactions(),
                   const Divider(),
                   ListTile(
                     leading: Text('(85%)'),
