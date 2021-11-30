@@ -40,6 +40,9 @@ class ChartPage extends StatelessWidget {
                   } else if (provider.state == ResultState.HasData) {
                     var totalPemasukanPerbulan = 0;
                     var totalPengeluaranPerbulan = 0;
+                    var percentTotalPengeluaranPerbulan = 0;
+                    var percentTotalPemasukanPerbulan = 0;
+
                     if (provider.totalInMonth.length > 0) {
                       for (var item in provider.totalInMonth) {
                         if (item.type == 'pengeluaran') {
@@ -48,19 +51,20 @@ class ChartPage extends StatelessWidget {
                           totalPemasukanPerbulan = item.total;
                         }
                       }
+                      // persen
+                      percentTotalPengeluaranPerbulan =
+                          (totalPengeluaranPerbulan /
+                                  (totalPengeluaranPerbulan +
+                                      totalPemasukanPerbulan) *
+                                  100)
+                              .toInt();
+                      percentTotalPemasukanPerbulan = (totalPemasukanPerbulan /
+                              (totalPengeluaranPerbulan +
+                                  totalPemasukanPerbulan) *
+                              100)
+                          .toInt();
                     }
-                    // persen
-                    var percentTotalPengeluaranPerbulan =
-                        totalPengeluaranPerbulan /
-                            (totalPengeluaranPerbulan +
-                                totalPemasukanPerbulan) *
-                            100.toInt();
-                    var percentTotalPemasukanPerbulan =
-                        (totalPemasukanPerbulan /
-                                (totalPengeluaranPerbulan +
-                                    totalPemasukanPerbulan) *
-                                100)
-                            .toInt();
+
                     return Column(
                       children: [
                         PieChartTransactions(
