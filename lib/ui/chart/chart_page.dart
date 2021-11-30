@@ -116,66 +116,78 @@ class MonthPickerChart extends StatefulWidget {
 }
 
 class _MonthPickerChartState extends State<MonthPickerChart> {
-  DateTime? selectDate;
+  DateTime? selectedDate;
 
   @override
   void initState() {
     super.initState();
-    selectDate = DateTime.now();
+    selectedDate = DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.chevron_left),
-              onPressed: () {
-                setState(() {
-                  selectDate = DateTime(
-                    selectDate!.year,
-                    selectDate!.month - 1,
-                  );
-                });
-              },
-            ),
-            TextButton(
-              child: Text(
-                'Month: ${selectDate?.month} - ${selectDate?.year}',
+    return Consumer<TransactionsProvider>(builder: (context, provider, child) {
+      return Material(
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.chevron_left),
+                onPressed: () {
+                  setState(() {
+                    selectedDate = DateTime(
+                      selectedDate!.year,
+                      selectedDate!.month - 1,
+                    );
+                  });
+                  getData(provider);
+                },
               ),
-              onPressed: () {
-                showMonthPicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(DateTime.now().year - 10, 5),
-                  lastDate: DateTime(DateTime.now().year + 1, 9),
-                ).then((date) {
-                  if (date != null) {
-                    setState(() {
-                      selectDate = date;
-                    });
-                  }
-                });
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.chevron_right),
-              onPressed: () {
-                setState(() {
-                  selectDate = DateTime(
-                    selectDate!.year,
-                    selectDate!.month + 1,
-                  );
-                });
-              },
-            ),
-          ],
+              TextButton(
+                child: Text(
+                  'Month: ${selectedDate?.month} - ${selectedDate?.year}',
+                ),
+                onPressed: () {
+                  showMonthPicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(DateTime.now().year - 10, 5),
+                    lastDate: DateTime(DateTime.now().year + 1, 9),
+                  ).then((date) {
+                    if (date != null) {
+                      setState(() {
+                        selectedDate = date;
+                      });
+                      getData(provider);
+                    }
+                  });
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.chevron_right),
+                onPressed: () {
+                  setState(() {
+                    selectedDate = DateTime(
+                      selectedDate!.year,
+                      selectedDate!.month + 1,
+                    );
+                  });
+                  getData(provider);
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
+  }
+
+  void getData(TransactionsProvider provider) {
+    // provider.setAllTransactionsbyDay(selectedDate!.month, selectedDate!.year);
+    provider.setAllTransactionsbyMonth(selectedDate!.month, selectedDate!.year);
+
+    provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
   }
 }
