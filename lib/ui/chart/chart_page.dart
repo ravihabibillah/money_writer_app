@@ -188,9 +188,6 @@ class _MonthPickerChartState extends State<MonthPickerChart> {
   }
 
   void getData(TransactionsProvider provider) {
-    // provider.setAllTransactionsbyDay(selectedDate!.month, selectedDate!.year);
-    provider.setAllTransactionsbyMonth(selectedDate!.month, selectedDate!.year);
-
     provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
   }
 }
