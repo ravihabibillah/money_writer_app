@@ -205,21 +205,21 @@ class CardCategory extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                   );
-                  // set up the AlertDialog
-                  AlertDialog alert = AlertDialog(
-                    title: Text("HAPUS"),
-                    content: Text("Anda yakin ingin menghapus Kategori ini ?"),
-                    actions: [
-                      cancelButton,
-                      okButton,
-                    ],
-                  );
+
                   // show the dialog
                   showDialog(
                     barrierDismissible: false,
                     context: context,
                     builder: (BuildContext context) {
-                      return alert;
+                      return AlertDialog(
+                        title: Text("PERINGATAN"),
+                        content: Text(
+                            "Menghapus kategori ini juga akan menghapus semua transaksi dalam kategori ini ?"),
+                        actions: [
+                          cancelButton,
+                          okButton,
+                        ],
+                      );
                     },
                   );
                 }
