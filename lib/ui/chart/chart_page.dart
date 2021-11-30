@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_writer_app/ui/chart/PieChartTransactions.dart';
+import 'package:money_writer_app/ui/chart/pie_chart_transactions.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class ChartPage extends StatefulWidget {
