@@ -124,6 +124,8 @@ class _MonthPickerChartState extends State<MonthPickerChart> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
+    Provider.of<TransactionsProvider>(context, listen: false)
+        .getTotalInMonth(selectedDate!.month, selectedDate!.year);
   }
 
   @override
