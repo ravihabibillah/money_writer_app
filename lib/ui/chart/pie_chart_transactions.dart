@@ -20,44 +20,39 @@ class PieChartTransactionsState extends State {
       aspectRatio: 1.3,
       child: Card(
         color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            const SizedBox(
-              height: 18,
-            ),
-            Consumer<TransactionsProvider>(builder: (context, provider, child) {
-              return Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: PieChart(
-                    PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          setState(() {
-                            if (!event.isInterestedForInteractions ||
-                                pieTouchResponse == null ||
-                                pieTouchResponse.touchedSection == null) {
-                              touchedIndex = -1;
-                              return;
-                            }
-                            touchedIndex = pieTouchResponse
-                                .touchedSection!.touchedSectionIndex;
-                          });
-                        },
-                      ),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 50,
-                      // sections: showingSections(),
-                      sections: showingTransactions(provider),
+        child: Consumer<TransactionsProvider>(
+          builder: (context, provider, child) {
+            return Expanded(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: PieChart(
+                  PieChartData(
+                    pieTouchData: PieTouchData(
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                        setState(() {
+                          if (!event.isInterestedForInteractions ||
+                              pieTouchResponse == null ||
+                              pieTouchResponse.touchedSection == null) {
+                            touchedIndex = -1;
+                            return;
+                          }
+                          touchedIndex = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
+                        });
+                      },
                     ),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 50,
+                    // sections: showingSections(),
+                    sections: showingTransactions(provider),
                   ),
                 ),
-              );
-            }),
-          ],
+              ),
+            );
+          },
         ),
       ),
     );
