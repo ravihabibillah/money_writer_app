@@ -44,7 +44,7 @@ class DatabaseHelper {
              transaction_date DATE,
              id_categories INTEGER,
              type TEXT NOT NULL,
-             FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+             FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE CASCADE ON UPDATE NO ACTION
            )''');
 
         // Insert data awal untuk kategori pengeluaran dan masukan
