@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
-import 'package:money_writer_app/ui/home/home_page.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:provider/provider.dart';
 
@@ -83,9 +82,12 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                           onPrimary: Colors.red,
                         ),
                         onPressed: () {
-                          provider.removeTransaction(widget.transaction!.id,
-                              widget.transaction!.transaction_date);
-                          Navigator.of(context).pushNamed(HomePage.routeName);
+                          provider.removeTransaction(
+                            widget.transaction!.id,
+                            widget.transaction!.transaction_date,
+                          );
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                         },
                       );
 
@@ -124,13 +126,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
           body: Form(
             key: _transactionFormKey,
             child: Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     // Mengubah kategori
                     _buildTabTypeTransaction(),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     // Tanggal
                     DateTimeField(
@@ -138,8 +140,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       initialValue: DateTime.tryParse(_dateController.text),
                       format: DateFormat("yyyy-MM-dd"),
                       decoration: InputDecoration(
-                        label: Text('tanggal'),
-                        icon: Icon(Icons.event),
+                        label: const Text('tanggal'),
+                        icon: const Icon(Icons.event),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -239,8 +241,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               print('onChanged : ' + dropdownValue!);
                             },
                             decoration: InputDecoration(
-                              label: Text('Kategori'),
-                              icon: Icon(Icons.category),
+                              label: const Text('Kategori'),
+                              icon: const Icon(Icons.category),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -259,7 +261,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         }
                       },
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     // Jumlah Uang
                     TextFormField(
@@ -267,8 +269,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         prefixText: 'Rp. ',
-                        label: Text('Jumlah'),
-                        icon: Icon(Icons.money),
+                        label: const Text('Jumlah'),
+                        icon: const Icon(Icons.money),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -280,14 +282,14 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     // Keterangan
                     TextFormField(
                       controller: _descriptionController,
                       decoration: InputDecoration(
-                        label: Text('Keterangan'),
-                        icon: Icon(Icons.description),
+                        label: const Text('Keterangan'),
+                        icon: const Icon(Icons.description),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -299,10 +301,10 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     ElevatedButton(
-                      child: Text('Simpan'),
+                      child: const Text('Simpan'),
                       onPressed: () {
                         if (_transactionFormKey.currentState!.validate()) {
                           print('Button save : ' + dropdownValue!);
@@ -362,7 +364,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
-          child: Text('Pengeluaran'),
+          child: const Text('Pengeluaran'),
           style: ElevatedButton.styleFrom(
             primary: typePengeluaran ? Colors.red : Colors.grey,
           ),
@@ -372,9 +374,9 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
             });
           },
         ),
-        SizedBox(width: 8.0),
+        const SizedBox(width: 8.0),
         ElevatedButton(
-          child: Text('Pemasukan'),
+          child: const Text('Pemasukan'),
           style: ElevatedButton.styleFrom(
             primary: !typePengeluaran ? Colors.blue : Colors.grey,
           ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/model/category.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
+import 'package:money_writer_app/utils/jenis_kategori.dart';
 import 'package:provider/provider.dart';
-
-enum JenisKategori { pemasukan, pengeluaran }
 
 Future<void> showInformationDialog(
     BuildContext context, Category category) async {
