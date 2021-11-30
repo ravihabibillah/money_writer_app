@@ -5,23 +5,18 @@ import 'package:money_writer_app/utils/result_state.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:provider/provider.dart';
 
-class ChartPage extends StatefulWidget {
+class ChartPage extends StatelessWidget {
   static const routeName = '/chart_page';
 
   const ChartPage({Key? key}) : super(key: key);
 
-  @override
-  State<ChartPage> createState() => _ChartPageState();
-}
+  // DateTime? selectedDate;
 
-class _ChartPageState extends State<ChartPage> {
-  DateTime? selectedDate;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedDate = DateTime.now();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   selectedDate = DateTime.now();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -32,58 +27,7 @@ class _ChartPageState extends State<ChartPage> {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Material(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.chevron_left),
-                    onPressed: () {
-                      setState(() {
-                        selectedDate = DateTime(
-                          selectedDate!.year,
-                          selectedDate!.month - 1,
-                        );
-                      });
-                    },
-                  ),
-                  TextButton(
-                    child: Text(
-                      'Month: ${selectedDate?.month} - ${selectedDate?.year}',
-                    ),
-                    onPressed: () {
-                      showMonthPicker(
-                        context: context,
-                        firstDate: DateTime(DateTime.now().year - 10, 5),
-                        lastDate: DateTime(DateTime.now().year + 1, 9),
-                        initialDate: selectedDate ?? DateTime.now(),
-                        locale: const Locale("id"),
-                      ).then((date) {
-                        if (date != null) {
-                          setState(() {
-                            selectedDate = date;
-                          });
-                        }
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.chevron_right),
-                    onPressed: () {
-                      setState(() {
-                        selectedDate = DateTime(
-                          selectedDate!.year,
-                          selectedDate!.month + 1,
-                        );
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+          MonthPickerChart(),
           Expanded(
             child: SingleChildScrollView(
               child: Consumer<TransactionsProvider>(
@@ -159,6 +103,78 @@ class _ChartPageState extends State<ChartPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MonthPickerChart extends StatefulWidget {
+  const MonthPickerChart({Key? key}) : super(key: key);
+
+  @override
+  _MonthPickerChartState createState() => _MonthPickerChartState();
+}
+
+class _MonthPickerChartState extends State<MonthPickerChart> {
+  DateTime? selectDate;
+
+  @override
+  void initState() {
+    super.initState();
+    selectDate = DateTime.now();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.chevron_left),
+              onPressed: () {
+                setState(() {
+                  selectDate = DateTime(
+                    selectDate!.year,
+                    selectDate!.month - 1,
+                  );
+                });
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Month: ${selectDate?.month} - ${selectDate?.year}',
+              ),
+              onPressed: () {
+                showMonthPicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(DateTime.now().year - 10, 5),
+                  lastDate: DateTime(DateTime.now().year + 1, 9),
+                ).then((date) {
+                  if (date != null) {
+                    setState(() {
+                      selectDate = date;
+                    });
+                  }
+                });
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.chevron_right),
+              onPressed: () {
+                setState(() {
+                  selectDate = DateTime(
+                    selectDate!.year,
+                    selectDate!.month + 1,
+                  );
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
