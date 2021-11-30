@@ -126,11 +126,20 @@ class PieChartTransactionsState extends State {
             }
           }
         }
+        // persen
+        var percentTotalPemasukanPerbulan = totalPemasukanPerbulan /
+            (totalPengeluaranPerbulan + totalPemasukanPerbulan) *
+            100;
+        var percentTotalPengeluaranPerbulan = totalPengeluaranPerbulan /
+            (totalPengeluaranPerbulan + totalPemasukanPerbulan) *
+            100;
+        print(
+            '$percentTotalPemasukanPerbulan - $percentTotalPengeluaranPerbulan');
         switch (i) {
           case 0:
             return PieChartSectionData(
               color: const Color(0xff0293ee),
-              value: 50,
+              value: percentTotalPemasukanPerbulan,
               title: '$totalPemasukanPerbulan',
               radius: radius,
               titleStyle: TextStyle(
@@ -141,7 +150,7 @@ class PieChartTransactionsState extends State {
           case 1:
             return PieChartSectionData(
               color: const Color(0xffff0000),
-              value: 50,
+              value: percentTotalPengeluaranPerbulan,
               title: '$totalPengeluaranPerbulan',
               radius: radius,
               titleStyle: TextStyle(
