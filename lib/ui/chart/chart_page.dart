@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/chart/pie_chart_transactions.dart';
 import 'package:money_writer_app/utils/result_state.dart';
@@ -35,9 +36,7 @@ class ChartPage extends StatelessWidget {
                   if (provider.state == ResultState.Loading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (provider.state == ResultState.NoData) {
-                    return Expanded(
-                      child: Center(child: Text("Belum Ada Data")),
-                    );
+                    return Center(child: Text("Belum Ada Data"));
                   } else if (provider.state == ResultState.HasData) {
                     var totalPemasukanPerbulan = 0;
                     var totalPengeluaranPerbulan = 0;
@@ -52,11 +51,10 @@ class ChartPage extends StatelessWidget {
                     }
                     // persen
                     var percentTotalPengeluaranPerbulan =
-                        (totalPengeluaranPerbulan /
-                                (totalPengeluaranPerbulan +
-                                    totalPemasukanPerbulan) *
-                                100)
-                            .toInt();
+                        totalPengeluaranPerbulan /
+                            (totalPengeluaranPerbulan +
+                                totalPemasukanPerbulan) *
+                            100.toInt();
                     var percentTotalPemasukanPerbulan =
                         (totalPemasukanPerbulan /
                                 (totalPengeluaranPerbulan +
@@ -147,7 +145,8 @@ class _MonthPickerChartState extends State<MonthPickerChart> {
               ),
               TextButton(
                 child: Text(
-                  'Month: ${selectedDate?.month} - ${selectedDate?.year}',
+                  DateFormat("MMMM yyyy", "id_ID").format(selectedDate!),
+                  // 'Month: ${selectedDate?.month} - ${selectedDate?.year}',
                 ),
                 onPressed: () {
                   showMonthPicker(

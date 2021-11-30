@@ -523,7 +523,8 @@ class _buildBottomAppbarState extends State<buildBottomAppbar> {
               ),
               TextButton(
                 child: Text(
-                  'Month: ${selectedDate?.month} - ${selectedDate?.year}',
+                  DateFormat("MMMM yyyy", "id_ID").format(selectedDate!),
+                  // 'Month: ${selectedDate?.month} - ${selectedDate?.year}',
                 ),
                 onPressed: () {
                   showMonthPicker(
