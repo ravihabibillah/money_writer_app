@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
+import 'package:money_writer_app/ui/chart/pie_chart_transactions.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:provider/provider.dart';
@@ -107,20 +108,27 @@ class _ChartPageState extends State<ChartPage> {
                     }
                     // persen
                     var percentTotalPengeluaranPerbulan =
-                        totalPengeluaranPerbulan /
-                            (totalPengeluaranPerbulan +
-                                totalPemasukanPerbulan) *
-                            100;
-                    var percentTotalPemasukanPerbulan = totalPemasukanPerbulan /
-                        (totalPengeluaranPerbulan + totalPemasukanPerbulan) *
-                        100;
+                        (totalPengeluaranPerbulan /
+                                (totalPengeluaranPerbulan +
+                                    totalPemasukanPerbulan) *
+                                100)
+                            .toInt();
+                    var percentTotalPemasukanPerbulan =
+                        (totalPemasukanPerbulan /
+                                (totalPengeluaranPerbulan +
+                                    totalPemasukanPerbulan) *
+                                100)
+                            .toInt();
                     return Column(
                       children: [
-                        // PieChartTransactions(provider: provider),
+                        PieChartTransactions(
+                          percentPemasukan: percentTotalPemasukanPerbulan,
+                          percentPengeluaran: percentTotalPengeluaranPerbulan,
+                        ),
                         const Divider(),
                         ListTile(
-                          leading: Text(
-                              '(${percentTotalPengeluaranPerbulan.toInt()}%)'),
+                          leading:
+                              Text('(${percentTotalPengeluaranPerbulan}%)'),
                           title: Text('Pengeluaran'),
                           trailing: Text(
                             'Rp. $totalPengeluaranPerbulan',
@@ -130,8 +138,7 @@ class _ChartPageState extends State<ChartPage> {
                           ),
                         ),
                         ListTile(
-                          leading: Text(
-                              '(${percentTotalPemasukanPerbulan.toInt()}%)'),
+                          leading: Text('(${percentTotalPemasukanPerbulan}%)'),
                           title: Text('Pemasukan'),
                           trailing: Text(
                             'Rp. $totalPemasukanPerbulan',
