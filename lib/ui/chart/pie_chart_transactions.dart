@@ -5,7 +5,10 @@ import 'package:money_writer_app/utils/result_state.dart';
 import 'package:provider/provider.dart';
 
 class PieChartTransactions extends StatefulWidget {
-  const PieChartTransactions({Key? key}) : super(key: key);
+  final TransactionsProvider provider;
+
+  const PieChartTransactions({required this.provider, Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => PieChartTransactionsState();

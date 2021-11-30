@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:money_writer_app/ui/chart/pie_chart_transactions.dart';
+import 'package:money_writer_app/provider/transactions_provider.dart';
+import 'package:money_writer_app/utils/result_state.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:provider/provider.dart';
 
 class ChartPage extends StatefulWidget {
   static const routeName = '/chart_page';
@@ -83,21 +85,50 @@ class _ChartPageState extends State<ChartPage> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  PieChartTransactions(),
-                  const Divider(),
-                  ListTile(
-                    leading: Text('(85%)'),
-                    title: Text('Pengeluaran'),
-                    trailing: Text('Rp. 850.000'),
-                  ),
-                  ListTile(
-                    leading: Text('(15%)'),
-                    title: Text('Pemasukan'),
-                    trailing: Text('Rp. 150.000'),
-                  ),
-                ],
+              child: Consumer<TransactionsProvider>(
+                builder: (context, provider, child) {
+                  if (provider.state == ResultState.Loading) {
+                  } else if (provider.state == ResultState.NoData) {
+                  } else if (provider.state == ResultState.HasData) {
+                    var totalPemasukanPerbulan = 0;
+                    var totalPengeluaranPerbulan = 0;
+                    if (provider.totalInMonth.length > 0) {
+                      for (var item in provider.totalInMonth) {
+                        if (item.type == 'pengeluaran') {
+                          totalPengeluaranPerbulan = item.total;
+                        } else {
+                          totalPemasukanPerbulan = item.total;
+                        }
+                      }
+                    }
+                    // persen
+                    var percentTotalPengeluaranPerbulan =
+                        totalPengeluaranPerbulan /
+                            (totalPengeluaranPerbulan +
+                                totalPemasukanPerbulan) *
+                            100;
+                    var percentTotalPemasukanPerbulan = totalPemasukanPerbulan /
+                        (totalPengeluaranPerbulan + totalPemasukanPerbulan) *
+                        100;
+                    return Column(
+                      children: [
+                        PieChartTransactions(provider: provider),
+                        const Divider(),
+                        ListTile(
+                          leading: Text('($percentTotalPengeluaranPerbulan%)'),
+                          title: Text('Pengeluaran'),
+                          trailing: Text('Rp. $totalPengeluaranPerbulan'),
+                        ),
+                        ListTile(
+                          leading: Text('($percentTotalPemasukanPerbulan%)'),
+                          title: Text('Pemasukan'),
+                          trailing: Text('Rp. $totalPemasukanPerbulan'),
+                        ),
+                      ],
+                    );
+                  } else if (provider.state == ResultState.Error) {
+                  } else {}
+                },
               ),
             ),
           ),
