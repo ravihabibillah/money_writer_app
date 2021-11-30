@@ -88,7 +88,11 @@ class _ChartPageState extends State<ChartPage> {
               child: Consumer<TransactionsProvider>(
                 builder: (context, provider, child) {
                   if (provider.state == ResultState.Loading) {
+                    return const Center(child: CircularProgressIndicator());
                   } else if (provider.state == ResultState.NoData) {
+                    return Expanded(
+                      child: Center(child: Text("Belum Ada Data")),
+                    );
                   } else if (provider.state == ResultState.HasData) {
                     var totalPemasukanPerbulan = 0;
                     var totalPengeluaranPerbulan = 0;
@@ -112,22 +116,37 @@ class _ChartPageState extends State<ChartPage> {
                         100;
                     return Column(
                       children: [
-                        PieChartTransactions(provider: provider),
+                        // PieChartTransactions(provider: provider),
                         const Divider(),
                         ListTile(
-                          leading: Text('($percentTotalPengeluaranPerbulan%)'),
+                          leading: Text(
+                              '(${percentTotalPengeluaranPerbulan.toInt()}%)'),
                           title: Text('Pengeluaran'),
-                          trailing: Text('Rp. $totalPengeluaranPerbulan'),
+                          trailing: Text(
+                            'Rp. $totalPengeluaranPerbulan',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
                         ListTile(
-                          leading: Text('($percentTotalPemasukanPerbulan%)'),
+                          leading: Text(
+                              '(${percentTotalPemasukanPerbulan.toInt()}%)'),
                           title: Text('Pemasukan'),
-                          trailing: Text('Rp. $totalPemasukanPerbulan'),
+                          trailing: Text(
+                            'Rp. $totalPemasukanPerbulan',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
                         ),
                       ],
                     );
                   } else if (provider.state == ResultState.Error) {
-                  } else {}
+                    return Center(child: Text(provider.message));
+                  } else {
+                    return const Center();
+                  }
                 },
               ),
             ),
