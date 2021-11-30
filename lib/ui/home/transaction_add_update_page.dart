@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
+import 'package:money_writer_app/ui/home/home_page.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
   // Text Controller
   TextEditingController _dateController = TextEditingController(
-    text: DateFormat('yyyy-MM-dd', "id_ID").format(DateTime.now()),
+    text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
   );
   // TextEditingController _categoryController = TextEditingController();
   MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
@@ -82,9 +83,9 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                           onPrimary: Colors.red,
                         ),
                         onPressed: () {
-                          provider.removeTransaction(widget.transaction!.id);
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          provider.removeTransaction(widget.transaction!.id,
+                              widget.transaction!.transaction_date);
+                          Navigator.of(context).pushNamed(HomePage.routeName);
                         },
                       );
 
@@ -129,7 +130,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                   children: [
                     // Mengubah kategori
                     _buildTabTypeTransaction(),
-                    const SizedBox(height: 16.0),
+                    SizedBox(height: 16.0),
 
                     // Tanggal
                     DateTimeField(
@@ -137,8 +138,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       initialValue: DateTime.tryParse(_dateController.text),
                       format: DateFormat("yyyy-MM-dd"),
                       decoration: InputDecoration(
-                        label: const Text('tanggal'),
-                        icon: const Icon(Icons.event),
+                        label: Text('tanggal'),
+                        icon: Icon(Icons.event),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -162,13 +163,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     // kategori
                     Consumer<CategoryProvider>(
                       builder: (context, provider, child) {
-                        if (provider.statePengeluaran == ResultState.Loading ||
-                            provider.statePemasukan == ResultState.Loading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (provider.statePengeluaran ==
-                                ResultState.HasData ||
+                        if (provider.statePengeluaran == ResultState.HasData ||
                             provider.statePemasukan == ResultState.HasData) {
                           // data category
                           var getCategory = typePengeluaran
