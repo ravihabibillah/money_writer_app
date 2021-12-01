@@ -213,11 +213,15 @@ class _ExportDialogState extends State<ExportDialog> {
     int index = 1;
 
     if (transactionsExport.isNotEmpty) {
-      final filename = 'Eksport Data $type $dateFrom-$dateTo.pdf';
+      final filename = 'Ekspor Data $type $dateFrom-$dateTo.pdf';
       final absolutePath = '/storage/emulated/0/Download/$filename';
 
       var totalPemasukan = 0;
       var totalPengeluaran = 0;
+
+      DateTime? parsedDateFrom = DateTime.tryParse(dateFrom);
+      DateTime? parsedDateTo = DateTime.tryParse(dateTo);
+
       for (var item in transactionsExport) {
         if (item.type == 'pengeluaran') {
           totalPengeluaran += item.amount;
@@ -225,6 +229,7 @@ class _ExportDialogState extends State<ExportDialog> {
           totalPemasukan += item.amount;
         }
       }
+
       try {
         final pdf = pw.Document();
         pdf.addPage(
@@ -262,7 +267,8 @@ class _ExportDialogState extends State<ExportDialog> {
                       pw.Column(
                         crossAxisAlignment: pw.CrossAxisAlignment.start,
                         children: [
-                          pw.Text(': $dateFrom - $dateTo'),
+                          pw.Text(
+                              ': ${DateFormat("d MMM yyyy", "id_ID").format(parsedDateFrom!)} - ${DateFormat("d MMM yyyy", "id_ID").format(parsedDateTo!)}'),
                           pw.Text(
                               ': Rp ${NumberFormat("#,##0", 'id_ID').format(totalPengeluaran)}'),
                           pw.Text(
@@ -306,14 +312,15 @@ class _ExportDialogState extends State<ExportDialog> {
                       for (var item in transactionsExport)
                         if (item.type == type.toLowerCase())
                           pw.TableRow(
-                            decoration: const pw.BoxDecoration(
-                              border: pw.Border.symmetric(
-                                horizontal: pw.BorderSide(width: 1),
-                              ),
-                            ),
+                            // decoration: const pw.BoxDecoration(
+                            //   border: pw.Border.symmetric(
+                            //     horizontal: pw.BorderSide(width: 1),
+                            //   ),
+                            // ),
                             children: [
                               pw.Text('${index++}'),
-                              pw.Text('${item.transaction_date}'),
+                              pw.Text(
+                                  '${DateFormat("d MMM yyyy", "id_ID").format(DateTime.tryParse(item.transaction_date)!)}'),
                               pw.Text('${item.description}'),
                               pw.Text(item.type == 'pengeluaran'
                                   ? 'Rp ${NumberFormat("#,##0", 'id_ID').format(item.amount)}'
@@ -336,13 +343,47 @@ class _ExportDialogState extends State<ExportDialog> {
 
         final file = File(absolutePath);
         await file.writeAsBytes(await pdf.save());
-        print('berhasil: $absolutePath');
+        // print('berhasil: $absolutePath');
+        _showAlertDialog(context, 'Berhasil Disimpan',
+            'Berhasil menyimpan File $filename dalam Folder Downloads');
+        // Alert Dialog Berhasil
+
       } catch (e) {
-        print('gagal menyimpan file: $e');
+        // Alert Dialog Error/Gagal
+        // print('gagal menyimpan file: $e');
+        _showAlertDialog(
+            context, 'Gagal Disimpan', 'Gagal menyimpan File $filename');
       }
     } else {
-      // alert dialog bahwa data tidak ada
-      Navigator.pop(context);
+      // // Alert Dialog Data Kosong
+      _showAlertDialog(context, 'Data Tidak Ditemukan',
+          'Proses Ekspor Gagal karena data tidak ada');
+      // Navigator.pop(context);
     }
+  }
+
+  void _showAlertDialog(
+      BuildContext context, String title, String description) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(description),
+          actions: [
+            OutlinedButton(
+              child: const Text("Oke"),
+              style: ElevatedButton.styleFrom(
+                onPrimary: Colors.red,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 }

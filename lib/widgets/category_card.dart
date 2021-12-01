@@ -42,7 +42,45 @@ class CardCategory extends StatelessWidget {
                 child: Icon(Icons.delete_forever),
               ),
               onTap: () {
-                provider.removeCategory(category.id);
+                showAlertDialog(BuildContext context) {
+                  // set up the button
+                  Widget okButton = OutlinedButton(
+                    child: const Text("Tetap Hapus"),
+                    style: ElevatedButton.styleFrom(
+                      onPrimary: Colors.red,
+                    ),
+                    onPressed: () {
+                      provider.removeCategory(category.id);
+                      Navigator.of(context).pop();
+                    },
+                  );
+
+                  Widget cancelButton = ElevatedButton(
+                    child: const Text("Batal"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+
+                  // show the dialog
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("PERINGATAN"),
+                        content: const Text(
+                            "Menghapus kategori ini juga akan menghapus semua transaksi dalam kategori ini ?"),
+                        actions: [
+                          cancelButton,
+                          okButton,
+                        ],
+                      );
+                    },
+                  );
+                }
+
+                return showAlertDialog(context);
               },
             ),
           ],
