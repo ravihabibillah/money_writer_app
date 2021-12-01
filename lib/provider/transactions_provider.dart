@@ -35,6 +35,12 @@ class TransactionsProvider extends ChangeNotifier {
   List<TotalTransactions> _totalInMonth = [];
   List<TotalTransactions> get totalInMonth => _totalInMonth;
 
+  List<Transactions> _transactionsExport = [];
+  List<Transactions> get transactionsExport => _transactionsExport;
+
+  // List<TotalTransactions> _totalInExport = [];
+  // List<TotalTransactions> get totalInExport => _totalInExport;
+
   // void _getAllTransactions() async {
   //   _transactions = await _dbHelper.getTransactionsJoinCategory();
   //   if (_transactions.isNotEmpty) {
@@ -99,6 +105,19 @@ class TransactionsProvider extends ChangeNotifier {
   Future<void> getTotalInMonth(int month, int year) async {
     _totalInMonth = await _dbHelper.getTotalInMonth(month, year);
     if (_totalInMonth.isNotEmpty) {
+      _state = ResultState.HasData;
+    } else {
+      _state = ResultState.NoData;
+      _message = 'Tidak Ada Data';
+    }
+    notifyListeners();
+  }
+
+  Future<void> getTransactionForExport(
+      String fromDate, String toDate, String type) async {
+    _transactionsExport =
+        await _dbHelper.getTransactionsForExport(fromDate, toDate, type);
+    if (_transactionsExport.isNotEmpty) {
       _state = ResultState.HasData;
     } else {
       _state = ResultState.NoData;

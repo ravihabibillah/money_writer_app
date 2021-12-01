@@ -307,7 +307,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       child: const Text('Simpan'),
                       onPressed: () {
                         if (_transactionFormKey.currentState!.validate()) {
-                          print('Button save : ' + dropdownValue!);
+                          // print('Button save : ' + dropdownValue!);
                           var idTransaction =
                               _isUpdate ? widget.transaction!.id : null;
                           var amountReplaceThousandSeparator =
@@ -325,7 +325,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               id_categories: int.parse(dropdownValue!),
                               type: typeTransaction);
 
-                          print(dataTranscation.toMap());
+                          // print(dataTranscation.toMap());
                           if (!_isUpdate) {
                             provider.addTransaction(dataTranscation);
                           } else {
