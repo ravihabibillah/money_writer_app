@@ -77,7 +77,7 @@ class ChartPage extends StatelessWidget {
                               Text('(${percentTotalPengeluaranPerbulan}%)'),
                           title: Text('Pengeluaran'),
                           trailing: Text(
-                            'Rp. $totalPengeluaranPerbulan',
+                            'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPengeluaranPerbulan)}',
                             style: TextStyle(
                               color: Colors.red,
                             ),
@@ -87,7 +87,7 @@ class ChartPage extends StatelessWidget {
                           leading: Text('(${percentTotalPemasukanPerbulan}%)'),
                           title: Text('Pemasukan'),
                           trailing: Text(
-                            'Rp. $totalPemasukanPerbulan',
+                            'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPemasukanPerbulan)}',
                             style: TextStyle(
                               color: Colors.blue,
                             ),
