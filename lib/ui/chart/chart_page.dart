@@ -20,21 +20,21 @@ class ChartPage extends StatelessWidget {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ChartMonthPicker(),
+          const ChartMonthPicker(),
           Expanded(
             child: Consumer<TransactionsProvider>(
               builder: (context, provider, child) {
                 if (provider.state == ResultState.Loading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (provider.state == ResultState.NoData) {
-                  return Center(child: Text("Belum Ada Data"));
+                  return const Center(child: Text("Belum Ada Data"));
                 } else if (provider.state == ResultState.HasData) {
                   var totalPemasukanPerbulan = 0;
                   var totalPengeluaranPerbulan = 0;
                   var percentTotalPengeluaranPerbulan = 0;
                   var percentTotalPemasukanPerbulan = 0;
 
-                  if (provider.totalInMonth.length > 0) {
+                  if (provider.totalInMonth.isNotEmpty) {
                     for (var item in provider.totalInMonth) {
                       if (item.type == 'pengeluaran') {
                         totalPengeluaranPerbulan = item.total;
@@ -42,7 +42,9 @@ class ChartPage extends StatelessWidget {
                         totalPemasukanPerbulan = item.total;
                       }
                     }
-                    // persen
+
+                    // Perhitungan Total Pengeluaran & Pemasukan Perbulan
+                    // menjadi Persen
                     percentTotalPengeluaranPerbulan =
                         (totalPengeluaranPerbulan /
                                 (totalPengeluaranPerbulan +
@@ -65,22 +67,21 @@ class ChartPage extends StatelessWidget {
                         ),
                         const Divider(),
                         ListTile(
-                          leading:
-                              Text('(${percentTotalPengeluaranPerbulan}%)'),
-                          title: Text('Pengeluaran'),
+                          leading: Text('($percentTotalPengeluaranPerbulan%)'),
+                          title: const Text('Pengeluaran'),
                           trailing: Text(
                             'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPengeluaranPerbulan)}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.red,
                             ),
                           ),
                         ),
                         ListTile(
-                          leading: Text('(${percentTotalPemasukanPerbulan}%)'),
-                          title: Text('Pemasukan'),
+                          leading: Text('($percentTotalPemasukanPerbulan%)'),
+                          title: const Text('Pemasukan'),
                           trailing: Text(
                             'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPemasukanPerbulan)}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.blue,
                             ),
                           ),
