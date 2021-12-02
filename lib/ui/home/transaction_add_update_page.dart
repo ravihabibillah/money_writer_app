@@ -30,7 +30,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   TextEditingController _dateController = TextEditingController(
     text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
   );
-  // TextEditingController _categoryController = TextEditingController();
   MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
       decimalSeparator: '', thousandSeparator: ',', precision: 0);
   TextEditingController _descriptionController = TextEditingController();
@@ -38,7 +37,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   @override
   void initState() {
     if (widget.transaction != null) {
-      // print("Data dari homePage : " + widget.transaction!.description); // mencoba mendapat data dari homepage
       var selectedTransaction = widget.transaction;
       typePengeluaran =
           selectedTransaction!.type == 'pengeluaran' ? true : false;
@@ -72,12 +70,12 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
             actions: [
               if (_isUpdate)
                 IconButton(
-                  icon: Icon(Icons.delete_forever),
+                  icon: const Icon(Icons.delete_forever),
                   onPressed: () {
                     showAlertDialog(BuildContext context) {
                       // set up the button
                       Widget okButton = OutlinedButton(
-                        child: Text("Tetap Hapus"),
+                        child: const Text("Tetap Hapus"),
                         style: ElevatedButton.styleFrom(
                           onPrimary: Colors.red,
                         ),
@@ -92,7 +90,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       );
 
                       Widget cancelButton = ElevatedButton(
-                        child: Text("Batal"),
+                        child: const Text("Batal"),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -100,8 +98,9 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
-                        title: Text("HAPUS"),
-                        content: Text("Anda yakin ingin menghapus data ini ?"),
+                        title: const Text("HAPUS"),
+                        content:
+                            const Text("Anda yakin ingin menghapus data ini ?"),
                         actions: [
                           cancelButton,
                           okButton,
@@ -171,16 +170,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                           var getCategory = typePengeluaran
                               ? provider.categoriesPengeluaran
                               : provider.categoriesPemasukan;
-                          // var categoryMapToList =
-                          //     getCategory.map((e) => e.name).toList();
-
-                          // var _firstDataWithCategoryMap =
-                          //     categoryMapToList.map((String value) {
-                          //   return DropdownMenuItem(
-                          //     value: value,
-                          //     child: Text(value),
-                          //   );
-                          // });
 
                           var categoryMap =
                               getCategory.map((e) => {e.id: e.name});
@@ -196,18 +185,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                                   .replaceAll(RegExp(r'[^0-9\a-z\A-Z\ ]'), '')),
                             );
                           });
-
-                          // print(categoryMapToList.toList());
-                          //
-                          // print(categoryMapToList.toList().map((entry) {
-                          //   return entry.keys;
-                          // }).toList());
-                          //
-                          // print(categoryMapToList.toList().map((entry) {
-                          //   return entry.keys
-                          //       .toString()
-                          //       .replaceAll(RegExp(r'[^0-9\.]'), '');
-                          // }).toList());
 
                           String? defaultValueDropdown() {
                             if (widget.transaction?.id_categories.toString() !=
@@ -230,9 +207,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
 
                           return DropdownButtonFormField(
                             items: categoryMapToDropdownMenuItem.toList(),
-                            // value: _isUpdate
-                            //     ? widget.transaction?.id_categories.toString()
-                            //     : categoryMapToDropdownMenuItem.first.value,
                             value: defaultValueDropdown(),
                             onChanged: (newValue) {
                               setState(() {
@@ -307,7 +281,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       child: const Text('Simpan'),
                       onPressed: () {
                         if (_transactionFormKey.currentState!.validate()) {
-                          // print('Button save : ' + dropdownValue!);
                           var idTransaction =
                               _isUpdate ? widget.transaction!.id : null;
                           var amountReplaceThousandSeparator =
@@ -315,9 +288,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                                   .replaceAll(RegExp(r'[^0-9\.]'), '');
                           int? amountToInt =
                               int.tryParse(amountReplaceThousandSeparator);
-                          // int? idCategoriesToInt = int.parse(dropdownValue!);
 
-                          Transactions dataTranscation = Transactions(
+                          Transactions dataTransaction = Transactions(
                               id: idTransaction,
                               description: _descriptionController.text,
                               amount: amountToInt!,
@@ -325,27 +297,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               id_categories: int.parse(dropdownValue!),
                               type: typeTransaction);
 
-                          // print(dataTranscation.toMap());
                           if (!_isUpdate) {
-                            provider.addTransaction(dataTranscation);
+                            provider.addTransaction(dataTransaction);
                           } else {
-                            provider.updateTransaction(dataTranscation);
+                            provider.updateTransaction(dataTransaction);
                           }
 
                           Navigator.pop(context);
-
-                          // String to DateTime
-                          // DateTime? parsedDateTime =
-                          //     DateTime.tryParse(_dateController.text);
-                          // print(parsedDateTime);
-                          print(_dateController.text);
-                          print(int.parse(dropdownValue!));
-                          print(int.parse(dropdownValue!).runtimeType);
-
-                          // assert(myInt is double);
-                          print(amountToInt);
-                          print(amountToInt.runtimeType);
-                          print(_descriptionController.text);
                         }
                       },
                     ),
