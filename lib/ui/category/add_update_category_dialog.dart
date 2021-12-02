@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/model/category.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
+import 'package:money_writer_app/utils/jenis_kategori.dart';
 import 'package:provider/provider.dart';
-
-enum JenisKategori { pemasukan, pengeluaran }
 
 Future<void> showInformationDialog(
     BuildContext context, Category category) async {
@@ -36,9 +35,10 @@ class _CustomDialogState extends State<CustomDialog> {
 
   @override
   Widget build(BuildContext context) {
+    checkCategory();
+
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
-        checkCategory();
         return AlertDialog(
           title: const Text('Tambah Kategori'),
           content: Form(
@@ -79,12 +79,24 @@ class _CustomDialogState extends State<CustomDialog> {
                   child: Row(
                     children: [
                       Radio<JenisKategori>(
+                        value: JenisKategori.pengeluaran,
+                        groupValue: _jenis,
+                        onChanged: (JenisKategori? value) {
+                          setState(() {
+                            _jenis = value;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Pengeluaran',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Radio<JenisKategori>(
                         value: JenisKategori.pemasukan,
                         groupValue: _jenis,
                         onChanged: (JenisKategori? value) {
                           setState(() {
                             _jenis = value;
-                            widget.category.type = 'pemasukan';
                           });
                         },
                       ),
@@ -92,20 +104,6 @@ class _CustomDialogState extends State<CustomDialog> {
                         'Pemasukan',
                         style: TextStyle(fontSize: 14),
                       ),
-                      Radio<JenisKategori>(
-                        value: JenisKategori.pengeluaran,
-                        groupValue: _jenis,
-                        onChanged: (JenisKategori? value) {
-                          setState(() {
-                            _jenis = value;
-                            widget.category.type = 'pengeluaran';
-                          });
-                        },
-                      ),
-                      const Text(
-                        'Pengeluaran',
-                        style: TextStyle(fontSize: 14),
-                      )
                     ],
                   ),
                 ),
@@ -125,6 +123,11 @@ class _CustomDialogState extends State<CustomDialog> {
                   if (isUpdate) {
                     provider.updateCategory(widget.category);
                   } else {
+                    if (_jenis == JenisKategori.pengeluaran) {
+                      widget.category.type = 'pengeluaran';
+                    } else {
+                      widget.category.type = 'pemasukan';
+                    }
                     provider.addCategory(widget.category);
                   }
                   Navigator.of(context).pop();
@@ -148,9 +151,6 @@ class _CustomDialogState extends State<CustomDialog> {
         _jenis = JenisKategori.pemasukan;
       }
       isUpdate = true;
-    } else {
-      // set nilai type awalan ketika data baru dibuat
-      widget.category.type = 'pengeluaran';
     }
   }
 }

@@ -172,14 +172,15 @@ class DatabaseHelper {
   // }
 
   // Fungsi get all transaction join category
-  Future<List<Transactions>> getTransactionsJoinCategory() async {
-    final Database? db = await database;
-    List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id");
+  // Future<List<Transactions>> getTransactionsJoinCategory() async {
+  //   final Database? db = await database;
+  //   List<Map<String, dynamic>> results = await db!.rawQuery(
+  //       "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id");
 
-    return results.map((res) => Transactions.fromMap(res)).toList();
-  }
+  //   return results.map((res) => Transactions.fromMap(res)).toList();
+  // }
 
+  // Fungsi get All Transaction per Month
   Future<List<Transactions>> getTransactionsJoinCategorybyMonthAndYear(
       int month, int year) async {
     var addZeroCharacter;
@@ -195,6 +196,7 @@ class DatabaseHelper {
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
 
+  // Fungsi get All Transaction per Date
   Future<List<Transactions>> getTransactionsJoinCategorybyDateMonthAndYear(
     int month,
     int year,
@@ -212,6 +214,7 @@ class DatabaseHelper {
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
 
+  // Fungsi get Total Transaction in Month
   Future<List<TotalTransactions>> getTotalInMonth(int month, int year) async {
     var addZeroCharacter;
     if (month < 10) {
@@ -225,6 +228,15 @@ class DatabaseHelper {
     // print(results);
 
     return results.map((res) => TotalTransactions.fromMap(res)).toList();
+  }
+
+  Future<List<Transactions>> getTransactionsForExport(
+      String fromDate, String toDate, String type) async {
+    final Database? db = await database;
+    List<Map<String, dynamic>> results = await db!.rawQuery(
+        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id WHERE (t.transaction_date BETWEEN '$fromDate' AND '$toDate') ORDER BY t.transaction_date DESC");
+    print(results);
+    return results.map((res) => Transactions.fromMap(res)).toList();
   }
 
   // Future<List<TotalTransactionPerDay>> getTotalPengeluaranAndPemasukanbyDay(

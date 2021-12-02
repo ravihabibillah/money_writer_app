@@ -3,6 +3,7 @@ import 'package:money_writer_app/data/model/category.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
 import 'package:money_writer_app/ui/category/add_update_category_dialog.dart';
 import 'package:money_writer_app/utils/result_state.dart';
+import 'package:money_writer_app/widgets/category_card.dart';
 import 'package:provider/provider.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool typePengeluaran = true;
 
   @override
   void initState() {
@@ -51,34 +53,40 @@ class _CategoryPageState extends State<CategoryPage>
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: TabBar(
-                controller: _tabController,
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.red,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  child: Text('Pengeluaran'),
+                  style: ElevatedButton.styleFrom(
+                    primary: typePengeluaran ? Colors.red : Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      typePengeluaran = true;
+                    });
+                  },
                 ),
-                tabs: const [
-                  Tab(child: Text('Pemasukan')),
-                  Tab(child: Text('Pengeluaran')),
-                ],
-              ),
+                SizedBox(width: 8.0),
+                ElevatedButton(
+                  child: Text('Pemasukan'),
+                  style: ElevatedButton.styleFrom(
+                    primary: !typePengeluaran ? Colors.blue : Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      typePengeluaran = false;
+                    });
+                  },
+                ),
+              ],
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildListPemasukan(),
-                    _buildListPengeluaran(),
-                  ],
-                ),
+                child: typePengeluaran
+                    ? _buildListPengeluaran()
+                    : _buildListPemasukan(),
               ),
             ),
           ],
@@ -136,55 +144,6 @@ class _CategoryPageState extends State<CategoryPage>
           );
         }
       },
-    );
-  }
-}
-
-class CardCategory extends StatelessWidget {
-  final Category category;
-  final CategoryProvider provider;
-
-  const CardCategory({
-    Key? key,
-    required this.category,
-    required this.provider,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 12.0),
-                child:
-                    Text(category.name, style: const TextStyle(fontSize: 15)),
-              ),
-            ),
-            GestureDetector(
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6.0),
-                child: Icon(Icons.edit),
-              ),
-              onTap: () {
-                showInformationDialog(context, category);
-              },
-            ),
-            GestureDetector(
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6.0),
-                child: Icon(Icons.delete_forever),
-              ),
-              onTap: () {
-                provider.removeCategory(category.id);
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
