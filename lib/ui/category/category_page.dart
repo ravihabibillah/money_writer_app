@@ -57,7 +57,7 @@ class _CategoryPageState extends State<CategoryPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  child: Text('Pengeluaran'),
+                  child: const Text('Pengeluaran'),
                   style: ElevatedButton.styleFrom(
                     primary: typePengeluaran ? Colors.red : Colors.grey,
                   ),
@@ -67,9 +67,9 @@ class _CategoryPageState extends State<CategoryPage>
                     });
                   },
                 ),
-                SizedBox(width: 8.0),
+                const SizedBox(width: 8.0),
                 ElevatedButton(
-                  child: Text('Pemasukan'),
+                  child: const Text('Pemasukan'),
                   style: ElevatedButton.styleFrom(
                     primary: !typePengeluaran ? Colors.blue : Colors.grey,
                   ),
