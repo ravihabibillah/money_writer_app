@@ -77,7 +77,7 @@ class ChartPage extends StatelessWidget {
                               Text('(${percentTotalPengeluaranPerbulan}%)'),
                           title: Text('Pengeluaran'),
                           trailing: Text(
-                            'Rp. $totalPengeluaranPerbulan',
+                            'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPengeluaranPerbulan)}',
                             style: TextStyle(
                               color: Colors.red,
                             ),
@@ -87,7 +87,7 @@ class ChartPage extends StatelessWidget {
                           leading: Text('(${percentTotalPemasukanPerbulan}%)'),
                           title: Text('Pemasukan'),
                           trailing: Text(
-                            'Rp. $totalPemasukanPerbulan',
+                            'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPemasukanPerbulan)}',
                             style: TextStyle(
                               color: Colors.blue,
                             ),
@@ -124,6 +124,8 @@ class _MonthPickerChartState extends State<MonthPickerChart> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
+    Provider.of<TransactionsProvider>(context, listen: false)
+        .getTotalInMonth(selectedDate!.month, selectedDate!.year);
   }
 
   @override
@@ -188,9 +190,6 @@ class _MonthPickerChartState extends State<MonthPickerChart> {
   }
 
   void getData(TransactionsProvider provider) {
-    // provider.setAllTransactionsbyDay(selectedDate!.month, selectedDate!.year);
-    // provider.setAllTransactionsbyMonth(selectedDate!.month, selectedDate!.year);
-
     provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
   }
 }
