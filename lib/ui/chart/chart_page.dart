@@ -30,42 +30,42 @@ class ChartPage extends StatelessWidget {
         children: [
           MonthPickerChart(),
           Expanded(
-            child: SingleChildScrollView(
-              child: Consumer<TransactionsProvider>(
-                builder: (context, provider, child) {
-                  if (provider.state == ResultState.Loading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (provider.state == ResultState.NoData) {
-                    return Center(child: Text("Belum Ada Data"));
-                  } else if (provider.state == ResultState.HasData) {
-                    var totalPemasukanPerbulan = 0;
-                    var totalPengeluaranPerbulan = 0;
-                    var percentTotalPengeluaranPerbulan = 0;
-                    var percentTotalPemasukanPerbulan = 0;
+            child: Consumer<TransactionsProvider>(
+              builder: (context, provider, child) {
+                if (provider.state == ResultState.Loading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (provider.state == ResultState.NoData) {
+                  return Center(child: Text("Belum Ada Data"));
+                } else if (provider.state == ResultState.HasData) {
+                  var totalPemasukanPerbulan = 0;
+                  var totalPengeluaranPerbulan = 0;
+                  var percentTotalPengeluaranPerbulan = 0;
+                  var percentTotalPemasukanPerbulan = 0;
 
-                    if (provider.totalInMonth.length > 0) {
-                      for (var item in provider.totalInMonth) {
-                        if (item.type == 'pengeluaran') {
-                          totalPengeluaranPerbulan = item.total;
-                        } else {
-                          totalPemasukanPerbulan = item.total;
-                        }
+                  if (provider.totalInMonth.length > 0) {
+                    for (var item in provider.totalInMonth) {
+                      if (item.type == 'pengeluaran') {
+                        totalPengeluaranPerbulan = item.total;
+                      } else {
+                        totalPemasukanPerbulan = item.total;
                       }
-                      // persen
-                      percentTotalPengeluaranPerbulan =
-                          (totalPengeluaranPerbulan /
-                                  (totalPengeluaranPerbulan +
-                                      totalPemasukanPerbulan) *
-                                  100)
-                              .toInt();
-                      percentTotalPemasukanPerbulan = (totalPemasukanPerbulan /
-                              (totalPengeluaranPerbulan +
-                                  totalPemasukanPerbulan) *
-                              100)
-                          .toInt();
                     }
+                    // persen
+                    percentTotalPengeluaranPerbulan =
+                        (totalPengeluaranPerbulan /
+                                (totalPengeluaranPerbulan +
+                                    totalPemasukanPerbulan) *
+                                100)
+                            .toInt();
+                    percentTotalPemasukanPerbulan = (totalPemasukanPerbulan /
+                            (totalPengeluaranPerbulan +
+                                totalPemasukanPerbulan) *
+                            100)
+                        .toInt();
+                  }
 
-                    return Column(
+                  return SingleChildScrollView(
+                    child: Column(
                       children: [
                         PieChartTransactions(
                           percentPemasukan: percentTotalPemasukanPerbulan,
@@ -94,14 +94,14 @@ class ChartPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                    );
-                  } else if (provider.state == ResultState.Error) {
-                    return Center(child: Text(provider.message));
-                  } else {
-                    return const Center();
-                  }
-                },
-              ),
+                    ),
+                  );
+                } else if (provider.state == ResultState.Error) {
+                  return Center(child: Text(provider.message));
+                } else {
+                  return const Center();
+                }
+              },
             ),
           ),
         ],
