@@ -84,9 +84,7 @@ class _CategoryPageState extends State<CategoryPage>
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: typePengeluaran
-                    ? _buildListPengeluaran()
-                    : _buildListPemasukan(),
+                child: _buildListCategory(typePengeluaran),
               ),
             ),
           ],
@@ -95,53 +93,49 @@ class _CategoryPageState extends State<CategoryPage>
     );
   }
 
-  Widget _buildListPemasukan() {
+  Widget _buildListCategory(bool isPengeluaran) {
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
-        if (provider.statePemasukan == ResultState.Loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (provider.statePemasukan == ResultState.HasData) {
-          return ListView.builder(
-            itemCount: provider.categoriesPemasukan.length,
-            itemBuilder: (context, index) {
-              return CardCategory(
-                category: provider.categoriesPemasukan[index],
-                provider: provider,
-              );
-            },
-          );
+        if (isPengeluaran) {
+          if (provider.statePengeluaran == ResultState.Loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (provider.statePengeluaran == ResultState.HasData) {
+            return ListView.builder(
+              itemCount: provider.categoriesPengeluaran.length,
+              itemBuilder: (context, index) {
+                return CardCategory(
+                  category: provider.categoriesPengeluaran[index],
+                  provider: provider,
+                );
+              },
+            );
+          } else {
+            return Center(
+              child: Text(provider.message),
+            );
+          }
         } else {
-          return Center(
-            child: Text(provider.message),
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildListPengeluaran() {
-    return Consumer<CategoryProvider>(
-      builder: (context, provider, child) {
-        if (provider.statePengeluaran == ResultState.Loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (provider.statePengeluaran == ResultState.HasData) {
-          return ListView.builder(
-            itemCount: provider.categoriesPengeluaran.length,
-            itemBuilder: (context, index) {
-              return CardCategory(
-                category: provider.categoriesPengeluaran[index],
-                provider: provider,
-              );
-            },
-          );
-        } else {
-          return Center(
-            child: Text(provider.message),
-          );
+          if (provider.statePemasukan == ResultState.Loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (provider.statePemasukan == ResultState.HasData) {
+            return ListView.builder(
+              itemCount: provider.categoriesPemasukan.length,
+              itemBuilder: (context, index) {
+                return CardCategory(
+                  category: provider.categoriesPemasukan[index],
+                  provider: provider,
+                );
+              },
+            );
+          } else {
+            return Center(
+              child: Text(provider.message),
+            );
+          }
         }
       },
     );
