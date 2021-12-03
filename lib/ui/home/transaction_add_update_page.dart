@@ -151,6 +151,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                                 return null;
                               }
                             } else {
+                              dropdownValue =
+                                  categoryMapToDropdownMenuItem.first.value;
                               return categoryMapToDropdownMenuItem.first.value;
                             }
                           }
@@ -159,9 +161,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                             items: categoryMapToDropdownMenuItem.toList(),
                             value: defaultValueDropdown(),
                             onChanged: (newValue) {
-                              setState(() {
-                                dropdownValue = newValue as String?;
-                              });
+                              dropdownValue = newValue as String?;
                               print('onChanged : ' + dropdownValue!);
                             },
                             decoration: InputDecoration(
