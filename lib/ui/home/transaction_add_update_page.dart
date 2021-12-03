@@ -72,7 +72,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                 IconButton(
                   icon: const Icon(Icons.delete_forever),
                   onPressed: () {
-                    return transactionAddUpdateDialog(provider, context);
+                    return _transactionAddUpdateDialog(provider, context);
                   },
                 ),
             ],
@@ -298,7 +298,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
     );
   }
 
-  void transactionAddUpdateDialog(
+  void _transactionAddUpdateDialog(
       TransactionsProvider provider, BuildContext context) {
     showAlertDialog(BuildContext context) {
       // set up the button
