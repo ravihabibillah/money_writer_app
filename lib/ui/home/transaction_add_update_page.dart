@@ -154,8 +154,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                                     .first.value;
                               }
                             } else {
-                              dropdownValue =
-                                  categoryMapToDropdownMenuItem.first.value;
                               return categoryMapToDropdownMenuItem.first.value;
                             }
                           }
