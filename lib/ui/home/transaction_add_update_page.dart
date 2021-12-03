@@ -72,52 +72,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                 IconButton(
                   icon: const Icon(Icons.delete_forever),
                   onPressed: () {
-                    showAlertDialog(BuildContext context) {
-                      // set up the button
-                      Widget okButton = OutlinedButton(
-                        child: const Text("Tetap Hapus"),
-                        style: ElevatedButton.styleFrom(
-                          onPrimary: Colors.red,
-                        ),
-                        onPressed: () {
-                          provider.removeTransaction(
-                            widget.transaction!.id,
-                            widget.transaction!.transaction_date,
-                          );
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        },
-                      );
-
-                      Widget cancelButton = ElevatedButton(
-                        child: const Text("Batal"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      );
-
-                      // set up the AlertDialog
-                      AlertDialog alert = AlertDialog(
-                        title: const Text("HAPUS"),
-                        content:
-                            const Text("Anda yakin ingin menghapus data ini ?"),
-                        actions: [
-                          cancelButton,
-                          okButton,
-                        ],
-                      );
-
-                      // show the dialog
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return alert;
-                        },
-                      );
-                    }
-
-                    return showAlertDialog(context);
+                    return transactionAddUpdateDialog(provider, context);
                   },
                 ),
             ],
@@ -346,5 +301,54 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
         ),
       ],
     );
+  }
+
+  void transactionAddUpdateDialog(
+      TransactionsProvider provider, BuildContext context) {
+    showAlertDialog(BuildContext context) {
+      // set up the button
+      Widget okButton = OutlinedButton(
+        child: const Text("Tetap Hapus"),
+        style: ElevatedButton.styleFrom(
+          onPrimary: Colors.red,
+        ),
+        onPressed: () {
+          provider.removeTransaction(
+            widget.transaction!.id,
+            widget.transaction!.transaction_date,
+          );
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        },
+      );
+
+      Widget cancelButton = ElevatedButton(
+        child: const Text("Batal"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: const Text("HAPUS"),
+        content: const Text("Anda yakin ingin menghapus data ini ?"),
+        actions: [
+          cancelButton,
+          okButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
+    return showAlertDialog(context);
   }
 }
