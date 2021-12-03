@@ -4,16 +4,16 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class buildBottomAppbar extends StatefulWidget {
-  const buildBottomAppbar({
+class BuildBottomAppbar extends StatefulWidget {
+  const BuildBottomAppbar({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<buildBottomAppbar> createState() => _buildBottomAppbarState();
+  State<BuildBottomAppbar> createState() => _BuildBottomAppbarState();
 }
 
-class _buildBottomAppbarState extends State<buildBottomAppbar> {
+class _BuildBottomAppbarState extends State<BuildBottomAppbar> {
   DateTime? selectedDate;
 
   @override

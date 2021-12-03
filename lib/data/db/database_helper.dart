@@ -62,7 +62,6 @@ class DatabaseHelper {
       },
       version: 1,
     );
-    // print('$path/money_writer.db');
     return db;
   }
 
@@ -152,38 +151,18 @@ class DatabaseHelper {
     );
   }
 
-  /**
-   * Fungsi CRUD table transactions
-   */
+  /// Fungsi CRUD table transactions
 
   // fungsi Insert Kategori
   Future<void> insertTransaction(Transactions transaction) async {
     final db = await database;
     await db!.insert(_tblTransaction, transaction.toMap());
-    print('Data saved');
   }
-
-  // Fungsi get all transactions
-  // Future<List<Transactions>> getTransactions() async {
-  //   final Database? db = await database;
-  //   List<Map<String, dynamic>> results = await db!.query(_tblTransaction);
-
-  //   return results.map((res) => Transactions.fromMap(res)).toList();
-  // }
-
-  // Fungsi get all transaction join category
-  // Future<List<Transactions>> getTransactionsJoinCategory() async {
-  //   final Database? db = await database;
-  //   List<Map<String, dynamic>> results = await db!.rawQuery(
-  //       "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id");
-
-  //   return results.map((res) => Transactions.fromMap(res)).toList();
-  // }
 
   // Fungsi get All Transaction per Month
   Future<List<Transactions>> getTransactionsJoinCategorybyMonthAndYear(
       int month, int year) async {
-    var addZeroCharacter;
+    String addZeroCharacter;
     if (month < 10) {
       addZeroCharacter = '0';
     } else {
@@ -192,7 +171,7 @@ class DatabaseHelper {
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
         "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCharacter$month%' GROUP BY t.transaction_date ORDER BY t.transaction_date DESC");
-    // print(results);
+
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
 
@@ -201,7 +180,7 @@ class DatabaseHelper {
     int month,
     int year,
   ) async {
-    var addZeroCharacter;
+    String addZeroCharacter;
     if (month < 10) {
       addZeroCharacter = '0';
     } else {
@@ -216,7 +195,7 @@ class DatabaseHelper {
 
   // Fungsi get Total Transaction in Month
   Future<List<TotalTransactions>> getTotalInMonth(int month, int year) async {
-    var addZeroCharacter;
+    String addZeroCharacter;
     if (month < 10) {
       addZeroCharacter = '0';
     } else {
@@ -231,40 +210,13 @@ class DatabaseHelper {
   }
 
   Future<List<Transactions>> getTransactionsForExport(
-      String fromDate, String toDate, String type) async {
+      String fromDate, String toDate) async {
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
         "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id WHERE (t.transaction_date BETWEEN '$fromDate' AND '$toDate') ORDER BY t.transaction_date DESC");
-    print(results);
+
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
-
-  // Future<List<TotalTransactionPerDay>> getTotalPengeluaranAndPemasukanbyDay(
-  //     String date) async {
-  //   final db = await database;
-
-  //   List<Map<String, dynamic>> results = await db!.rawQuery(
-  //       "SELECT SUM(amount) FROM $_tblTransaction where transaction_date = $date GROUP BY type");
-
-  //   return results.map((res) => TotalTransactionPerDay.fromMap(res)).toList();
-  // }
-
-  // Fungsi get transactions by id
-  // Future<Map> getTransactionById(int id) async {
-  //   final db = await database;
-
-  //   List<Map<String, dynamic>> results = await db!.query(
-  //     _tblTransaction,
-  //     where: 'id = ?',
-  //     whereArgs: [id],
-  //   );
-
-  //   if (results.isNotEmpty) {
-  //     return results.first;
-  //   } else {
-  //     return {};
-  //   }
-  // }
 
   // Fungsi Update transactions
   Future<void> updateTransaction(Transactions transaction) async {

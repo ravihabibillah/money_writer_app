@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -15,7 +14,7 @@ Future<void> showExportDialog(BuildContext context) async {
   await showDialog(
       context: context,
       builder: (context) {
-        return ExportDialog();
+        return const ExportDialog();
       });
 }
 
@@ -27,17 +26,17 @@ class ExportDialog extends StatefulWidget {
 }
 
 class _ExportDialogState extends State<ExportDialog> {
-  TextEditingController _dateControllerDari = TextEditingController(
+  final TextEditingController _dateControllerDari = TextEditingController(
       // text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
       );
-  TextEditingController _dateControllerSampai = TextEditingController(
+  final TextEditingController _dateControllerSampai = TextEditingController(
       // text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
       );
 
   final _formKey = GlobalKey<FormState>();
   late String title;
-  String dropdownvalue = 'Pengeluaran';
-  var dropdownItem = ['Pengeluaran', 'Pemasukan'];
+  String dropdownvalue = 'Semua Jenis';
+  var dropdownItem = ['Semua Jenis', 'Pengeluaran', 'Pemasukan'];
 
   @override
   void dispose() {
@@ -93,7 +92,6 @@ class _ExportDialogState extends State<ExportDialog> {
                             lastDate: DateTime(2100));
                       },
                       controller: _dateControllerDari,
-                      // initialValue: DateTime.tryParse(_dateController.text),
                       format: DateFormat("yyyy-MM-dd"),
                       decoration: InputDecoration(
                         hintText: "Dari",
@@ -119,7 +117,6 @@ class _ExportDialogState extends State<ExportDialog> {
                             lastDate: DateTime(2100));
                       },
                       controller: _dateControllerSampai,
-                      // initialValue: DateTime.tryParse(_dateController.text),
                       format: DateFormat("yyyy-MM-dd"),
                       decoration: InputDecoration(
                         hintText: "Sampai",
@@ -148,7 +145,6 @@ class _ExportDialogState extends State<ExportDialog> {
                         setState(() {
                           dropdownvalue = newValue as String;
                         });
-                        // print('onChanged : ' + dropdownvalue);
                       },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -179,16 +175,16 @@ class _ExportDialogState extends State<ExportDialog> {
                     final String type;
                     if (dropdownvalue == 'Pengeluaran') {
                       type = 'pengeluaran';
-                    } else {
+                    } else if (dropdownvalue == 'Pemasukan') {
                       type = 'pemasukan';
+                    } else {
+                      type = 'semua';
                     }
 
-                    provider.getTransactionForExport(_dateControllerDari.text,
-                        _dateControllerSampai.text, type);
-                    // print(provider.transactionsExport);
+                    provider.getTransactionForExport(
+                        _dateControllerDari.text, _dateControllerSampai.text);
 
-                    // pdf
-
+                    // Konversi ke PDF
                     saveToPDF(
                         _dateControllerDari.text,
                         _dateControllerSampai.text,
@@ -208,8 +204,6 @@ class _ExportDialogState extends State<ExportDialog> {
 
   Future<void> saveToPDF(String dateFrom, String dateTo, String type,
       String title, List<Transactions> transactionsExport) async {
-    // final directory = await getApplicationDocumentsDirectory();
-    // final prefix = directory.path;
     int index = 1;
 
     if (transactionsExport.isNotEmpty) {
@@ -310,17 +304,13 @@ class _ExportDialogState extends State<ExportDialog> {
                         ],
                       ),
                       for (var item in transactionsExport)
-                        if (item.type == type.toLowerCase())
+                        if (item.type == type.toLowerCase() ||
+                            type.toLowerCase() == 'semua')
                           pw.TableRow(
-                            // decoration: const pw.BoxDecoration(
-                            //   border: pw.Border.symmetric(
-                            //     horizontal: pw.BorderSide(width: 1),
-                            //   ),
-                            // ),
                             children: [
                               pw.Text('${index++}'),
                               pw.Text(DateFormat("d MMM yyyy", "id_ID").format(
-                                  DateTime.tryParse(item.transaction_date)!)),
+                                  DateTime.tryParse(item.transactionDate)!)),
                               pw.Text(item.description),
                               pw.Text(item.type == 'pengeluaran'
                                   ? 'Rp ${NumberFormat("#,##0", 'id_ID').format(item.amount)}'
@@ -328,13 +318,11 @@ class _ExportDialogState extends State<ExportDialog> {
                               pw.Text(item.type == 'pemasukan'
                                   ? 'Rp ${NumberFormat("#,##0", 'id_ID').format(item.amount)}'
                                   : 'Rp 0'),
-                              pw.Text(item.name_categories),
+                              pw.Text(item.nameCategories),
                             ],
                           ),
                     ],
-                  )
-
-                  // pw.Divider(borderStyle: pw.BorderStyle.solid, thickness: 1),
+                  ),
                 ],
               );
             },
@@ -343,14 +331,12 @@ class _ExportDialogState extends State<ExportDialog> {
 
         final file = File(absolutePath);
         await file.writeAsBytes(await pdf.save());
-        // print('berhasil: $absolutePath');
+
+        // Alert Dialog Berhasil
         _showAlertDialog(context, 'Berhasil Disimpan',
             'Berhasil menyimpan File $filename dalam Folder Downloads');
-        // Alert Dialog Berhasil
-
       } catch (e) {
         // Alert Dialog Error/Gagal
-        // print('gagal menyimpan file: $e');
         _showAlertDialog(
             context, 'Gagal Disimpan', 'Gagal menyimpan File $filename');
       }
@@ -358,7 +344,6 @@ class _ExportDialogState extends State<ExportDialog> {
       // // Alert Dialog Data Kosong
       _showAlertDialog(context, 'Data Tidak Ditemukan',
           'Proses Ekspor Gagal karena data tidak ada');
-      // Navigator.pop(context);
     }
   }
 

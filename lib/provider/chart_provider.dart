@@ -13,7 +13,7 @@ class ChartProvider extends ChangeNotifier {
     getTotalInMonthForChart(date.month, date.year);
   }
 
-  late ResultState _state = ResultState.Loading;
+  late ResultState _state = ResultState.loading;
   ResultState get state => _state;
 
   String _message = '';
@@ -24,11 +24,11 @@ class ChartProvider extends ChangeNotifier {
 
   Future<void> getTotalInMonthForChart(int month, int year) async {
     _totalInMonth = await _dbHelper.getTotalInMonth(month, year);
-    print(_totalInMonth);
+
     if (_totalInMonth.isNotEmpty) {
-      _state = ResultState.HasData;
+      _state = ResultState.hasData;
     } else {
-      _state = ResultState.NoData;
+      _state = ResultState.noData;
       _message = 'Tidak Ada Data';
     }
     notifyListeners();

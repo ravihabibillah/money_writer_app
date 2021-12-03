@@ -97,11 +97,11 @@ class _CategoryPageState extends State<CategoryPage>
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
         if (isPengeluaran) {
-          if (provider.statePengeluaran == ResultState.Loading) {
+          if (provider.statePengeluaran == ResultState.loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (provider.statePengeluaran == ResultState.HasData) {
+          } else if (provider.statePengeluaran == ResultState.hasData) {
             return ListView.builder(
               itemCount: provider.categoriesPengeluaran.length,
               itemBuilder: (context, index) {
@@ -117,11 +117,11 @@ class _CategoryPageState extends State<CategoryPage>
             );
           }
         } else {
-          if (provider.statePemasukan == ResultState.Loading) {
+          if (provider.statePemasukan == ResultState.loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (provider.statePemasukan == ResultState.HasData) {
+          } else if (provider.statePemasukan == ResultState.hasData) {
             return ListView.builder(
               itemCount: provider.categoriesPemasukan.length,
               itemBuilder: (context, index) {

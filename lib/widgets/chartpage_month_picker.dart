@@ -19,7 +19,6 @@ class _ChartMonthPickerState extends State<ChartMonthPicker> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
-    print(selectedDate);
     Provider.of<ChartProvider>(context, listen: false)
         .getTotalInMonthForChart(selectedDate!.month, selectedDate!.year);
   }
@@ -48,7 +47,6 @@ class _ChartMonthPickerState extends State<ChartMonthPicker> {
               TextButton(
                 child: Text(
                   DateFormat("MMMM yyyy", "id_ID").format(selectedDate!),
-                  // 'Month: ${selectedDate?.month} - ${selectedDate?.year}',
                 ),
                 onPressed: () {
                   showMonthPicker(

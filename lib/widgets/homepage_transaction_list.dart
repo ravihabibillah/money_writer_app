@@ -18,11 +18,11 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
   Widget build(BuildContext context) {
     return Consumer<TransactionsProvider>(
       builder: (context, provider, child) {
-        if (provider.state == ResultState.Loading) {
+        if (provider.state == ResultState.loading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (provider.state == ResultState.NoData) {
+        } else if (provider.state == ResultState.noData) {
           return const TotalDefault();
-        } else if (provider.state == ResultState.HasData) {
+        } else if (provider.state == ResultState.hasData) {
           var itemCardData = provider.transactionsMonth;
           var totalPemasukanPerbulan = 0;
           var totalPengeluaranPerbulan = 0;
@@ -105,8 +105,8 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                           var totalPemasukan = 0;
                           var totalPengeluaran = 0;
                           for (var item in provider.transactionsDay) {
-                            if (item.transaction_date ==
-                                itemCardData[index].transaction_date) {
+                            if (item.transactionDate ==
+                                itemCardData[index].transactionDate) {
                               listItemTransaction.add(item);
 
                               if (item.type == 'pengeluaran') {
@@ -117,7 +117,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                             }
                           }
                           DateTime? parsedDate = DateTime.tryParse(
-                              itemCardData[index].transaction_date);
+                              itemCardData[index].transactionDate);
 
                           // parseDate(itemCardData[index].transaction_date);
 
@@ -178,7 +178,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(listItemTransaction[index]
-                                                .name_categories
+                                                .nameCategories
                                                 .toString()),
                                           ],
                                         ),
@@ -237,7 +237,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
               )
             ],
           );
-        } else if (provider.state == ResultState.Error) {
+        } else if (provider.state == ResultState.error) {
           return Center(child: Text(provider.message));
         } else {
           return const Center();

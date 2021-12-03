@@ -13,8 +13,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Consumer<TransactionsProvider>(
-    //   builder: (context, provider, child) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Money Writer'),
@@ -40,7 +38,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: const TransactionListPerDay(),
-      bottomNavigationBar: const buildBottomAppbar(),
+      bottomNavigationBar: const BuildBottomAppbar(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
@@ -49,7 +47,5 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
-    //   },
-    // );
   }
 }

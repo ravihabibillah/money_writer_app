@@ -11,13 +11,13 @@ class CategoryProvider extends ChangeNotifier {
     _getCategoriesByPengeluaran();
   }
 
-  late ResultState _state = ResultState.Loading;
+  late ResultState _state = ResultState.loading;
   ResultState get state => _state;
 
-  late ResultState _statePemasukan = ResultState.Loading;
+  late ResultState _statePemasukan = ResultState.loading;
   ResultState get statePemasukan => _statePemasukan;
 
-  late ResultState _statePengeluaran = ResultState.Loading;
+  late ResultState _statePengeluaran = ResultState.loading;
   ResultState get statePengeluaran => _statePengeluaran;
 
   String _message = '';
@@ -29,25 +29,13 @@ class CategoryProvider extends ChangeNotifier {
   List<Category> _categoriesPengeluaran = [];
   List<Category> get categoriesPengeluaran => _categoriesPengeluaran;
 
-  // void _getCategories() async {
-  //   _categories = await databaseHelper.getCategories();
-
-  //   if (_categories.isNotEmpty) {
-  //     _state = ResultState.HasData;
-  //   } else {
-  //     _state = ResultState.NoData;
-  //     _message = 'Tidak Ada Data';
-  //   }
-  //   notifyListeners();
-  // }
-
   void _getCategoriesByPemasukan() async {
     _categoriesPemasukan = await databaseHelper.getCategoryByPemasukan();
 
     if (_categoriesPemasukan.isNotEmpty) {
-      _statePemasukan = ResultState.HasData;
+      _statePemasukan = ResultState.hasData;
     } else {
-      _statePemasukan = ResultState.NoData;
+      _statePemasukan = ResultState.noData;
       _message = 'Tidak Ada Data';
     }
     notifyListeners();
@@ -57,9 +45,9 @@ class CategoryProvider extends ChangeNotifier {
     _categoriesPengeluaran = await databaseHelper.getCategoryByPengeluaran();
 
     if (_categoriesPengeluaran.isNotEmpty) {
-      _statePengeluaran = ResultState.HasData;
+      _statePengeluaran = ResultState.hasData;
     } else {
-      _statePengeluaran = ResultState.NoData;
+      _statePengeluaran = ResultState.noData;
       _message = 'Tidak Ada Data';
     }
     notifyListeners();
@@ -71,7 +59,7 @@ class CategoryProvider extends ChangeNotifier {
       _getCategoriesByPemasukan();
       _getCategoriesByPengeluaran();
     } catch (e) {
-      _state = ResultState.Error;
+      _state = ResultState.error;
       _message = 'Gagal Menambahkan Kategori';
       notifyListeners();
     }
@@ -81,9 +69,9 @@ class CategoryProvider extends ChangeNotifier {
     final categories = await databaseHelper.getCategoryById(id);
 
     if (categories.isNotEmpty) {
-      _state = ResultState.HasData;
+      _state = ResultState.hasData;
     } else {
-      _state = ResultState.NoData;
+      _state = ResultState.noData;
       _message = 'Tidak Ada Data';
     }
     notifyListeners();
@@ -95,7 +83,7 @@ class CategoryProvider extends ChangeNotifier {
       _getCategoriesByPemasukan();
       _getCategoriesByPengeluaran();
     } catch (e) {
-      _state = ResultState.Error;
+      _state = ResultState.error;
       _message = 'Gagal Menghapus Kategori';
       notifyListeners();
     }
@@ -107,7 +95,7 @@ class CategoryProvider extends ChangeNotifier {
       _getCategoriesByPemasukan();
       _getCategoriesByPengeluaran();
     } catch (e) {
-      _state = ResultState.Error;
+      _state = ResultState.error;
       _message = 'Gagal Mengubah Kategori';
       notifyListeners();
     }

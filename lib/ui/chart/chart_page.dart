@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_writer_app/provider/chart_provider.dart';
-import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:money_writer_app/widgets/chartpage_month_picker.dart';
 import 'package:money_writer_app/widgets/chartpage_piechart_transactions.dart';
@@ -25,11 +24,11 @@ class ChartPage extends StatelessWidget {
           Expanded(
             child: Consumer<ChartProvider>(
               builder: (context, provider, child) {
-                if (provider.state == ResultState.Loading) {
+                if (provider.state == ResultState.loading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (provider.state == ResultState.NoData) {
+                } else if (provider.state == ResultState.noData) {
                   return const Center(child: Text("Belum Ada Data"));
-                } else if (provider.state == ResultState.HasData) {
+                } else if (provider.state == ResultState.hasData) {
                   var totalPemasukanPerbulan = 0;
                   var totalPengeluaranPerbulan = 0;
                   var percentTotalPengeluaranPerbulan = 0;
@@ -90,7 +89,7 @@ class ChartPage extends StatelessWidget {
                       ],
                     ),
                   );
-                } else if (provider.state == ResultState.Error) {
+                } else if (provider.state == ResultState.error) {
                   return Center(child: Text(provider.message));
                 } else {
                   return const Center();

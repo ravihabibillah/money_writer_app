@@ -27,12 +27,13 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   String? dropdownValue;
 
   // Text Controller
-  TextEditingController _dateController = TextEditingController(
+  final TextEditingController _dateController = TextEditingController(
     text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
   );
-  MoneyMaskedTextController _amountTextController = MoneyMaskedTextController(
-      decimalSeparator: '', thousandSeparator: ',', precision: 0);
-  TextEditingController _descriptionController = TextEditingController();
+  final MoneyMaskedTextController _amountTextController =
+      MoneyMaskedTextController(
+          decimalSeparator: '', thousandSeparator: ',', precision: 0);
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -40,8 +41,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
       var selectedTransaction = widget.transaction;
       typePengeluaran =
           selectedTransaction!.type == 'pengeluaran' ? true : false;
-      _dateController.text = selectedTransaction.transaction_date;
-      dropdownValue = selectedTransaction.id_categories.toString();
+      _dateController.text = selectedTransaction.transactionDate;
+      dropdownValue = selectedTransaction.idCategories.toString();
       _amountTextController.text = selectedTransaction.amount.toString();
       _descriptionController.text = selectedTransaction.description;
       _isUpdate = true;
@@ -119,8 +120,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                     // kategori
                     Consumer<CategoryProvider>(
                       builder: (context, provider, child) {
-                        if (provider.statePengeluaran == ResultState.HasData ||
-                            provider.statePemasukan == ResultState.HasData) {
+                        if (provider.statePengeluaran == ResultState.hasData ||
+                            provider.statePemasukan == ResultState.hasData) {
                           // data category
                           var getCategory = typePengeluaran
                               ? provider.categoriesPengeluaran
@@ -142,10 +143,10 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                           });
 
                           String? defaultValueDropdown() {
-                            if (widget.transaction?.id_categories.toString() !=
+                            if (widget.transaction?.idCategories.toString() !=
                                 null) {
                               if (widget.transaction?.type == typeTransaction) {
-                                return widget.transaction?.id_categories
+                                return widget.transaction?.idCategories
                                     .toString();
                               } else {
                                 return null;
@@ -162,7 +163,6 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                             value: defaultValueDropdown(),
                             onChanged: (newValue) {
                               dropdownValue = newValue as String?;
-                              print('onChanged : ' + dropdownValue!);
                             },
                             decoration: InputDecoration(
                               label: const Text('Kategori'),
@@ -243,8 +243,8 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               id: idTransaction,
                               description: _descriptionController.text,
                               amount: amountToInt!,
-                              transaction_date: _dateController.text,
-                              id_categories: int.parse(dropdownValue!),
+                              transactionDate: _dateController.text,
+                              idCategories: int.parse(dropdownValue!),
                               type: typeTransaction);
 
                           if (!_isUpdate) {
@@ -310,7 +310,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
         onPressed: () {
           provider.removeTransaction(
             widget.transaction!.id,
-            widget.transaction!.transaction_date,
+            widget.transaction!.transactionDate,
           );
           Navigator.of(context).pop();
           Navigator.of(context).pop();

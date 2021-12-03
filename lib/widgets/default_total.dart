@@ -23,9 +23,9 @@ class TotalDefault extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const SizedBox(height: 8.0),
-                    Text(
+                    const Text(
                       'Rp. 0',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.blue,
                       ),
                     ),
@@ -38,9 +38,9 @@ class TotalDefault extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const SizedBox(height: 8.0),
-                    Text(
+                    const Text(
                       'Rp. 0',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.red,
                       ),
                     ),
@@ -53,7 +53,7 @@ class TotalDefault extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const SizedBox(height: 8.0),
-                    Text('Rp.0'),
+                    const Text('Rp.0'),
                   ],
                 ),
               ],
@@ -61,7 +61,7 @@ class TotalDefault extends StatelessWidget {
           ),
         ),
         const Divider(),
-        Expanded(child: Center(child: Text("Belum Ada Data")))
+        const Expanded(child: Center(child: Text("Belum Ada Data")))
       ],
     );
   }

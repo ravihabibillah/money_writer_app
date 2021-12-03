@@ -2,17 +2,17 @@ class Transactions {
   late int? id;
   late String description;
   late int amount;
-  late String transaction_date;
-  late int? id_categories;
+  late String transactionDate;
+  late int? idCategories;
   late String type;
-  late String name_categories;
+  late String nameCategories;
 
   Transactions({
     required this.id,
     required this.description,
     required this.amount,
-    required this.transaction_date,
-    required this.id_categories,
+    required this.transactionDate,
+    required this.idCategories,
     required this.type,
   });
 
@@ -21,10 +21,10 @@ class Transactions {
     id = map['id'];
     description = map['description'];
     amount = map['amount'];
-    transaction_date = map['transaction_date'];
-    id_categories = map['id_categories'];
+    transactionDate = map['transaction_date'];
+    idCategories = map['id_categories'];
     type = map['type'];
-    name_categories = map['name'];
+    nameCategories = map['name'];
   }
 
   // konversi data ke map
@@ -32,8 +32,8 @@ class Transactions {
         "id": id,
         "description": description,
         "amount": amount,
-        "transaction_date": transaction_date,
-        "id_categories": id_categories,
+        "transaction_date": transactionDate,
+        "id_categories": idCategories,
         "type": type,
       };
 }
