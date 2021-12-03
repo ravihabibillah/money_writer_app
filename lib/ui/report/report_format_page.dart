@@ -319,16 +319,16 @@ class _ExportDialogState extends State<ExportDialog> {
                             // ),
                             children: [
                               pw.Text('${index++}'),
-                              pw.Text(
-                                  '${DateFormat("d MMM yyyy", "id_ID").format(DateTime.tryParse(item.transaction_date)!)}'),
-                              pw.Text('${item.description}'),
+                              pw.Text(DateFormat("d MMM yyyy", "id_ID").format(
+                                  DateTime.tryParse(item.transaction_date)!)),
+                              pw.Text(item.description),
                               pw.Text(item.type == 'pengeluaran'
                                   ? 'Rp ${NumberFormat("#,##0", 'id_ID').format(item.amount)}'
                                   : 'Rp 0'),
                               pw.Text(item.type == 'pemasukan'
                                   ? 'Rp ${NumberFormat("#,##0", 'id_ID').format(item.amount)}'
                                   : 'Rp 0'),
-                              pw.Text('${item.name_categories}'),
+                              pw.Text(item.name_categories),
                             ],
                           ),
                     ],

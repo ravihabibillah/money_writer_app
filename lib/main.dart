@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/db/database_helper.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
+import 'package:money_writer_app/provider/chart_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
 import 'package:provider/provider.dart';
@@ -31,21 +32,24 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<TransactionsProvider>(
           create: (_) => TransactionsProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ChartProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Money Writer',
         theme: buildTheme(context),
         initialRoute: HomePage.routeName,
         routes: {
-          HomePage.routeName: (context) => HomePage(),
+          HomePage.routeName: (context) => const HomePage(),
           CategoryPage.routeName: (context) => const CategoryPage(),
-          ChartPage.routeName: (context) => ChartPage(),
+          ChartPage.routeName: (context) => const ChartPage(),
           TransactionAddUpdatePage.routeName: (context) {
             if (ModalRoute.of(context)!.settings.arguments != null) {
               return TransactionAddUpdatePage(
                   ModalRoute.of(context)!.settings.arguments as Transactions);
             } else {
-              return TransactionAddUpdatePage();
+              return const TransactionAddUpdatePage();
             }
           }
         },

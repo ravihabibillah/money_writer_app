@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_writer_app/provider/chart_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/utils/result_state.dart';
 import 'package:money_writer_app/widgets/chartpage_month_picker.dart';
@@ -22,7 +23,7 @@ class ChartPage extends StatelessWidget {
         children: [
           const ChartMonthPicker(),
           Expanded(
-            child: Consumer<TransactionsProvider>(
+            child: Consumer<ChartProvider>(
               builder: (context, provider, child) {
                 if (provider.state == ResultState.Loading) {
                   return const Center(child: CircularProgressIndicator());

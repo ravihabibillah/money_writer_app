@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_writer_app/provider/transactions_provider.dart';
+import 'package:money_writer_app/provider/chart_provider.dart';
+// import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -18,13 +19,14 @@ class _ChartMonthPickerState extends State<ChartMonthPicker> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
-    Provider.of<TransactionsProvider>(context, listen: false)
-        .getTotalInMonth(selectedDate!.month, selectedDate!.year);
+    print(selectedDate);
+    Provider.of<ChartProvider>(context, listen: false)
+        .getTotalInMonthForChart(selectedDate!.month, selectedDate!.year);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TransactionsProvider>(builder: (context, provider, child) {
+    return Consumer<ChartProvider>(builder: (context, provider, child) {
       return Material(
         child: Container(
           padding: const EdgeInsets.all(8.0),
@@ -83,7 +85,7 @@ class _ChartMonthPickerState extends State<ChartMonthPicker> {
     });
   }
 
-  void getData(TransactionsProvider provider) {
-    provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);
+  void getData(ChartProvider provider) {
+    provider.getTotalInMonthForChart(selectedDate!.month, selectedDate!.year);
   }
 }
