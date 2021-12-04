@@ -32,7 +32,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
   );
   final MoneyMaskedTextController _amountTextController =
       MoneyMaskedTextController(
-          decimalSeparator: '', thousandSeparator: ',', precision: 0);
+          decimalSeparator: '', thousandSeparator: '.', precision: 0);
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
@@ -235,7 +235,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                               _isUpdate ? widget.transaction!.id : null;
                           var amountReplaceThousandSeparator =
                               _amountTextController.text
-                                  .replaceAll(RegExp(r'[^0-9\.]'), '');
+                                  .replaceAll(RegExp(r'[^0-9]'), '');
                           int? amountToInt =
                               int.tryParse(amountReplaceThousandSeparator);
 
