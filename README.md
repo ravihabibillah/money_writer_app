@@ -1,9 +1,12 @@
-# money_writer_app
+# Money Writer App
 
-A Capstone Flutter project.
+Money Writer adalah Aplikasi untuk mencatat keuangan dimana pengguna dapat terbantu dalam pengelolaan keuangan dan financial planning, sehingga pengguna dapat memperkiraan pengeluaran yang dipakai dan pemasukan yang didapat.
+
+# Project
+This project is for Capstone in Independent Studies program from Dicoding X Kampus Merdeka
 
 # Mockup Design
-(Figma)[https://www.figma.com/file/5MMbCYhFEPEqBJvYMUn35Z/Money-Writer?node-id=4%3A5]
+[Figma](https://www.figma.com/file/5MMbCYhFEPEqBJvYMUn35Z/Money-Writer?node-id=4%3A5)
 
 
 # Reference
