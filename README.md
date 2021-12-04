@@ -1,16 +1,19 @@
-# money_writer_app
+# Money Writer App
 
-A Capstone Flutter project.
+Money Writer adalah Aplikasi untuk mencatat keuangan dimana pengguna dapat terbantu dalam pengelolaan keuangan dan financial planning, sehingga pengguna dapat memperkiraan pengeluaran yang dipakai dan pemasukan yang didapat.
 
-## Getting Started
+## Project
+This project is for Capstone in Independent Studies program from Dicoding X Kampus Merdeka
 
-This project is a starting point for a Flutter application.
+## Mockup Design
+[Money Writer Mockup](https://www.figma.com/file/5MMbCYhFEPEqBJvYMUn35Z/Money-Writer?node-id=4%3A5)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Reference
+[Nested ListView](https://stackoverflow.com/questions/45270900/how-to-implement-nested-listview-in-flutter)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[bottom appbar](https://stackoverflow.com/questions/60214248/flutter-how-to-automatically-update-appbar-bottom-height-depending-on-child-hei)
+
+[Indonesia DateTime](https://galangaji.medium.com/tutorial-format-tanggal-ke-dalam-bahasa-indonesia-di-flutter-2bbf42d158b7)
+
+[Dynamic Table for PDF](https://stackoverflow.com/questions/65037185/create-dynamic-table-rows-in-pdf-document-using-the-pdf-package)

@@ -1,0 +1,1 @@
+enum JenisKategori { pemasukan, pengeluaran }
