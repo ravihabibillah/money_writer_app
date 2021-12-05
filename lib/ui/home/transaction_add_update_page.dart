@@ -110,7 +110,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       },
                       validator: (value) {
                         if (value == null) {
-                          return 'Please enter some text';
+                          return 'Tanggal tidak boleh kosong';
                         }
                         return null;
                       },
@@ -173,7 +173,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                             ),
                             validator: (value) {
                               if (value == null) {
-                                return 'Please enter some text';
+                                return 'Kategori tidak boleh kosong';
                               }
                               return null;
                             },
@@ -201,7 +201,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Masukkan jumlah Transaksi';
                         }
                         return null;
                       },
@@ -220,7 +220,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Keterangan Tidak boleh kosong';
                         }
                         return null;
                       },
