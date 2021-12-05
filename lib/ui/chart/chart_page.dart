@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_writer_app/provider/chart_provider.dart';
@@ -67,7 +68,13 @@ class ChartPage extends StatelessWidget {
                         ),
                         const Divider(),
                         ListTile(
-                          leading: Text('($percentTotalPengeluaranPerbulan%)'),
+                          leading: Text(
+                            '($percentTotalPengeluaranPerbulan%)',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           title: const Text('Pengeluaran'),
                           trailing: Text(
                             'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPengeluaranPerbulan)}',
@@ -77,7 +84,13 @@ class ChartPage extends StatelessWidget {
                           ),
                         ),
                         ListTile(
-                          leading: Text('($percentTotalPemasukanPerbulan%)'),
+                          leading: Text(
+                            '($percentTotalPemasukanPerbulan%)',
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           title: const Text('Pemasukan'),
                           trailing: Text(
                             'Rp. ${NumberFormat("#,##0", 'id_ID').format(totalPemasukanPerbulan)}',
