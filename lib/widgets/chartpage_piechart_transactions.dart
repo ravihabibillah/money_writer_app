@@ -63,7 +63,7 @@ class _PieChartTransactionsState extends State<PieChartTransactions> {
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: const Color(0xffff0000),
+            color: Colors.red,
             value: widget.percentPengeluaran.toDouble(),
             title: '${widget.percentPengeluaran}%',
             radius: radius,
@@ -74,7 +74,7 @@ class _PieChartTransactionsState extends State<PieChartTransactions> {
           );
         case 1:
           return PieChartSectionData(
-            color: const Color(0xff0293ee),
+            color: Colors.blue,
             value: widget.percentPemasukan.toDouble(),
             title: '${widget.percentPemasukan}%',
             radius: radius,
