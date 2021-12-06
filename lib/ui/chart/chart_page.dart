@@ -28,7 +28,20 @@ class ChartPage extends StatelessWidget {
                 if (provider.state == ResultState.loading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (provider.state == ResultState.noData) {
-                  return const Center(child: Text("Belum Ada Data"));
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.pie_chart,
+                            size: 46, color: Colors.grey[400]),
+                        const SizedBox(height: 10),
+                        Text(
+                          "Belum Ada Data",
+                          style: TextStyle(color: Colors.grey[500]),
+                        ),
+                      ],
+                    ),
+                  );
                 } else if (provider.state == ResultState.hasData) {
                   var totalPemasukanPerbulan = 0;
                   var totalPengeluaranPerbulan = 0;
