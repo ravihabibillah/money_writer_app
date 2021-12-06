@@ -79,6 +79,11 @@ class _ExportDialogState extends State<ExportDialog> {
                       },
                     ),
                     const SizedBox(height: 24),
+                    const Text(
+                      'Tentukan Tanggal :',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 12),
                     DateTimeField(
                       onShowPicker: (context, currentValue) {
                         return showDatePicker(
@@ -129,6 +134,11 @@ class _ExportDialogState extends State<ExportDialog> {
                       },
                     ),
                     const SizedBox(height: 24),
+                    const Text(
+                      'Tentukan Jenis :',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 12),
                     DropdownButtonFormField(
                       value: dropdownvalue,
                       items: dropdownItem.map((String items) {

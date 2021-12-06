@@ -60,7 +60,7 @@ class TotalDefault extends StatelessWidget {
             ),
           ),
         ),
-        const Divider(),
+        const Divider(thickness: 2),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

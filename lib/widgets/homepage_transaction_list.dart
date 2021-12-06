@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_writer_app/common/styles.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
 import 'package:money_writer_app/utils/result_state.dart';
@@ -35,7 +36,6 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
               }
             }
           }
-          // print("TOTAL: ${provider.totalInMonth}");
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -90,7 +90,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                   ),
                 ),
               ),
-              const Divider(),
+              const Divider(thickness: 2),
               Expanded(
                 child:
                     // LIST VIEW BUILDER MANUAL
@@ -99,8 +99,6 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                         shrinkWrap: true,
                         itemCount: itemCardData.length,
                         itemBuilder: (BuildContext context, int index) {
-                          // contoh check data pengeluaran atau pemasukan
-
                           var listItemTransaction = [];
                           var totalPemasukan = 0;
                           var totalPengeluaran = 0;
@@ -119,16 +117,17 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                           DateTime? parsedDate = DateTime.tryParse(
                               itemCardData[index].transactionDate);
 
-                          // parseDate(itemCardData[index].transaction_date);
-
                           return Card(
+                            elevation: 1,
+                            shadowColor: Pallete.tealToDark.shade200,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(12.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20.0),
                                     child: Text(
                                       DateFormat("EEEE, d MMM yyyy", "id_ID")
                                           .format(parsedDate!),
@@ -162,34 +161,33 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                       ],
                                     ),
                                   ),
-                                  const Divider(),
+                                  const Divider(thickness: 1),
                                   ListView.builder(
                                     itemCount: listItemTransaction.length,
                                     physics: const ClampingScrollPhysics(),
                                     shrinkWrap: true,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      // contoh check data pengeluaran atau pemasukan
-                                      // isPengeluaran = !isPengeluaran;
-
                                       return ListTile(
-                                        leading: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(listItemTransaction[index]
-                                                .nameCategories
-                                                .toString()),
-                                          ],
+                                        leading: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              5,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(listItemTransaction[index]
+                                                  .nameCategories
+                                                  .toString()),
+                                            ],
+                                          ),
                                         ),
                                         title: Text(listItemTransaction[index]
                                             .description),
-
-                                        /**
-                               * properti subtitle hanya percobaan
-                               * untuk menampilkan data type dan transaction_date
-                               */
-
                                         trailing: Text(
                                           'Rp. ${NumberFormat("#,##0", 'id_ID').format(listItemTransaction[index].amount)}',
                                           style: TextStyle(
@@ -202,28 +200,11 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                           ),
                                         ),
                                         onTap: () {
-                                          // final selectedTransaction =
-                                          //     await provider.getTransactionById(
-                                          //         provider.transactions[index].id!);
-
                                           Navigator.pushNamed(
                                             context,
                                             TransactionAddUpdatePage.routeName,
                                             arguments:
                                                 listItemTransaction[index],
-                                            // arguments: Transactions(
-                                            //   id: null,
-                                            //   description: provider
-                                            //       .transactions[index].description,
-                                            //   amount:
-                                            //       provider.transactions[index].amount,
-                                            //   transaction_date: provider
-                                            //       .transactions[index]
-                                            //       .transaction_date,
-                                            //   id_categories: provider
-                                            //       .transactions[index].id_categories,
-                                            //   type: provider.transactions[index].type,
-                                            // ),
                                           );
                                         },
                                       );
@@ -245,10 +226,4 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
       },
     );
   }
-
-  // void parseDate(String transaction_date) {
-  //   DateTime? parsedDate = DateTime.tryParse(transaction_date);
-  //   var month
-  //   if()
-  // }
 }

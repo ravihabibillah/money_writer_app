@@ -26,7 +26,6 @@ class _BuildBottomAppbarState extends State<BuildBottomAppbar> {
   Widget build(BuildContext context) {
     return Consumer<TransactionsProvider>(
       builder: (context, provider, child) {
-        // getData(provider);
         return BottomAppBar(
           shape: const CircularNotchedRectangle(),
           child: Row(
@@ -84,7 +83,6 @@ class _BuildBottomAppbarState extends State<BuildBottomAppbar> {
   }
 
   void getData(TransactionsProvider provider) {
-    // provider.setAllTransactionsbyDay(selectedDate!.month, selectedDate!.year);
     provider.setAllTransactionsbyMonth(selectedDate!.month, selectedDate!.year);
 
     provider.getTotalInMonth(selectedDate!.month, selectedDate!.year);

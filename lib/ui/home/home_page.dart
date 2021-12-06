@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_writer_app/common/styles.dart';
 import 'package:money_writer_app/ui/category/category_page.dart';
 import 'package:money_writer_app/ui/chart/chart_page.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
