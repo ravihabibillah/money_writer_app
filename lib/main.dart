@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         title: 'Money Writer',
         theme: buildTheme(context),
         initialRoute: HomePage.routeName,
+        debugShowCheckedModeBanner: false,
         routes: {
           HomePage.routeName: (context) => const HomePage(),
           CategoryPage.routeName: (context) => const CategoryPage(),

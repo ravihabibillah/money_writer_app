@@ -60,8 +60,20 @@ class TotalDefault extends StatelessWidget {
             ),
           ),
         ),
-        const Divider(),
-        const Expanded(child: Center(child: Text("Belum Ada Data")))
+        const Divider(thickness: 2),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.description, size: 46, color: Colors.grey[400]),
+              const SizedBox(height: 10),
+              Text(
+                "Belum Ada Data",
+                style: TextStyle(color: Colors.grey[500]),
+              ),
+            ],
+          ),
+        )
       ],
     );
   }

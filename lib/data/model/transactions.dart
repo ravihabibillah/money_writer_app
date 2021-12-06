@@ -42,6 +42,7 @@ class TotalTransactions {
   late int total;
   late String type;
 
+  // mengambil data
   TotalTransactions.fromMap(Map<String, dynamic> map) {
     type = map['type'];
     total = map['total'];
