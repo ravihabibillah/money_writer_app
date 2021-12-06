@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:provider/provider.dart';
 
 Future<void> showExportDialog(BuildContext context) async {
   await showDialog(
@@ -26,12 +26,8 @@ class ExportDialog extends StatefulWidget {
 }
 
 class _ExportDialogState extends State<ExportDialog> {
-  final TextEditingController _dateControllerDari = TextEditingController(
-      // text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      );
-  final TextEditingController _dateControllerSampai = TextEditingController(
-      // text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      );
+  final TextEditingController _dateControllerDari = TextEditingController();
+  final TextEditingController _dateControllerSampai = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   late String title;
