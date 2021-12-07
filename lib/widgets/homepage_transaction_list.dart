@@ -169,7 +169,7 @@ class _TransactionListPerDayState extends State<TransactionListPerDay> {
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return ListTile(
-                                        leading: Container(
+                                        leading: SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width /

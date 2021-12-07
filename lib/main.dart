@@ -5,6 +5,7 @@ import 'package:money_writer_app/provider/category_provider.dart';
 import 'package:money_writer_app/provider/chart_provider.dart';
 import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/home/transaction_add_update_page.dart';
+import 'package:money_writer_app/widgets/splashscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'common/styles.dart';
@@ -39,9 +40,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Money Writer',
         theme: buildTheme(context),
-        initialRoute: HomePage.routeName,
+        initialRoute: SplashScreen.routeName,
         debugShowCheckedModeBanner: false,
         routes: {
+          SplashScreen.routeName: (context) => const SplashScreen(),
           HomePage.routeName: (context) => const HomePage(),
           CategoryPage.routeName: (context) => const CategoryPage(),
           ChartPage.routeName: (context) => const ChartPage(),
