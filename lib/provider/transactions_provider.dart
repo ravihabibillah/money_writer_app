@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/db/database_helper.dart';
 import 'package:money_writer_app/data/model/transactions.dart';
 import 'package:money_writer_app/utils/result_state.dart';
+import 'package:money_writer_app/utils/save_pdf.dart';
 
 class TransactionsProvider extends ChangeNotifier {
   late DatabaseHelper _dbHelper;
@@ -88,16 +89,18 @@ class TransactionsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getTransactionForExport(String fromDate, String toDate) async {
+  Future<void> getTransactionForExport(
+    BuildContext context,
+    String fromDate,
+    String toDate,
+    String type,
+    String title,
+  ) async {
     _transactionsExport =
         await _dbHelper.getTransactionsForExport(fromDate, toDate);
+    // Konversi ke PDF
+    saveToPDF(context, fromDate, toDate, type, title, _transactionsExport);
 
-    if (_transactionsExport.isNotEmpty) {
-      _state = ResultState.hasData;
-    } else {
-      _state = ResultState.noData;
-      _message = 'Tidak Ada Data';
-    }
     notifyListeners();
   }
 
