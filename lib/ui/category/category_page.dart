@@ -18,12 +18,16 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool typePengeluaran = true;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        _tabController.index;
+      });
+    });
   }
 
   @override
@@ -53,38 +57,37 @@ class _CategoryPageState extends State<CategoryPage>
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  child: const Text('Pengeluaran'),
-                  style: ElevatedButton.styleFrom(
-                    primary: typePengeluaran ? Colors.red : Colors.grey,
+            Container(
+              margin: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10), // Creates border
+                    color:
+                        _tabController.index == 0 ? Colors.red : Colors.blue),
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white,
+                tabs: [
+                  Tab(
+                    text: "Pengeluaran",
                   ),
-                  onPressed: () {
-                    setState(() {
-                      typePengeluaran = true;
-                    });
-                  },
-                ),
-                const SizedBox(width: 8.0),
-                ElevatedButton(
-                  child: const Text('Pemasukan'),
-                  style: ElevatedButton.styleFrom(
-                    primary: !typePengeluaran ? Colors.blue : Colors.grey,
+                  Tab(
+                    text: "Pemasukan",
                   ),
-                  onPressed: () {
-                    setState(() {
-                      typePengeluaran = false;
-                    });
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: _buildListCategory(typePengeluaran),
+              child: TabBarView(
+                controller: _tabController,
+                children: <Widget>[
+                  _buildListCategory(true), // list pengeluaran
+                  _buildListCategory(false), // list pemasukan
+                ],
               ),
             ),
           ],
