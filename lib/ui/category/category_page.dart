@@ -83,6 +83,7 @@ class _CategoryPageState extends State<CategoryPage>
             ),
             Expanded(
               child: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: <Widget>[
                   _buildListCategory(true), // list pengeluaran
