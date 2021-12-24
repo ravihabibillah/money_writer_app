@@ -34,13 +34,32 @@ class _CustomDialogState extends State<CustomDialog> {
   bool isUpdate = false;
 
   @override
-  Widget build(BuildContext context) {
-    checkCategory();
+  void initState() {
+    super.initState();
+    // jika id null, maka posisi data baru,
+    // jika tidak null berarti data update
+    if (widget.category.id != null) {
+      if (widget.category.type == 'pengeluaran') {
+        setState(() {
+          _jenis = JenisKategori.pengeluaran;
+        });
+      } else {
+        setState(() {
+          _jenis = JenisKategori.pemasukan;
+        });
+      }
+      isUpdate = true;
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
         return AlertDialog(
-          title: const Text('Tambah Kategori'),
+          title: isUpdate
+              ? const Text('Ubah Kategori')
+              : const Text('Tambah Kategori'),
           content: Form(
             key: _formKey,
             child: Column(
@@ -85,6 +104,9 @@ class _CustomDialogState extends State<CustomDialog> {
                           setState(() {
                             _jenis = value;
                           });
+                          // if (widget.category != null) {
+                          //   widget.category.type = 'pengeluaran';
+                          // }
                         },
                       ),
                       const Text(
@@ -98,6 +120,9 @@ class _CustomDialogState extends State<CustomDialog> {
                           setState(() {
                             _jenis = value;
                           });
+                          // if (widget.category != null) {
+                          //   widget.category.type = 'pemasukan';
+                          // }
                         },
                       ),
                       const Text(
@@ -120,16 +145,19 @@ class _CustomDialogState extends State<CustomDialog> {
             TextButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  // tipe kategori
+                  if (_jenis == JenisKategori.pengeluaran) {
+                    widget.category.type = 'pengeluaran';
+                  } else {
+                    widget.category.type = 'pemasukan';
+                  }
+
                   if (isUpdate) {
                     provider.updateCategory(widget.category);
                   } else {
-                    if (_jenis == JenisKategori.pengeluaran) {
-                      widget.category.type = 'pengeluaran';
-                    } else {
-                      widget.category.type = 'pemasukan';
-                    }
                     provider.addCategory(widget.category);
                   }
+
                   Navigator.of(context).pop();
                 }
               },
@@ -139,18 +167,5 @@ class _CustomDialogState extends State<CustomDialog> {
         );
       },
     );
-  }
-
-  void checkCategory() {
-    // jika id null, maka posisi data baru,
-    // jika tidak null berarti data update
-    if (widget.category.id != null) {
-      if (widget.category.type == 'pengeluaran') {
-        _jenis = JenisKategori.pengeluaran;
-      } else {
-        _jenis = JenisKategori.pemasukan;
-      }
-      isUpdate = true;
-    }
   }
 }
