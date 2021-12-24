@@ -212,7 +212,7 @@ class DatabaseHelper {
       String fromDate, String toDate) async {
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id WHERE (t.transaction_date BETWEEN '$fromDate' AND '$toDate') ORDER BY t.transaction_date DESC");
+        "SELECT t.*, c.name, c.type FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id WHERE (t.transaction_date BETWEEN '$fromDate' AND '$toDate') ORDER BY t.transaction_date DESC");
 
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
