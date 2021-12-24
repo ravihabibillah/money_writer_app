@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/model/category.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
+import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/utils/jenis_kategori.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class CustomDialog extends StatefulWidget {
 
 class _CustomDialogState extends State<CustomDialog> {
   JenisKategori? _jenis = JenisKategori.pengeluaran;
+  DateTime? selectedDate;
 
   final _formKey = GlobalKey<FormState>();
   bool isUpdate = false;
@@ -36,6 +38,7 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   void initState() {
     super.initState();
+    selectedDate = DateTime.now();
     // jika id null, maka posisi data baru,
     // jika tidak null berarti data update
     if (widget.category.id != null) {
@@ -154,6 +157,9 @@ class _CustomDialogState extends State<CustomDialog> {
 
                   if (isUpdate) {
                     provider.updateCategory(widget.category);
+                    Provider.of<TransactionsProvider>(context, listen: false)
+                        .setAllTransactionsbyDay(
+                            selectedDate!.month, selectedDate!.year);
                   } else {
                     provider.addCategory(widget.category);
                   }

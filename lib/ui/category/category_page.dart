@@ -58,7 +58,7 @@ class _CategoryPageState extends State<CategoryPage>
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 color: Colors.grey,
                 borderRadius: BorderRadius.circular(10),
@@ -71,7 +71,7 @@ class _CategoryPageState extends State<CategoryPage>
                         _tabController.index == 0 ? Colors.red : Colors.blue),
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.white,
-                tabs: [
+                tabs: const [
                   Tab(
                     text: "Pengeluaran",
                   ),
@@ -83,7 +83,7 @@ class _CategoryPageState extends State<CategoryPage>
             ),
             Expanded(
               child: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: <Widget>[
                   _buildListCategory(true), // list pengeluaran

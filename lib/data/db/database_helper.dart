@@ -44,7 +44,6 @@ class DatabaseHelper {
              amount INTEGER NOT NULL,
              transaction_date TEXT NOT NULL,
              id_categories INTEGER NOT NULL,
-             type TEXT NOT NULL,
              FOREIGN KEY (id_categories) REFERENCES $_tblCategories (id) ON DELETE CASCADE ON UPDATE NO ACTION
            )''');
 
@@ -170,7 +169,7 @@ class DatabaseHelper {
     }
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCharacter$month%' GROUP BY t.transaction_date ORDER BY t.transaction_date DESC");
+        "SELECT t.*, c.name, c.type FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCharacter$month%' GROUP BY t.transaction_date ORDER BY t.transaction_date DESC");
 
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
@@ -188,7 +187,7 @@ class DatabaseHelper {
     }
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.*, c.name FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCharacter$month%'");
+        "SELECT t.*, c.name, c.type FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCharacter$month%'");
     // print(results);
     return results.map((res) => Transactions.fromMap(res)).toList();
   }
