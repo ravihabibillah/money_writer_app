@@ -37,6 +37,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage>
   final MoneyMaskedTextController _amountTextController =
       MoneyMaskedTextController(
           decimalSeparator: '', thousandSeparator: '.', precision: 0);
+
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
@@ -295,8 +296,7 @@ class _TransactionAddUpdatePageState extends State<TransactionAddUpdatePage>
                   description: _descriptionController.text,
                   amount: amountToInt!,
                   transactionDate: _dateController.text,
-                  idCategories: int.parse(dropdownValue!),
-                  type: typeTransaction);
+                  idCategories: int.parse(dropdownValue!));
 
               if (!_isUpdate) {
                 provider.addTransaction(dataTransaction);

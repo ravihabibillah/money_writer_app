@@ -158,7 +158,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   if (isUpdate) {
                     provider.updateCategory(widget.category);
                     Provider.of<TransactionsProvider>(context, listen: false)
-                        .setAllTransactionsbyDay(
+                        .setAllTransactionsbyMonth(
                             selectedDate!.month, selectedDate!.year);
                   } else {
                     provider.addCategory(widget.category);

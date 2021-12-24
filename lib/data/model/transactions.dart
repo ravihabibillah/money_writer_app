@@ -13,7 +13,7 @@ class Transactions {
     required this.amount,
     required this.transactionDate,
     required this.idCategories,
-    required this.type,
+    // required this.type,
   });
 
   // mengambil data
@@ -34,7 +34,7 @@ class Transactions {
         "amount": amount,
         "transaction_date": transactionDate,
         "id_categories": idCategories,
-        "type": type,
+        // "type": type,
       };
 }
 

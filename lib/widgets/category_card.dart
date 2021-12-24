@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:money_writer_app/data/model/category.dart';
 import 'package:money_writer_app/provider/category_provider.dart';
+import 'package:money_writer_app/provider/transactions_provider.dart';
 import 'package:money_writer_app/ui/category/add_update_category_dialog.dart';
+import 'package:provider/provider.dart';
 
-class CardCategory extends StatelessWidget {
+class CardCategory extends StatefulWidget {
   final Category category;
   final CategoryProvider provider;
 
@@ -12,6 +14,13 @@ class CardCategory extends StatelessWidget {
     required this.category,
     required this.provider,
   }) : super(key: key);
+
+  @override
+  State<CardCategory> createState() => _CardCategoryState();
+}
+
+class _CardCategoryState extends State<CardCategory> {
+  DateTime? selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +32,8 @@ class CardCategory extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(right: 12.0),
-                child:
-                    Text(category.name, style: const TextStyle(fontSize: 15)),
+                child: Text(widget.category.name,
+                    style: const TextStyle(fontSize: 15)),
               ),
             ),
             GestureDetector(
@@ -33,7 +42,7 @@ class CardCategory extends StatelessWidget {
                 child: Icon(Icons.edit),
               ),
               onTap: () {
-                showInformationDialog(context, category);
+                showInformationDialog(context, widget.category);
               },
             ),
             GestureDetector(
@@ -50,7 +59,11 @@ class CardCategory extends StatelessWidget {
                       onPrimary: Colors.red,
                     ),
                     onPressed: () {
-                      provider.removeCategory(category.id);
+                      widget.provider.removeCategory(widget.category.id);
+                      Provider.of<TransactionsProvider>(context, listen: false)
+                          .setAllTransactionsbyMonth(
+                              selectedDate!.month, selectedDate!.year);
+
                       Navigator.of(context).pop();
                     },
                   );

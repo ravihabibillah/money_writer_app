@@ -202,7 +202,7 @@ class DatabaseHelper {
     }
     final Database? db = await database;
     List<Map<String, dynamic>> results = await db!.rawQuery(
-        "SELECT t.type, SUM(t.amount) as total FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCharacter$month%' GROUP BY t.type");
+        "SELECT c.type, SUM(t.amount) as total FROM $_tblTransaction t INNER JOIN $_tblCategories c ON t.id_categories = c.id AND t.transaction_date LIKE '%$year-$addZeroCharacter$month%' GROUP BY c.type");
     // print(results);
 
     return results.map((res) => TotalTransactions.fromMap(res)).toList();
